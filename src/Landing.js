@@ -140,8 +140,9 @@ export default function Landing(props) {
     const paths = site + '/apijson/path_alias/path_alias';
     const taxColors = getTaxonomyPath(site, 'colors', false);
     const taxWidth = getTaxonomyPath(site, 'paragraph_width', false);
+    const taxIcons = getTaxonomyPath(site, 'icons', false);
 
-    let [f, m, d, configuration, me, colorsTax, widthTax] = await Promise.all([
+    let [f, m, d, configuration, me, colorsTax, widthTax, iconsTax] = await Promise.all([
       axios.get(files),
       axios.get(media),
       axios.get(doc),
@@ -149,9 +150,11 @@ export default function Landing(props) {
       axios.get(menuData),
       axios.get(taxColors),
       axios.get(taxWidth),
+      axios.get(taxIcons),
     ]);
 
-    const taxonomies = setTaxonomies([['Colors',colorsTax], ['Width', widthTax]]);
+    const taxonomies = setTaxonomies([['Colors',colorsTax], ['Width', widthTax], ['Icons', iconsTax]]);
+    console.log(taxonomies);
     let menus = makeMenu(me);
     const fullRelease = getFullRelease(configuration);
     let [fi, sv, en,] = [null, null, null,];
