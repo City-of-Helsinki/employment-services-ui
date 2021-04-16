@@ -31,5 +31,6 @@ export interface SingleCardProps {
 declare global {
   interface Window {
     rnsData: any;
+    _paq: any;
   }
 }

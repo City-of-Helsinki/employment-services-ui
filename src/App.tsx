@@ -7,13 +7,14 @@ import { Switch, Route, Redirect, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { Helmet } from "react-helmet";
-import CookieConsent from "react-cookie-consent";
+import CookieConsent, { getCookieConsentValue } from "react-cookie-consent";
 import Nav from "./Nav";
 import { Lang } from "./types";
 import Landing from "./pages/Landing";
 import Page from "./pages/Page";
 import Event from "./pages/Event";
 import { getAppName } from "./config";
+import { ImportMatomo } from './hooks/ImportScripts';
 
 const groteskTheme = createMuiTheme({
   typography: {
@@ -42,6 +43,8 @@ function App() {
   const { t, i18n } = useTranslation();
   const [, langPath] = location.pathname.split("/");
   const [lang, setLang] = useState<Lang>(strToLang(langPath));
+  const [cookieConsent, setCookieConsent] = useState(getCookieConsentValue('tyollisyyspalvelut_cookie_consent'));
+  ImportMatomo(cookieConsent);
 
   const changeLang = (newLang: Lang) => {
     i18n.changeLanguage(newLang);
@@ -80,6 +83,12 @@ function App() {
         declineButtonStyle={{ background: "#0000bf", color: "#fff", fontSize: "16px", fontWeight: "500", lineHeight: "1.5", border: "2px solid #fff", padding: "16px 24px", margin: "0 8px 16px" }}
         expires={180}
         flipButtons={true}
+        onAccept={() => {
+          setCookieConsent('true');
+        }}
+        onDecline={() => {
+          setCookieConsent('false');
+        }}
       >
         <p>{t("cookies.text")}</p>
         <a href={t("cookies.url")} style={{ color: "#fff" }}>{t("cookies.link_text")}</a>

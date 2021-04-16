@@ -19,7 +19,7 @@ import Link from "./components/Link";
 import Date from "./components/Date";
 import Location from "./components/Location";
 import SujoEmbedded from "./components/SujoEmbedded";
-import ImportReactAndShare from './hooks/ImportScripts';
+import { ImportReactAndShare } from './hooks/ImportScripts';
 import { Lang } from "./types";
 
 const useStyles = makeStyles((theme) => ({
@@ -184,10 +184,7 @@ function Paragraphs(props: ParagraphsProps) {
   const { paragraphs, width, lang, lastParagraphColor } = props;
   const items: any[] = [];
   const [cookieConsent, setCookieConsent] = useState(getCookieConsentValue('tyollisyyspalvelut_cookie_consent'));
-
-  if (cookieConsent === 'true') {
-    ImportReactAndShare("https://cdn.reactandshare.com/plugin/rns.js", lang);
-  }
+  ImportReactAndShare(cookieConsent, lang);
 
   paragraphs.forEach((paragraph: any, index: number) => {
     switch (paragraph.type) {
