@@ -107,7 +107,7 @@ function ImageAndCard(props: ImageAndCardProps) {
         }}
         >
           <div>
-            <Typography className={classes.title}>
+            <Typography component="h2" className={classes.title}>
               {card.title}
             </Typography>
             <Typography className={classes.text} dangerouslySetInnerHTML={{ __html: card.text }} />
