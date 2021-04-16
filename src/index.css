@@ -8,3 +8,7 @@ body {
 code {
   font-family: HelsinkiGrotesk;
 }
+
+.rns .rns-plugin .rns-shares .rns-share {
+  padding: 0 .2rem .4rem !important;
+}

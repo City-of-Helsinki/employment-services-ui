@@ -2,7 +2,7 @@
 import 'react-app-polyfill/ie9';
 import 'react-app-polyfill/stable';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from "react-router-dom";
 import './index.css';
@@ -13,9 +13,11 @@ import "./i18n";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <App />
-    </Router>
+    <Suspense fallback={<h2>Loading...</h2>}>
+      <Router>
+        <App />
+      </Router>
+    </Suspense>
   </React.StrictMode>,
   document.getElementById('root')
 );

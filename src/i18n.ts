@@ -10,11 +10,7 @@ i18n
     fallbackLng: "fi",
     interpolation: {
       escapeValue: false
-    },
-    react: {
-      wait: true,
-      useSuspense: false,
-   },
+    }
   });
 
 export default i18n;
