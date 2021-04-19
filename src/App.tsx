@@ -2,7 +2,7 @@ import "./App.css";
 import "./fonts.css";
 
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Switch, Route, Redirect, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -46,8 +46,11 @@ function App() {
   const [cookieConsent, setCookieConsent] = useState(getCookieConsentValue('tyollisyyspalvelut_cookie_consent'));
   ImportMatomo(cookieConsent);
 
+  useEffect(() => {
+    i18n.changeLanguage(lang);
+  }, [lang]);
+
   const changeLang = (newLang: Lang) => {
-    i18n.changeLanguage(newLang);
     setLang(newLang);
   };
 
