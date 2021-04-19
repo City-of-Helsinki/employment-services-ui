@@ -5,6 +5,7 @@ import 'react-app-polyfill/stable';
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from "react-router-dom";
+import { LoadingSpinner } from "hds-react";
 import './index.css';
 import './fonts.css';
 import App from './App';
@@ -13,7 +14,7 @@ import "./i18n";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Suspense fallback={<h2>Loading...</h2>}>
+    <Suspense fallback={<LoadingSpinner style={{ margin: "50vh auto 0"}} />}>
       <Router>
         <App />
       </Router>

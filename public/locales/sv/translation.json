@@ -6,5 +6,13 @@
     "accept": "Avvisa cookies",
     "decline": "Godkänn cookies",
     "url": "https://tyollisyyspalvelut.hel.fi/sv/cookie-policy"
+  },
+  "footer": {
+    "feedback": "Ge respons",
+    "feedbackLink": "https://www.hel.fi/helsinki/sv/stad-och-forvaltning/delta/feedback",
+    "goup": "Till början av sidan",
+    "accessibility": "Tillgänglighetsutlåtande",
+    "cookies": "Cookie policy",
+    "cookie_settings": "Cookie inställningar"
   }
 }

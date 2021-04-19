@@ -6,5 +6,13 @@
     "accept": "Accept cookies",
     "decline": "Decline cookies",
     "url": "https://tyollisyyspalvelut.hel.fi/en/cookie-policy"
+  },
+  "footer": {
+    "feedback": "Give feedback",
+    "feedbackLink": "https://www.hel.fi/helsinki/en/administration/participate/feedback",
+    "goup": "Back to the top",
+    "accessibility": "Accessibility statement",
+    "cookies": "Cookie policy",
+    "cookie_settings": "Cookie settings"
   }
 }
