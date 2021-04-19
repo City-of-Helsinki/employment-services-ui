@@ -78,7 +78,8 @@ function App() {
         declineButtonText={t("cookies.decline")}
         ariaDeclineLabel={t("cookies.decline")}
         cookieName="tyollisyyspalvelut_cookie_consent"
-        style={{ background: "#0000bf", color: "#fff", fontSize: "18px", padding: "32px 40px", alignItems: "center" }}
+        containerClasses="cookie-banner"
+        style={{ background: "#0000bf", color: "#fff", fontSize: "18px", alignItems: "center" }}
         buttonStyle={{ background: "#fff", color: "#0000bf", fontSize: "16px", fontWeight: "500", lineHeight: "1.5", border: "2px solid #fff", padding: "16px 24px", margin: "0 8px 16px" }}
         declineButtonStyle={{ background: "#0000bf", color: "#fff", fontSize: "16px", fontWeight: "500", lineHeight: "1.5", border: "2px solid #fff", padding: "16px 24px", margin: "0 8px 16px" }}
         expires={180}

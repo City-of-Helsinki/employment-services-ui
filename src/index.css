@@ -12,3 +12,13 @@ code {
 .rns .rns-plugin .rns-shares .rns-share {
   padding: 0 .2rem .4rem !important;
 }
+
+.cookie-banner {
+  padding: 32px 40px;
+}
+
+@media only screen and (max-width: 764px) {
+  .cookie-banner {
+    padding: 16px;
+  }
+}
