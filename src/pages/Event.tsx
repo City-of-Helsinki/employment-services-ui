@@ -14,6 +14,7 @@ type Data = null | {
 };
 interface EventProps {
   lang: Lang;
+  cookieConsent: string;
 }
 
 function Event(props: EventProps) {
@@ -22,7 +23,7 @@ function Event(props: EventProps) {
   const [data, setData] = useState<Data>(null);
   const [redirect, setRedirect] = useState(false);
   const location = useLocation();
-  const { lang } = props;
+  const { lang, cookieConsent } = props;
 
   const fetchData = async () => {
     // TODO: Change langParam here when there's lang support for events
@@ -72,7 +73,7 @@ function Event(props: EventProps) {
     return <></>;
   }
 
-  return <PageUsingParagraphs lang={lang} paragraphData={data.paragraphData} width={data.width} />;
+  return <PageUsingParagraphs lang={lang} cookieConsent={cookieConsent} paragraphData={data.paragraphData} width={data.width} />;
 }
 
 export default Event;

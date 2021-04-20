@@ -7,6 +7,10 @@
     "decline": "Kieltäydy evästeistä",
     "url": "https://tyollisyyspalvelut.hel.fi/fi/evastekaytanto"
   },
+  "video": {
+    "cookie_consent": "Et ole antanut lupaa asettaa evästeitä kohteesta YouTube.com. ",
+    "link_text": "Hyväksy evästeet nähdäksesi videon"
+  },
   "footer": {
     "feedback": "Anna palautetta",
     "feedbackLink": "https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/osallistu-ja-vaikuta/palaute/",

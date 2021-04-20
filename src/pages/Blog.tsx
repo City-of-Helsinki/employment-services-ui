@@ -26,6 +26,7 @@ type Data = null | {
 
 interface BlogProps {
   lang: Lang;
+  cookieConsent: string;
 }
 
 function Blog(props: BlogProps) {
@@ -34,7 +35,7 @@ function Blog(props: BlogProps) {
   const [data, setData] = useState<Data>(null);
   const [redirect, setRedirect] = useState(false);
   const location = useLocation();
-  const { lang } = props;
+  const { lang, cookieConsent } = props;
 
   const fetchData = async () => {
     const [files, media, documents, colorsTax, widthTax] = await Promise.all([
@@ -96,10 +97,10 @@ function Blog(props: BlogProps) {
     if (lang !== langPath) {
       const newPath =
         lang === "fi"
-          ? `/fi/blogit/${alias}`
+          ? `/fi/blogi/${alias}`
           : lang === "sv"
-          ? `/sv/bloggar/${alias}`
-          : `/en/blogs/${alias}`;
+          ? `/sv/blogg/${alias}`
+          : `/en/blog/${alias}`;
       history.replace(newPath);
     }
   }, [lang]);
@@ -112,7 +113,7 @@ function Blog(props: BlogProps) {
     return <></>;
   }
 
-  return <PageUsingParagraphs lang={lang} nodeData={data.nodeData} paragraphData={data.paragraphData} width={data.width} />;
+  return <PageUsingParagraphs lang={lang} cookieConsent={cookieConsent} nodeData={data.nodeData} paragraphData={data.paragraphData} width={data.width} />;
 }
 
 export default Blog;

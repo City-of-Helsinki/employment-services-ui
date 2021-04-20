@@ -9,20 +9,21 @@ import Text from "./components/Text";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Image from "./components/Image";
-import { getCookieConsentValue } from "react-cookie-consent";
 import ImageAndCard from "./components/ImageAndCard";
 import CardList from "./components/CardList";
 import EventsList from "./components/EventsList";
 import NewsList from "./components/NewsList";
 import BlogList from "./components/BlogList";
+import Video from "./components/Video";
 import { Container } from "hds-react";
 import { Koros } from "hds-react/components/Koros";
 import Link from "./components/Link";
 import { DateWithIcon } from "./components/Date";
 import Location from "./components/Location";
 import SujoEmbedded from "./components/SujoEmbedded";
-import { ImportReactAndShare } from './hooks/ImportScripts';
+import { ImportReactAndShare } from './hooks';
 import { Lang } from "./types";
+
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -116,6 +117,11 @@ const useStyles = makeStyles((theme) => ({
   location: {
     paddingBottom: 20,
   },
+  video: {
+    marginTop: 24,
+    marginBottom: 24,
+    textAlign: "center",
+  },
   reactAndShare: {
     padding: 0,
     marginTop: 0,
@@ -126,9 +132,10 @@ const useStyles = makeStyles((theme) => ({
 type ParagraphWidth = "Narrow" | "Medium" | "Wide" | "Full" | null;
 interface ParagraphsProps {
   paragraphs: any;
+  lang: Lang;
+  cookieConsent: string;
   nodeData?: any;
   width: ParagraphWidth;
-  lang: Lang;
   lastParagraphColor: string;
 }
 
@@ -192,9 +199,8 @@ export const ParagraphGrid = ({
 
 function Paragraphs(props: ParagraphsProps) {
   const classes = useStyles();
-  const { paragraphs, nodeData, width, lang, lastParagraphColor } = props;
+  const { paragraphs, lang, cookieConsent, nodeData, width, lastParagraphColor } = props;
   const items: any[] = [];
-  const [cookieConsent, setCookieConsent] = useState(getCookieConsentValue('tyollisyyspalvelut_cookie_consent'));
   ImportReactAndShare(cookieConsent, lang);
 
   paragraphs.forEach((paragraph: any, index: number) => {
@@ -363,6 +369,15 @@ function Paragraphs(props: ParagraphsProps) {
           <Container className={classes.container2}>
             <ParagraphGrid className={classes.sujo} paragraphWidth={width}>
               <SujoEmbedded training={paragraph.training} />
+            </ParagraphGrid>
+          </Container>
+        )
+        break;
+      case "Video":
+        items.push(
+          <Container className={classes.container2}>
+            <ParagraphGrid className={classes.video} paragraphWidth={width}>
+              <Video videoUrl={paragraph.videoUrl} cookieConsent={cookieConsent} />
             </ParagraphGrid>
           </Container>
         )

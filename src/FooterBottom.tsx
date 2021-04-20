@@ -5,6 +5,7 @@ import { Footer } from  "hds-react/components/Footer";
 import { useTranslation } from "react-i18next";
 import { drupalUrl } from "./config";
 import { Lang } from "./types";
+import { deleteCookie } from "../src/helpers/helpers";
 
 const useStyles = makeStyles((theme) => ({
   footerWrapper: {
@@ -32,12 +33,6 @@ function FooterBottom(props: FooterProps) {
     });
   };
 
-  const deleteCookie = (event: any, name: string) => {
-    event.preventDefault();
-    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    history.go(0)
-  }
-
   return (
     <>
       <div className={classes.footerWrapper} style={{ backgroundColor: lastParagraphColor }}>
@@ -56,7 +51,7 @@ function FooterBottom(props: FooterProps) {
             <Footer.Item href={`${drupalUrl}/sites/default/files/2021-02/saavutettavuusseloste%2026.2.2021.pdf`} label={t("footer.accessibility")} />
             <Footer.Item href={t("cookies.url")} label={t("footer.cookies")} />
             <Footer.Item href="#" label={t("footer.cookie_settings")} onClick={(e: any) => {
-              deleteCookie(e ,'tyollisyyspalvelut_cookie_consent');
+              deleteCookie(e ,'tyollisyyspalvelut_cookie_consent', history);
             }}/>
             <Footer.Item href={t("footer.feedbackLink")} label={t("footer.feedback")} />
             <Footer.Item href="#" label={t("footer.goup")} onClick={scrollToTop} />

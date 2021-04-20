@@ -7,6 +7,10 @@
     "decline": "Decline cookies",
     "url": "https://tyollisyyspalvelut.hel.fi/en/cookie-policy"
   },
+  "video": {
+    "cookie_consent": "You have not yet given permission to place the required cookies from YouTube.com. ",
+    "link_text": "Accept the required cookies to view this video content."
+  },
   "footer": {
     "feedback": "Give feedback",
     "feedbackLink": "https://www.hel.fi/helsinki/en/administration/participate/feedback",

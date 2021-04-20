@@ -24,6 +24,7 @@ type Data = null | {
 
 interface PageProps {
   lang: Lang;
+  cookieConsent: string;
 }
 
 function Page(props: PageProps) {
@@ -31,7 +32,7 @@ function Page(props: PageProps) {
   const history = useHistory();
   const [data, setData] = useState<Data>(null);
   const [redirect, setRedirect] = useState(false);
-  const { lang } = props;
+  const { lang, cookieConsent } = props;
 
   const fetchData = async () => {
     const [files, media, documents, colorsTax, widthTax] = await Promise.all([
@@ -99,7 +100,7 @@ function Page(props: PageProps) {
     return <></>;
   }
   
-  return <PageUsingParagraphs lang={lang} paragraphData={data.paragraphData} width={data.width} />;
+  return <PageUsingParagraphs lang={lang} cookieConsent={cookieConsent} paragraphData={data.paragraphData} width={data.width} />;
 }
 
 export default Page;

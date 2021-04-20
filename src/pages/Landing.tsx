@@ -21,13 +21,14 @@ type Data = null | {
 
 interface LandingProps {
   lang: Lang;
+  cookieConsent: string;
 }
 
 function Landing(props: LandingProps) {
   const { langParam } = useParams<{langParam: string}>()
   const history = useHistory();
   const [data, setData] = useState<Data>(null);
-  const { lang } = props;
+  const { lang, cookieConsent } = props;
 
   const fetchData = async () => {
     const [files, media, documents, colorsTax, widthTax] = await Promise.all([
@@ -69,7 +70,7 @@ function Landing(props: LandingProps) {
     return <></>;
   }
 
-  return <PageUsingParagraphs lang={lang} paragraphData={data.paragraphData} width={data.width} />;
+  return <PageUsingParagraphs lang={lang} cookieConsent={cookieConsent} paragraphData={data.paragraphData} width={data.width} />;
 }
 
 export default Landing;

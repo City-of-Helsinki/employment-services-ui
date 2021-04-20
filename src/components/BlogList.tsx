@@ -84,7 +84,7 @@ function BlogList(props: BlogListProps) {
 
   const loadMoreText = lang === "fi" ? "Lataa lisää" : lang === "sv" ? "Visa fler" : "Show more";
   const readMoreText = lang === "fi" ? "Lue kaikki blogit" : lang === "sv" ? "Läs alla bloggar" : "Read all blogs";
-  const blogUrl = lang === "fi" ? "/fi/blogit" : lang === "sv" ? "/sv/bloggar" : "/en/blogs";
+  const blogUrl = lang === "fi" ? "/fi/blogi" : lang === "sv" ? "/sv/blogg" : "/en/blog";
 
   return (
     <div

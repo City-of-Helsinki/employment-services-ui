@@ -268,6 +268,18 @@ export const findPageData = (lang, json, files, media, doc, taxonomies) => {
           console.log(error);
         }
         break;
+      case 'paragraph--video':
+        try {
+          data.push({
+            type: 'Video',
+            lang: item.attributes.langcode,
+            videoUrl: item.attributes.field_youtube,
+          });
+        } catch (error) {
+          console.log("video");
+          console.log(error);
+        }
+        break;
       case 'paragraph--link_internal':
         try {
           const pdfUrl = findPdfUrl(item.relationships.field_media_document.data.id, files, doc);

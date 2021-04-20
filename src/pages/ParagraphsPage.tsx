@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface PageUsingParagraphsProps {
   lang: Lang;
+  cookieConsent: string;
   nodeData?: any;
   paragraphData: ParagraphData;
   width: any;
@@ -33,7 +34,7 @@ interface PageUsingParagraphsProps {
 
 export default function ParagraphsPage(props: PageUsingParagraphsProps) {
   const classes = useStyles();
-  const { lang, nodeData, paragraphData, width } = props;
+  const { lang, cookieConsent, nodeData, paragraphData, width } = props;
 
   const useData = lang === 'fi' ? paragraphData.fi : lang === 'sv' ? paragraphData.sv : paragraphData.en;
 
@@ -64,7 +65,7 @@ export default function ParagraphsPage(props: PageUsingParagraphsProps) {
           <></>
         )}
         <div className={classes.paragraphs}>
-          <Paragraphs paragraphs={useData} nodeData={nodeData} width={width} lang={lang} lastParagraphColor={lastParagraphColor} />
+          <Paragraphs paragraphs={useData} lang={lang} cookieConsent={cookieConsent} nodeData={nodeData} width={width} lastParagraphColor={lastParagraphColor} />
         </div>
       </main>
       <FooterBottom title={getAppName(lang)} lang={lang} lastParagraphColor={lastParagraphColor} />

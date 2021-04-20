@@ -26,6 +26,7 @@ type Data = null | {
 
 interface NewsProps {
   lang: Lang;
+  cookieConsent: string;
 }
 
 function News(props: NewsProps) {
@@ -34,7 +35,7 @@ function News(props: NewsProps) {
   const [data, setData] = useState<Data>(null);
   const [redirect, setRedirect] = useState(false);
   const location = useLocation();
-  const { lang } = props;
+  const { lang, cookieConsent } = props;
 
   const fetchData = async () => {
     const [files, media, documents, colorsTax, widthTax] = await Promise.all([
@@ -110,7 +111,7 @@ function News(props: NewsProps) {
     return <></>;
   }
 
-  return <PageUsingParagraphs lang={lang} nodeData={data.nodeData} paragraphData={data.paragraphData} width={data.width} />;
+  return <PageUsingParagraphs lang={lang} cookieConsent={cookieConsent} nodeData={data.nodeData} paragraphData={data.paragraphData} width={data.width} />;
 }
 
 export default News;

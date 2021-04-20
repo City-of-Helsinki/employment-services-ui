@@ -16,7 +16,7 @@ import Event from "./pages/Event";
 import News from "./pages/News";
 import Blog from "./pages/Blog";
 import { getAppName } from "./config";
-import { ImportMatomo } from './hooks/ImportScripts';
+import { ImportMatomo } from './hooks';
 
 const groteskTheme = createMuiTheme({
   typography: {
@@ -68,17 +68,17 @@ function App() {
         <Route path="/QA">
           <Redirect to={"/fi/QA"} />
         </Route>
-        <Route path="/fi/tapahtuma/:urlAlias" strict children={<Event lang={lang} />} />
-        <Route path="/en/event/:urlAlias" strict children={<Event lang={lang} />} />
-        <Route path="/sv/evenemang/:urlAlias" strict children={<Event lang={lang} />} />
-        <Route path="/fi/uutiset/:urlAlias" strict children={<News lang={lang} />} />
-        <Route path="/en/news/:urlAlias" strict children={<News lang={lang} />} />
-        <Route path="/sv/nyheter/:urlAlias" strict children={<News lang={lang} />} />
-        <Route path="/fi/blogit/:urlAlias" strict children={<Blog lang={lang} />} />
-        <Route path="/en/blogs/:urlAlias" strict children={<Blog lang={lang} />} />
-        <Route path="/sv/bloggar/:urlAlias" strict children={<Blog lang={lang} />} />
-        <Route path="/:langParam/:urlAlias" strict children={<Page lang={lang} />} />
-        <Route path="/:langParam" strict children={<Landing lang={lang} />} />
+        <Route path="/fi/tapahtuma/:urlAlias" strict children={<Event lang={lang} cookieConsent={cookieConsent} />} />
+        <Route path="/en/event/:urlAlias" strict children={<Event lang={lang} cookieConsent={cookieConsent} />} />
+        <Route path="/sv/evenemang/:urlAlias" strict children={<Event lang={lang} cookieConsent={cookieConsent} />} />
+        <Route path="/fi/uutiset/:urlAlias" strict children={<News lang={lang} cookieConsent={cookieConsent} />} />
+        <Route path="/en/news/:urlAlias" strict children={<News lang={lang} cookieConsent={cookieConsent} />} />
+        <Route path="/sv/nyheter/:urlAlias" strict children={<News lang={lang} cookieConsent={cookieConsent} />} />
+        <Route path="/fi/blogi/:urlAlias" strict children={<Blog lang={lang} cookieConsent={cookieConsent} />} />
+        <Route path="/en/blog/:urlAlias" strict children={<Blog lang={lang} cookieConsent={cookieConsent} />} />
+        <Route path="/sv/blogg/:urlAlias" strict children={<Blog lang={lang} cookieConsent={cookieConsent} />} />
+        <Route path="/:langParam/:urlAlias" strict children={<Page lang={lang} cookieConsent={cookieConsent} />} />
+        <Route path="/:langParam" strict children={<Landing lang={lang} cookieConsent={cookieConsent} />} />
         <Redirect to={"/fi"}></Redirect>
       </Switch>
       <CookieConsent
