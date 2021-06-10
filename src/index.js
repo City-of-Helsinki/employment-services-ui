@@ -12,7 +12,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "./i18n";
 
-ReactDOM.render(
+ReactDOM.hydrate(
   <React.StrictMode>
     <Suspense fallback={<LoadingSpinner style={{ margin: "50vh auto 0"}} />}>
       <Router>

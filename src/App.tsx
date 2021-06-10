@@ -66,10 +66,10 @@ function App(): JSX.Element {
 
   return (
     <ThemeProvider theme={groteskTheme}>
-      <Helmet>
+      {/* <Helmet>
         <html lang={lang} />
         <title>{getAppName(lang)}</title>
-      </Helmet>
+      </Helmet> */}
       <Nav lang={lang} changeLang={changeLang} />
       <CssBaseline />
       <Switch>

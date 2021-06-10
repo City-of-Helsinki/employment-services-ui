@@ -70,13 +70,13 @@ export default function ParagraphsPage(props: PageUsingParagraphsProps): JSX.Ele
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>{`${getAppName(lang)} | ${nodeAttributes.title}`}</title>
         { nodeAttributes.summary && <meta name="description" content={nodeAttributes.summary} /> }
         <meta name="og:title" content={nodeAttributes.title} />
         { nodeAttributes.summary && <meta name="og:description" content={nodeAttributes.summary} />}
         { imageParagraph?.length && <meta name="og:image" content={imageParagraph[0].imageUrl} />}
-      </Helmet>
+      </Helmet> */}
       <main className={classes.main}>
         {isHero ? (
           <div className={classes.hero}>
