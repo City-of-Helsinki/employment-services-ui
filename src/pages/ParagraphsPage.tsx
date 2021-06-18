@@ -66,17 +66,13 @@ export default function ParagraphsPage(props: PageUsingParagraphsProps): JSX.Ele
   const filteredParagraphs = useData.filter((el: any) => el.type !== 'ReactAndShare' && el.type !== 'ShareButtons');
   const lastParagraph = !filteredParagraphs ? undefined : filteredParagraphs[filteredParagraphs.length - 1];
   const lastParagraphColor = lastParagraph ? lastParagraph.bgColor : "";
-  const imageParagraph = useData.filter((el: any) => el.type === 'Image');
 
   return (
     <>
-      {/* <Helmet>
-        <title>{`${getAppName(lang)} | ${nodeAttributes.title}`}</title>
+      <Helmet>
+        <title>{`${nodeAttributes.title} | ${getAppName(lang)}`}</title>
         { nodeAttributes.summary && <meta name="description" content={nodeAttributes.summary} /> }
-        <meta name="og:title" content={nodeAttributes.title} />
-        { nodeAttributes.summary && <meta name="og:description" content={nodeAttributes.summary} />}
-        { imageParagraph?.length && <meta name="og:image" content={imageParagraph[0].imageUrl} />}
-      </Helmet> */}
+      </Helmet>
       <main className={classes.main}>
         {isHero ? (
           <div className={classes.hero}>

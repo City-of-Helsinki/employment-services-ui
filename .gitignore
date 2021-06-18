@@ -3,5 +3,4 @@ node_modules/
 .github
 .editorconfig
 .env
-.eslintcache
 build/
