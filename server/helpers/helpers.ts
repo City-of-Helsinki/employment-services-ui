@@ -96,7 +96,6 @@ export const getDrupalNodeDataFromPathAlias = async (
 
   return {
     nid: nodeData[0].attributes.path.substr(6),
-    // nodeLang: nodeData[0].attributes.langcode,
   };
 };
 
