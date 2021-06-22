@@ -8,7 +8,7 @@ import {
 } from "../helpers/fetchHelper";
 import { findTaxonomy } from "../helpers/taxonomiesHelper";
 import { findEventData, findNodeAttributes } from "../helpers/dataHelper";
-import PageUsingParagraphs from "./ParagraphsPage";
+import PageUsingParagraphs from "../components/ParagraphsPage";
 import { Lang, EventParams, ParagraphData } from "../types";
 import NotFound from "./NotFound";
 

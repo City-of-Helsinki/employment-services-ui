@@ -1,9 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Helmet } from "react-helmet";
-import Footer from "../components/Footer";
-import Paragraphs from "../components/Paragraphs";
-import { Hero, HeroShallow } from "../components/Hero";
+import Footer from "./Footer";
+import Paragraphs from "./Paragraphs";
+import { Hero, HeroShallow } from "./Hero";
 import { getAppName } from "../config";
 import { Lang, ParagraphData } from "../types";
 

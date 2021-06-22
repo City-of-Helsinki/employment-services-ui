@@ -479,13 +479,13 @@ export const findPageData = (lang, json, files, media, doc, taxonomies) => {
     return data;
   });
 
-  // if (pageType !== 'node--landing') {
-  //   data.push({
-  //     type: 'ShareButtons',
-  //     lang,
-  //     bgColor: '#fff',
-  //   });
-  // }
+  if (pageType !== 'node--landing') {
+    data.push({
+      type: 'ShareButtons',
+      lang,
+      bgColor: '#fff',
+    });
+  }
 
   if (pageType === 'node--news') {
     data.push({

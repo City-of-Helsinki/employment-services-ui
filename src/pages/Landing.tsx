@@ -11,7 +11,7 @@ import {
 } from "../helpers/fetchHelper";
 import { findTaxonomy, setTaxonomies } from "../helpers/taxonomiesHelper";
 import { findPageData, findNodeAttributes} from "../helpers/dataHelper";
-import PageUsingParagraphs from "./ParagraphsPage";
+import PageUsingParagraphs from "../components/ParagraphsPage";
 import { Lang, ParagraphData } from "../types";
 
 type Data = null | {

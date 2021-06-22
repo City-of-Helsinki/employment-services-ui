@@ -13,7 +13,7 @@ import {
 } from "../helpers/fetchHelper";
 import { findTaxonomy, setTaxonomies } from "../helpers/taxonomiesHelper";
 import { findPageData, getUrlAlias, findNodeAttributes } from "../helpers/dataHelper";
-import PageUsingParagraphs from "./ParagraphsPage";
+import PageUsingParagraphs from "../components/ParagraphsPage";
 import { Lang, Params, ParagraphData } from "../types";
 import NotFound from "./NotFound";
 
