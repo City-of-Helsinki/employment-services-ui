@@ -1,18 +1,22 @@
-import { PreviewAlert } from '@/components/PreviewAlert'
+import { PreviewAlert } from 'src/components/PreviewAlert'
 import { Container } from 'hds-react'
 import styles from './layout.module.scss'
+import Nav from 'src/components/Nav'
+import { DrupalMenuLinkContent } from "next-drupal"
 
 interface LayoutProps {
-  children: any
+  children: any,
+  menu: DrupalMenuLinkContent[],
 }
 
-export function Layout({ children }: LayoutProps): JSX.Element {
+export function Layout({ children, menu }: LayoutProps): JSX.Element {
   return (
     <>
       <PreviewAlert />
       <div className={styles.wrapper}>
         <header>
           <div>
+          <Nav menu={menu}/>
           </div>
         </header>
         <main>{children}</main>
