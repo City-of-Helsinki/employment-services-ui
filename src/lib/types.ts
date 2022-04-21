@@ -1,4 +1,8 @@
-import { DrupalNode } from 'next-drupal'
+import {
+  DrupalNode,
+  Locale,
+  DrupalMenuLinkContent,
+} from 'next-drupal'
 
 export interface Node extends DrupalNode {
   title: string
@@ -12,3 +16,9 @@ export interface DrupalFormattedText {
   processed: string
   value: string
 }
+
+export declare type HeaderProps = {
+    locale: Locale,
+    menu?: DrupalMenuLinkContent[],
+    themes?: DrupalMenuLinkContent[],
+  };

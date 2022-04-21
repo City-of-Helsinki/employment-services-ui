@@ -8,12 +8,9 @@ import {
   Locale,
   DrupalParagraph,
   getPathsFromContext,
-  getResource,
   getResourceFromContext,
   getResourceTypeFromContext,
   getMenu,
-  DrupalMenuLinkContent,
-  JsonApiWithLocaleOptions,
 } from "next-drupal"
 
 import NodeBasicPage from '@/components/pageTemplates/NodeBasicPage'
@@ -22,12 +19,13 @@ import { Layout } from '@/components/layout/Layout'
 import { NODE_TYPES, CONTENT_TYPES } from 'src/lib/drupalApiTypes'
 import { Node } from 'src/lib/types'
 import { getParams } from 'src/lib/params'
+import { HeaderProps } from "src/lib/types"
 interface PageProps {
   node: Node
-  menu: DrupalMenuLinkContent[],
+  header: HeaderProps,
 }
 
-export default function Page({ node, menu }: PageProps) {
+export default function Page({ node, header }: PageProps) {
   const router = useRouter()
   if (!router.isFallback && !node?.id) {
     return <ErrorPage statusCode={404} />
@@ -36,7 +34,7 @@ export default function Page({ node, menu }: PageProps) {
   if (!node) return null
 
   return (
-    <Layout menu={menu}>
+    <Layout header={header}>
       <Head>
         <title>{node.title}</title>
         <meta name="description" content="A Next.js site powered by a Drupal backend."
@@ -73,12 +71,17 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
       }
   }
 
-  const { tree } = await getMenu("main", {locale, defaultLocale})
+  const { tree: menu } = await getMenu("main", {locale, defaultLocale})
+  const { tree: themes } = await getMenu("themes")
 
   return {
     props: {
       node,
-      menu: tree,
+      header: {
+        locale,
+        menu,
+        themes,
+      },
     },
     // revalidate: 30,
   }
@@ -90,8 +93,9 @@ export async function getStaticPaths(context: GetStaticPathsContext): Promise<Ge
   const types = Object.values(NODE_TYPES)
 
   const paths = await getPathsFromContext(types, context)
+
   return {
     paths: paths,
-    fallback: true,
+    fallback: false,
   }
 }
