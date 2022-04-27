@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import ErrorPage from 'next/error'
-
 import { GetStaticPropsContext, GetStaticPathsContext, GetStaticPathsResult, GetStaticPropsResult } from 'next'
+
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import {
   Locale,
@@ -82,6 +83,7 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
         menu,
         themes,
       },
+      ...(await serverSideTranslations(locale, ['common'])),
     },
     // revalidate: 30,
   }

@@ -1,10 +1,12 @@
-import { Navigation, Button } from "hds-react"
-import { DrupalMenuLinkContent } from "next-drupal"
-import { HeaderProps } from "src/lib/types"
+import { useTranslation } from 'next-i18next'
+import { Navigation, Button } from 'hds-react'
+import { DrupalMenuLinkContent } from 'next-drupal'
+import { HeaderProps } from 'src/lib/types'
 
 function Header(header:HeaderProps): JSX.Element {
 
   const {locale, menu, themes} = header
+  const { t } = useTranslation('common')
 
   const getNavi = (menuArray: any) => {
     const nav: any = [];
@@ -67,8 +69,8 @@ function Header(header:HeaderProps): JSX.Element {
       theme={{
         "--header-divider-color": "white",
       }}
-      title="työllisyyspalvelut"
-      titleAriaLabel={"navigation.title_aria_label"}
+      title={t("site_name")}
+      titleAriaLabel={t("navigation.title_aria_label")}
     >
       <Navigation.Actions>
         <Navigation.Item
@@ -90,10 +92,10 @@ function Header(header:HeaderProps): JSX.Element {
           size="small"
           variant="secondary"
           onClick={() => {
-            window.location.href = "navigation.button_link"
+            window.location.href = t("navigation.button_link")
           }}
         >
-          {"navigation.button_text"}
+          {t("navigation.button_text")}
         </Button>
       </Navigation.Actions>
       <Navigation.Row>
