@@ -1,12 +1,13 @@
 import { useTranslation } from 'next-i18next'
 import { Navigation, Button } from 'hds-react'
-import { DrupalMenuLinkContent } from 'next-drupal'
 import { HeaderProps } from 'src/lib/types'
 
 function Header(header:HeaderProps): JSX.Element {
 
-  const {locale, menu, themes} = header
+  const { locale, menu, themes, langLinks } = header
   const { t } = useTranslation('common')
+
+  const activePath = langLinks[locale]
 
   const getNavi = (menuArray: any) => {
     const nav: any = [];
@@ -23,6 +24,7 @@ function Header(header:HeaderProps): JSX.Element {
             as="a"
             href={sub.url}
             label={sub.title}
+            active={sub.url === activePath}
             // onClick={function noRefCheck() {}}
           />
         )
@@ -42,7 +44,7 @@ function Header(header:HeaderProps): JSX.Element {
     if (!links) {
       return <></>
     }
-    const nav: any = [];
+    const nav: any = []
     links.map((item: any, index: number) => {
       nav.push(
         <Navigation.Item
@@ -50,13 +52,14 @@ function Header(header:HeaderProps): JSX.Element {
           href={item.url}
           label={item.title}
           lang="und"
+          active={item.url === activePath}
         />
       )
     })
     return nav
   }
 
-  if (!menu&&!themes) {
+  if (!menu&&!themes&&!langLinks) {
     return <></>
   }
 
@@ -74,23 +77,30 @@ function Header(header:HeaderProps): JSX.Element {
     >
       <Navigation.Actions>
         <Navigation.Item
-          href="/"
+          href={langLinks.fi}
+          hrefLang='fi'
           label="Suomeksi"
+          active={langLinks.fi === activePath}
         />
         <Navigation.Item
-          href="/sv"
+          href={langLinks.sv}
+          hrefLang='sv'
           label="På svenska"
+          active={langLinks.sv === activePath}
         />
         <Navigation.Item
-          href="/en"
+          href={langLinks.en}
+          hrefLang='en'
           label="In English"
+          active={langLinks.en === activePath}
         />
-      <Navigation.Dropdown label="🌐">
+      <Navigation.Dropdown label="🌐" key="theme_dropdown">
         {getThemes(themes)}
       </Navigation.Dropdown>
       <Button
           size="small"
           variant="secondary"
+          key="navigation_button"
           onClick={() => {
             window.location.href = t("navigation.button_link")
           }}

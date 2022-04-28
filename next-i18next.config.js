@@ -3,6 +3,7 @@ const languages = [
   { code: 'sv', text: 'Svenska' },
   { code: 'en', text: 'English' },
 ]
+
 const locales = languages.map(({ code }) => code)
 
 module.exports = {

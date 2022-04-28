@@ -18,7 +18,8 @@ export interface DrupalFormattedText {
 }
 
 export declare type HeaderProps = {
-    locale: Locale,
-    menu?: DrupalMenuLinkContent[],
-    themes?: DrupalMenuLinkContent[],
-  };
+  locale: Locale,
+  menu?: DrupalMenuLinkContent[],
+  themes?: DrupalMenuLinkContent[],
+  langLinks?: any,
+};

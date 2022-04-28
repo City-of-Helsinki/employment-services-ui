@@ -13,7 +13,7 @@ interface ContentMapperProps {
 
 export function ContentMapper({ content, ...props }: ContentMapperProps): JSX.Element {
 
-  console.log('content: ', content)
+  // console.log('content: ', content)
   return content.map((item: any) => {
     const {type, id} = item
 
