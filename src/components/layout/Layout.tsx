@@ -1,7 +1,7 @@
 import { PreviewAlert } from 'src/components/PreviewAlert'
 import { Container } from 'hds-react'
 import styles from './layout.module.scss'
-import Header from "src/components/Header"
+import Header from "@/components/navigation/Header"
 import { HeaderProps } from "src/lib/types"
 
 interface LayoutProps {

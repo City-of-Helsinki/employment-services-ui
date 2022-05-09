@@ -1,5 +1,5 @@
 import { useTranslation } from 'next-i18next'
-import { Navigation, Button } from 'hds-react'
+import { Navigation, Button, IconAngleRight, IconArrowTopRight } from 'hds-react'
 import { HeaderProps } from 'src/lib/types'
 
 function Header(header:HeaderProps): JSX.Element {
@@ -69,44 +69,44 @@ function Header(header:HeaderProps): JSX.Element {
       logoLanguage={locale === "sv" ? "sv" : "fi"}
       skipTo="#content"
       skipToContentLabel="Skip to main content"
-      theme={{
-        "--header-divider-color": "white",
-      }}
       title={t("site_name")}
       titleAriaLabel={t("navigation.title_aria_label")}
     >
       <Navigation.Actions>
-        <Navigation.Item
-          href={langLinks.fi}
-          hrefLang='fi'
-          label="Suomeksi"
-          active={langLinks.fi === activePath}
-        />
-        <Navigation.Item
-          href={langLinks.sv}
-          hrefLang='sv'
-          label="På svenska"
-          active={langLinks.sv === activePath}
-        />
-        <Navigation.Item
-          href={langLinks.en}
-          hrefLang='en'
-          label="In English"
-          active={langLinks.en === activePath}
-        />
-      <Navigation.Dropdown label="🌐" key="theme_dropdown">
-        {getThemes(themes)}
-      </Navigation.Dropdown>
-      <Button
-          size="small"
-          variant="secondary"
-          key="navigation_button"
-          onClick={() => {
-            window.location.href = t("navigation.button_link")
-          }}
-        >
-          {t("navigation.button_text")}
-        </Button>
+        <Navigation.Row variant='inline'>
+          <Navigation.Item
+            href={langLinks.fi}
+            hrefLang='fi'
+            label="Suomeksi"
+            active={langLinks.fi === activePath}
+          />
+          <Navigation.Item
+            href={langLinks.sv}
+            hrefLang='sv'
+            label="På svenska"
+            active={langLinks.sv === activePath}
+          />
+          <Navigation.Item
+            href={langLinks.en}
+            hrefLang='en'
+            label="In English"
+            active={langLinks.en === activePath}
+          />
+          <Navigation.Dropdown label="🌐" key="theme_dropdown">
+            {getThemes(themes)}
+          </Navigation.Dropdown>
+
+        </Navigation.Row>
+        <Button
+            size="small"
+            key="navigation_button"
+            iconRight={<IconArrowTopRight size="l" />}
+            onClick={() => {
+              window.open(t("navigation.button_link"), '_blank').focus();
+            }}
+          >
+            {t("navigation.button_text")}
+          </Button>
       </Navigation.Actions>
       <Navigation.Row>
         {getNavi(menu)}

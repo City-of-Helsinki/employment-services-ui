@@ -4,7 +4,6 @@ import ErrorPage from 'next/error'
 import { GetStaticPropsContext, GetStaticPathsContext, GetStaticPathsResult, GetStaticPropsResult } from 'next'
 
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { i18n } from 'next-i18next.config'
 
 import {
   Locale,
@@ -13,17 +12,16 @@ import {
   getResourceFromContext,
   getResourceTypeFromContext,
   getMenu,
-  getResource,
 } from "next-drupal"
 
 import NodeBasicPage from '@/components/pageTemplates/NodeBasicPage'
 import { Layout } from '@/components/layout/Layout'
 
-import { NODE_TYPES, CONTENT_TYPES } from 'src/lib/drupalApiTypes'
 import { Node } from 'src/lib/types'
+import { NODE_TYPES } from 'src/lib/drupalApiTypes'
 import { getParams } from 'src/lib/params'
 import { HeaderProps } from "src/lib/types"
-import { DrupalJsonApiParams } from 'drupal-jsonapi-params'
+import { getLanguageLinks } from 'src/lib/helpers'
 
 interface PageProps {
   node: Node
@@ -79,7 +77,7 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
   const langLinks = await getLanguageLinks(node);
 
   const { tree: menu } = await getMenu("main", {locale, defaultLocale})
-  const { tree: themes } = await getMenu("themes")
+  const { tree: themes } = await getMenu("additional-languages")
 
   return {
     props: {
@@ -94,27 +92,6 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
     },
     // revalidate: 30,
   }
-}
-
-async function getLanguageLinks(node: DrupalNode): Promise<Object> {
-  let params = new DrupalJsonApiParams().addFields(node.type, ['path']).getQueryObject()
-  const uuid = node.id
-
-  let langLinks = {};
-  for (let locale of i18n.locales) {
-    let prefix = locale !== i18n.defaultLocale ? `/${locale}` : ''
-    let link = ''
-    if(locale === node.langcode) {
-      link = `${prefix}${node?.path.alias}` // current page link
-    } else {
-      // this has the original alias if not translated
-      const response = await getResource(node.type, uuid, {params, locale, defaultLocale: i18n.defaultLocale})
-      link = `${prefix}${response?.path.alias}`
-    }
-    Object.assign(langLinks, {[locale]: link})
-  }
-
-  return langLinks
 }
 
 export async function getStaticPaths(context: GetStaticPathsContext): Promise<GetStaticPathsResult> {
