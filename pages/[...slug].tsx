@@ -7,7 +7,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import {
   Locale,
-  DrupalParagraph,
   getPathsFromContext,
   getResourceFromContext,
   getResourceTypeFromContext,
