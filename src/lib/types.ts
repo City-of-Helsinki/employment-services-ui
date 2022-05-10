@@ -21,7 +21,7 @@ export interface DrupalFormattedText {
   value: string
 }
 
-export interface HeaderProps {
+export interface NavProps {
   locale: Locale
   menu?: DrupalMenuLinkContent[]
   themes?: DrupalMenuLinkContent[]

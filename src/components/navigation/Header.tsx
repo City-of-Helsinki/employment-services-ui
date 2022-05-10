@@ -1,8 +1,8 @@
 import { useTranslation } from 'next-i18next'
 import { Navigation, Button, IconAngleRight, IconArrowTopRight } from 'hds-react'
-import { HeaderProps } from 'src/lib/types'
+import { NavProps } from 'src/lib/types'
 
-function Header(header:HeaderProps): JSX.Element {
+function Header(header:NavProps): JSX.Element {
 
   const { locale, menu, themes, langLinks } = header
   const { t } = useTranslation('common')
