@@ -14,9 +14,7 @@ export function Layout({ children, header }: LayoutProps): JSX.Element {
     <>
       <PreviewAlert />
       <div className={styles.wrapper}>
-        <header>
-          <Header {...header} />
-        </header>
+        <Header {...header} />
         <main>{children}</main>
         <footer>
           <Container className="container">

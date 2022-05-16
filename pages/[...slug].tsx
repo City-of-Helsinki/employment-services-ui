@@ -59,8 +59,6 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
   const { tree: menu } = await getMenu("main", {locale, defaultLocale})
   const { tree: themes } = await getMenu("additional-languages")
 
-  console.log('menu', menu)
-
   return {
     props: {
       node,

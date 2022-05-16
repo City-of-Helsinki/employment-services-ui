@@ -1,6 +1,8 @@
+import { useState, useRef } from 'react'
 import { useTranslation } from 'next-i18next'
 import { Navigation, Button, IconAngleRight, IconArrowTopRight } from 'hds-react'
 import { NavProps } from 'src/lib/types'
+import styles from './navigation.module.scss'
 
 function Header(header:NavProps): JSX.Element {
 
@@ -31,7 +33,7 @@ function Header(header:NavProps): JSX.Element {
         return subs
       })
       nav.push(
-        <Navigation.Dropdown label={item.title} key={item.title}>
+        <Navigation.Dropdown label={item.title} key={item.title} id={item.title} className={styles.zover}>
           {subs}
         </Navigation.Dropdown>
       )
@@ -75,30 +77,34 @@ function Header(header:NavProps): JSX.Element {
       <Navigation.Actions>
         <Navigation.Row variant='inline'>
           <Navigation.Item
+            key="fi_lang"
             href={langLinks.fi}
             hrefLang='fi'
             label="Suomeksi"
             active={langLinks.fi === activePath}
           />
           <Navigation.Item
+            key="sv_lang"
             href={langLinks.sv}
             hrefLang='sv'
             label="På svenska"
             active={langLinks.sv === activePath}
           />
           <Navigation.Item
+            key="en_lang"
             href={langLinks.en}
             hrefLang='en'
             label="In English"
             active={langLinks.en === activePath}
           />
-          <Navigation.Dropdown label="🌐" key="theme_dropdown">
+          <Navigation.Dropdown label="🌐" key="theme_dropdown" id="theme_dropdown">
             {getThemes(themes)}
           </Navigation.Dropdown>
 
         </Navigation.Row>
         <Button
             size="small"
+            id="navigation_button"
             key="navigation_button"
             iconRight={<IconArrowTopRight size="l" />}
             onClick={() => {

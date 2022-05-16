@@ -4,13 +4,13 @@ import { DrupalNode, Locale, getMenu, getResourceTypeFromContext, getResourceFro
 import getConfig from 'next/config'
 
 import { Layout } from "@/components/layout/Layout"
-import { Node, HeaderProps } from "@/lib/types";
+import { Node, NavProps } from "@/lib/types";
 import { getLanguageLinks } from "@/lib/helpers";
 import { getQueryParamsFor } from "@/lib/params";
 
 interface HomePageProps {
   node: DrupalNode;
-  nav: HeaderProps;
+  nav: NavProps;
 }
 
 export async function getStaticProps(context: GetStaticPropsContext): Promise<GetStaticPropsResult<HomePageProps>> {
