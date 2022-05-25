@@ -22,5 +22,6 @@ export const CONTENT_TYPES = {
   LIST_OF_LINKS: 'paragraph--list_of_links',
   PARAGRAPH_IMAGE: 'paragraph--image',
   VIDEO_REMOTE: 'paragraph--remote_video',
+  NOTIFICATION: 'paragraph--notification',
   COLOR: 'taxonomy_term--colors'
 }

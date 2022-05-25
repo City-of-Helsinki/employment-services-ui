@@ -8,7 +8,7 @@ interface NodeLandingPageProps {
 }
 
 export function NodeLandingPage({ node, ...props }: NodeLandingPageProps): JSX.Element {
-  const { title, field_hero, field_content} = node
+  const { title, field_content, field_hero, field_notification} = node
 
   return (
     <article>
@@ -18,6 +18,10 @@ export function NodeLandingPage({ node, ...props }: NodeLandingPageProps): JSX.E
       <Container className="container">
         <div className="columns">
           <div className="col-12">
+          {field_notification?.length > 0 && (
+              <ContentMapper content={node.field_notification}/>
+            )}
+            <h1>{title}</h1>
             {field_content?.length > 0 && (
               <ContentMapper content={node.field_content}/>
             )}

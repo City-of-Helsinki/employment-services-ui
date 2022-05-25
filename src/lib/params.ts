@@ -8,6 +8,7 @@ const baseQueryParams = () =>
     .addInclude([
       'field_content.field_list_of_links_links.field_list_of_links_image.field_media_image',
       'field_content.field_background_color',
+      'field_notification'
     ])
     .addFields(CONTENT_TYPES.MEDIA_IMAGE, [
       'field_media_image',
@@ -41,6 +42,10 @@ const baseQueryParams = () =>
       'url',
       'image_style_uri'
     ])
+    .addFields(CONTENT_TYPES.NOTIFICATION, [
+      'field_notification_title',
+      'field_notification_description'
+    ])
 
 const getPageQueryParams = () =>
   baseQueryParams()
@@ -53,6 +58,7 @@ const getPageQueryParams = () =>
       'field_content',
       'field_lead_in',
       'field_metatags',
+      'field_notification'
     ])
     .addInclude([
       'field_content.field_accordion_items.field_accordion_item_content',
@@ -76,6 +82,7 @@ const getLandingPageQueryParams = () =>
       'field_content',
       'field_hero',
       'field_metatags',
+      'field_notification'
     ])
     .addInclude([
       'field_hero.field_custom_hero_image.field_media_image'
