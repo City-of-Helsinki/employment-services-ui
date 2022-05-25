@@ -27,7 +27,6 @@ function Header(header:NavProps): JSX.Element {
             href={sub.url}
             label={sub.title}
             active={sub.url === activePath}
-            // onClick={function noRefCheck() {}}
           />
         )
         return subs
@@ -68,14 +67,14 @@ function Header(header:NavProps): JSX.Element {
   return (
     <Navigation
       menuToggleAriaLabel="Menu"
-      logoLanguage={locale === "sv" ? "sv" : "fi"}
+      logoLanguage={locale === 'sv' ? 'sv' : 'fi'}
       skipTo="#content"
       skipToContentLabel="Skip to main content"
-      title={t("site_name")}
-      titleAriaLabel={t("navigation.title_aria_label")}
+      title={t('site_name')}
+      titleAriaLabel={t('navigation.title_aria_label')}
     >
       <Navigation.Actions>
-        <Navigation.Row variant='inline'>
+        <Navigation.Row variant='inline' key='languages'>
           <Navigation.Item
             key="fi_lang"
             href={langLinks.fi}
@@ -97,21 +96,21 @@ function Header(header:NavProps): JSX.Element {
             label="In English"
             active={langLinks.en === activePath}
           />
-          <Navigation.Dropdown label="🌐" key="theme_dropdown" id="theme_dropdown">
+          <Navigation.Dropdown label="🌐" key='theme_dropdown' id='theme_dropdown'>
             {getThemes(themes)}
           </Navigation.Dropdown>
 
         </Navigation.Row>
         <Button
             size="small"
-            id="navigation_button"
-            key="navigation_button"
+            id='navigation_button'
+            key='navigation_button'
             iconRight={<IconArrowTopRight size="l" />}
             onClick={() => {
-              window.open(t("navigation.button_link"), '_blank')?.focus();
+              window.open(t('navigation.button_link'), '_blank')?.focus();
             }}
           >
-            {t("navigation.button_text")}
+            {t('navigation.button_text')}
           </Button>
       </Navigation.Actions>
       <Navigation.Row>

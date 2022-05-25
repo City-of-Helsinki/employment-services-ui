@@ -3,5 +3,55 @@
 }
 
 .sidenav {
-  --side-navigation-active-indicator-background-color: var(--color-metro),
+  --side-navigation-active-indicator-background-color: var(--color-metro) !important;
+  --side-navigation-background-color: var(--color-white) !important;
+  --side-navigation-level-border-color: var(--color-fog-light);
+  --side-navigation-level-border-color-focus: var(--color-coat-of-arms);
+  --side-navigation-level-border-color-hover: var(--color-fog-light);
+  --side-navigation-level-background-color: var(--color-white) !important;
+  --side-navigation-level-background-color-active: var(--color-white) !important;
+  --side-navigation-level-background-color-hover: var(--color-white) !important;
+  --side-navigation-level-color: var(--color-black);
+  --side-navigation-level-color-active: var(--color-black);
+  --side-navigation-level-color-hover: var(--color-black);
+  --side-navigation-mobile-menu-border-color: var(--color-white) !important;
+  --side-navigation-mobile-menu-z-index: 100 !important;
 }
+.mainLevel {
+  &:not(.active) {
+    > a, > button {
+      padding-left: 0;
+    }
+  }
+  &.active {
+    > a, > button {
+      font-weight: 600;
+      padding-left: var(--spacing-s);
+    }
+  }
+}
+
+.subLevel {
+  &.active {
+    > a, > button {
+      font-weight: 400 !important;
+      padding-left: var(--spacing-s);
+    }
+  }
+}
+
+.mainLevel, .subLevel {
+  padding: var(--spacing-s) 0;
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-black-10);
+  }
+}
+
+.topLevel {
+  border-bottom: 2px solid var(--color-black);
+  > a {
+    padding-left: 0 !important;
+    font-size: var(--fontsize-heading-s);
+  }
+}
+

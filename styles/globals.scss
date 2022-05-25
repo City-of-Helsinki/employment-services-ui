@@ -68,55 +68,57 @@ h5, .h5,
   line-height: var(--lineheight-m);
 }
 
-ul, ol {
-  margin-top: var(--spacing-l);
-  margin-bottom: var(--spacing-l);
-  padding-top: 0;
-  padding-left: var(--spacing-s);
-  list-style-position: outside;
-}
+.content-region {
+  ul, ol {
+    margin-top: var(--spacing-l);
+    margin-bottom: var(--spacing-l);
+    padding-top: 0;
+    padding-left: var(--spacing-s);
+    list-style-position: outside;
+  }
 
-li {
-  padding-left: var(--spacing-m);
-}
+  li {
+    padding-left: var(--spacing-m);
+  }
 
-ul li::marker {
-  color: var(--color-metro);
-}
+  ul li::marker {
+    color: var(--color-metro);
+  }
 
-li li::marker {
-  color: var(--color-black-90);
-}
+  li li::marker {
+    color: var(--color-black-90);
+  }
 
-a.link-internal,
-a.link-external {
-  display: inline-flex;
-}
+  a.link-internal,
+  a.link-external {
+    display: inline-flex;
+  }
 
-a.link-internal::after,
-a.link-external::after {
-  content: '';
-  margin-left: var(--spacing-3-xs);
-  transition: transform .2s linear;
-  width: 1.25rem;
-}
+  a.link-internal::after,
+  a.link-external::after {
+    content: '';
+    margin-left: var(--spacing-3-xs);
+    transition: transform .2s linear;
+    width: 1.25rem;
+  }
 
-.link-internal::after {
-  margin-right: var(--spacing-2-xs);
-  background: url('../src/assets/arrow-right.svg') no-repeat center center;
-}
+  .link-internal::after {
+    margin-right: var(--spacing-2-xs);
+    background: url('../src/assets/arrow-right.svg') no-repeat center center;
+  }
 
-.link-external::after {
-  margin-right: var(--spacing-3-xs);
-  background: url('../src/assets/arrow-top-right.svg') no-repeat center center;
-}
+  .link-external::after {
+    margin-right: var(--spacing-3-xs);
+    background: url('../src/assets/arrow-top-right.svg') no-repeat center center;
+  }
 
-.link-internal:hover::after {
-  transform: translateX(8px);
-}
+  .link-internal:hover::after {
+    transform: translateX(8px);
+  }
 
-.link-external:hover::after {
-  transform: translate(4px, -4px);
+  .link-external:hover::after {
+    transform: translate(4px, -4px);
+  }
 }
 
 .container {

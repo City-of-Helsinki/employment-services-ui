@@ -5,7 +5,8 @@
   "navigation": {
     "button_text": "Oma asiointi",
     "button_link": "https://asiointi.mol.fi/omaasiointi/",
-    "title_aria_label": "Helsinki: Työllisyyspalvelut"
+    "title_aria_label": "Helsinki: Työllisyyspalvelut",
+    "navigate_to_page": "Siiry sivulle"
   },
   "search": {
     "filter": "Suodata tapahtumia",
