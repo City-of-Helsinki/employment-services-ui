@@ -3,6 +3,8 @@ import { NavProps } from "@/lib/types"
 import { IconArrowLeft, SideNavigation } from "hds-react"
 import styles from './navigation.module.scss'
 import { useTranslation } from 'next-i18next'
+import { ReactElement } from "react"
+import { DrupalMenuLinkContent } from "next-drupal"
 
 export function Sidebar(sidebar:NavProps): JSX.Element {
 
@@ -10,27 +12,27 @@ export function Sidebar(sidebar:NavProps): JSX.Element {
   const { t } = useTranslation('common')
 
   const activePath = langLinks[locale]
-  let defaultOpenMainLevels: any = []; // written by side-effect
+  let defaultOpenMainLevels: number[] = []; // written by side-effect
 
-  const getSideNavi = (menuArray: any) => {
-    const nav: any = [];
-    
+  const getSideNavi = (menuArray: DrupalMenuLinkContent[]|undefined) => {
+    const nav: ReactElement[] = [];
+
     if (!menuArray) {
       return <></>
     }
-    menuArray.map((toplevel: any, tidx: number) => {
-      toplevel.items?.map((second: any, index: number) => {
-        const subs: any = []
+    menuArray.map((toplevel: DrupalMenuLinkContent, tidx: number) => {
+      toplevel.items?.map((second: DrupalMenuLinkContent, index: number) => {
+        const subs: ReactElement[] = []
         let parent: boolean = false
 
-        second.items?.map((sub: any, i: number) => {
+        second.items?.map((sub: DrupalMenuLinkContent, i: number) => {
           if (sub.url === activePath) {
             parent = true;
             defaultOpenMainLevels.push(i+1)
           }
           if (sub.items) {
-            let thirds: any = []
-            sub.items?.map((third: any, idx: number) => {
+            let thirds: ReactElement[] = []
+            sub.items?.map((third: DrupalMenuLinkContent, idx: number) => {
               if (third.url === activePath) {
                 parent = true;
               }
@@ -93,8 +95,7 @@ export function Sidebar(sidebar:NavProps): JSX.Element {
     })
     return nav
   }
-  const sidebarNav = getSideNavi(menu)
-  console.log({defaultOpenMainLevels})
+  const sidebarNav =  getSideNavi(menu) // this needs to run before return to set defaultOpenMainLevels
 
   return (
     <SideNavigation
