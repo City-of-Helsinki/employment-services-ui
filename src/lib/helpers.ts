@@ -13,7 +13,7 @@ export const getImageUrl = (url: string): string|undefined => {
   url = url.substring(url.indexOf('/sites'))
 
   return url ? `${host}${url}` : undefined
-};
+}
 
 export async function getLanguageLinks(node: DrupalNode): Promise<Object> {
   let params = new DrupalJsonApiParams().addFields(node.type, ['path']).getQueryObject()
