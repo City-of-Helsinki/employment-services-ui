@@ -8,11 +8,11 @@ export const isExternalLink = (href: string): boolean|undefined => {
   return isExternalLink || false
 };
 
-export const getImageUrl = (url: string): string|undefined => {
+export const getImageUrl = (url: string): string => {
   const host = getConfig().publicRuntimeConfig.NEXT_PUBLIC_DRUPAL_BASE_URL
   url = url.substring(url.indexOf('/sites'))
 
-  return url ? `${host}${url}` : undefined
+  return url ? `${host}${url}` : ''
 }
 
 export async function getLanguageLinks(node: DrupalNode): Promise<Object> {
