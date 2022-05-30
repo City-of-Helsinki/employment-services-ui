@@ -1,10 +1,18 @@
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import { DrupalNode, getResource } from "next-drupal";
+import getConfig from 'next/config'
 import { i18n } from "next-i18next.config";
 
 export const isExternalLink = (href: string): boolean|undefined => {
   const isExternalLink = href && (href.startsWith("https://") || href.startsWith("https://"));
   return isExternalLink || false
+};
+
+export const getImageUrl = (url: string): string|undefined => {
+  const host = getConfig().publicRuntimeConfig.NEXT_PUBLIC_DRUPAL_BASE_URL
+  url = url.substring(url.indexOf('/sites'))
+
+  return url ? `${host}${url}` : undefined
 };
 
 export async function getLanguageLinks(node: DrupalNode): Promise<Object> {

@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import { Koros, IconArrowDown } from 'hds-react';
 import HtmlBlock from '@/components/HtmlBlock'
-import { DrupalFormattedText } from 'src/lib/types'
+import { DrupalFormattedText } from '@/lib/types'
+import { getImageUrl } from '@/lib/helpers'
 
 import styles from './hero.module.scss'
 
@@ -80,7 +81,7 @@ function Hero(props: HeroProps): JSX.Element {
             />
           </div>
           <Image
-            src={field_custom_hero_image?.field_media_image?.image_style_uri?.['hero']}
+            src={getImageUrl(field_custom_hero_image?.field_media_image?.image_style_uri?.['hero'])}
             alt=''
             layout='fill'
             objectFit='cover'

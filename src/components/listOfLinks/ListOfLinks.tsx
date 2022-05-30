@@ -1,7 +1,7 @@
 import { Linkbox } from 'hds-react'
 
 import Link from '@/components/link/Link'
-import { isExternalLink } from '@/lib/helpers'
+import { isExternalLink, getImageUrl } from '@/lib/helpers'
 import styles from './listOfLinks.module.scss'
 
 
@@ -29,7 +29,7 @@ function ListOfLinks(props: ListOfLinksProps): JSX.Element {
                 href={link.field_list_of_links_link.url} 
                 heading={link.field_list_of_links_link.title}
                 external={isExternalLink(link.field_list_of_links_link.url)}
-                imgProps={{ src: link.field_list_of_links_image?.field_media_image?.image_style_uri?.['1_1_s']}}
+                imgProps={{ src: getImageUrl(link.field_list_of_links_image?.field_media_image?.image_style_uri?.['1_1_s'])}}
               />
             </div>
           ) : (
