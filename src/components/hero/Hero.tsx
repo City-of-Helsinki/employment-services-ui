@@ -8,13 +8,13 @@ import styles from './hero.module.scss'
 
 
 interface HeroProps {
-  title: string
+  field_hero_title: string
   field_hero_desc: DrupalFormattedText
   field_custom_hero_image: any
 }
 
 function Hero(props: HeroProps): JSX.Element {
-  const { title, field_hero_desc, field_custom_hero_image } = props
+  const { field_hero_title, field_hero_desc, field_custom_hero_image } = props
   const rootKorosStyle = { '--koros-height': '120px', '--hero-height': '480px', '--hero-width': '950px' };
 
   return (
@@ -22,10 +22,12 @@ function Hero(props: HeroProps): JSX.Element {
       <div className={styles.heroContainer}>
         <div className={styles.heroTextContainer}>
           <div className={styles.heroTextContent}>
-            <h1>{title}</h1>
-            { field_hero_desc && 
+            { field_hero_title &&
+              <h1>{field_hero_title}</h1>
+            }
+            { field_hero_desc &&
               <HtmlBlock field_text={field_hero_desc} />
-            }      
+            }
           </div>
           <Koros
             className={styles.heroMobileKoros}
@@ -40,7 +42,7 @@ function Hero(props: HeroProps): JSX.Element {
           <span className={styles.heroArrow} aria-hidden='true'>
             <IconArrowDown
               size="xl"
-              style={{ 
+              style={{
                 color: 'var(--color-metro)',
                 width: '150px',
                 height: '150px'

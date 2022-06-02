@@ -88,6 +88,7 @@ const getLandingPageQueryParams = () =>
       'field_hero.field_custom_hero_image.field_media_image'
     ])
     .addFields(CONTENT_TYPES.HERO, [
+      'field_hero_title',
       'field_hero_desc',
       'field_custom_hero_image'
     ])

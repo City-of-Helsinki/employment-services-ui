@@ -13,7 +13,7 @@ export function NodeLandingPage({ node, ...props }: NodeLandingPageProps): JSX.E
   return (
     <article>
       {field_hero && (
-        <Hero title={title} {...field_hero} />
+        <Hero {...field_hero} />
       )}
       <Container className="container">
         <div className="columns">

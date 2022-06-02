@@ -7,6 +7,7 @@ import {
 export interface Node extends DrupalNode {
   title: string
   field_hero?: {
+    field_hero_title: string
     field_hero_desc: DrupalFormattedText
     field_custom_hero_image: any
   }
