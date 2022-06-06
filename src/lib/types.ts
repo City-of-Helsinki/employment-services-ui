@@ -27,4 +27,5 @@ export interface NavProps {
   menu?: DrupalMenuLinkContent[]
   themes?: DrupalMenuLinkContent[]
   langLinks?: any
+  breadcrumb?: any
 };

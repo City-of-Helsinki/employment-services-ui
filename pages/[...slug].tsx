@@ -22,7 +22,7 @@ import { Node } from '@/lib/types'
 import { NODE_TYPES } from '@/lib/drupalApiTypes'
 import { getQueryParamsFor } from '@/lib/params'
 import { NavProps } from "@/lib/types"
-import { getLanguageLinks } from '@/lib/helpers'
+import { getBreadCrumb, getLanguageLinks } from '@/lib/helpers'
 
 interface PageProps {
   node: Node
@@ -56,8 +56,10 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
 
   const langLinks = await getLanguageLinks(node)
 
-  const { tree: menu } = await getMenu("main", {locale, defaultLocale})
+  const { tree: menu, items: menuItems } = await getMenu("main", {locale, defaultLocale})
   const { tree: themes } = await getMenu("additional-languages")
+
+  const breadcrumb = getBreadCrumb(menuItems, node?.path.alias)
 
   return {
     props: {
@@ -67,6 +69,7 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
         menu,
         themes,
         langLinks,
+        breadcrumb,
       },
       ...(await serverSideTranslations(locale, ['common'])),
     },

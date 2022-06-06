@@ -55,3 +55,15 @@
   }
 }
 
+.breadcrumb {
+  display: flex;
+  li {
+    list-style: none;
+    a {
+      color: var(--color-black-100);
+    }
+  }
+}
+.breadcrumbElement {
+
+}

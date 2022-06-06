@@ -1,25 +1,27 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, ReactElement } from 'react'
 import { useTranslation } from 'next-i18next'
-import { Navigation, Button, IconAngleRight, IconArrowTopRight } from 'hds-react'
+import { Navigation, Button, IconAngleRight, IconArrowTopRight, IconGlobe } from 'hds-react'
 import { NavProps } from 'src/lib/types'
 import styles from './navigation.module.scss'
+import { DrupalMenuLinkContent } from 'next-drupal'
+import { Breadcrumb } from './Breadcrumb'
 
 function Header(header:NavProps): JSX.Element {
 
-  const { locale, menu, themes, langLinks } = header
+  const { locale, menu, themes, langLinks, breadcrumb } = header
   const { t } = useTranslation('common')
 
   const activePath = langLinks[locale]
 
-  const getNavi = (menuArray: any) => {
-    const nav: any = [];
+  const getNavi = (menuArray: DrupalMenuLinkContent[]|undefined) => {
+    const nav: ReactElement[] = [];
     if (!menuArray) {
       return <></>
     }
 
-    menuArray.map((item: any, index: number) => {
-      const subs: any = [];
-      item.items?.map((sub: any, i: number) => {
+    menuArray.map((item: DrupalMenuLinkContent, index: number) => {
+      const subs: ReactElement[] = [];
+      item.items?.map((sub: DrupalMenuLinkContent, i: number) => {
         subs.push(
           <Navigation.Item
             key={sub.title}
@@ -41,12 +43,12 @@ function Header(header:NavProps): JSX.Element {
     return nav
   }
 
-  const getThemes = (links: any) => {
+  const getThemes = (links: DrupalMenuLinkContent[]|undefined) => {
     if (!links) {
       return <></>
     }
-    const nav: any = []
-    links.map((item: any, index: number) => {
+    const nav: ReactElement[] = []
+    links.map((item: DrupalMenuLinkContent, index: number) => {
       nav.push(
         <Navigation.Item
           key={item.title}
@@ -65,6 +67,7 @@ function Header(header:NavProps): JSX.Element {
   }
 
   return (
+    <>
     <Navigation
       menuToggleAriaLabel="Menu"
       logoLanguage={locale === 'sv' ? 'sv' : 'fi'}
@@ -96,7 +99,7 @@ function Header(header:NavProps): JSX.Element {
             label="In English"
             active={langLinks.en === activePath}
           />
-          <Navigation.Dropdown label="🌐" key='theme_dropdown' id='theme_dropdown'>
+          <Navigation.Dropdown label="" icon={<IconGlobe size='s'/>} key='theme_dropdown' id='theme_dropdown'>
             {getThemes(themes)}
           </Navigation.Dropdown>
 
@@ -117,6 +120,8 @@ function Header(header:NavProps): JSX.Element {
         {getNavi(menu)}
       </Navigation.Row>
     </Navigation>
+    <Breadcrumb breadcrumb={breadcrumb}/>
+    </>
   );
 }
 
