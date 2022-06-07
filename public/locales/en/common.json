@@ -6,7 +6,8 @@
     "button_text": "E-Services",
     "button_link": "https://asiointi.mol.fi/omaasiointi/",
     "title_aria_label": "Helsinki: Employment services",
-    "navigate_to_page": "Navigate to page"
+    "navigate_to_page": "Navigate to page",
+    "frontpage": "Front page"
   },
   "search": {
     "filter": "Filter events",

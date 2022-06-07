@@ -6,7 +6,8 @@
     "button_text": "E-Tjänster",
     "button_link": "https://asiointi.mol.fi/omaasiointi/?kieli=sv",
     "title_aria_label": "Helsingfors: Sysselsättningstjänster",
-    "navigate_to_page": "Navigera till sidan"
+    "navigate_to_page": "Navigera till sidan",
+    "frontpage": "Framsida"
   },
   "search": {
     "filter": "Filtrera evenemang",

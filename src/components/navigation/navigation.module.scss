@@ -17,6 +17,7 @@
   --side-navigation-mobile-menu-border-color: var(--color-white) !important;
   --side-navigation-mobile-menu-z-index: 100 !important;
 }
+
 .mainLevel {
   &:not(.active) {
     > a, > button {
@@ -57,13 +58,30 @@
 
 .breadcrumb {
   display: flex;
-  li {
-    list-style: none;
-    a {
-      color: var(--color-black-100);
-    }
+  height: var(--spacing-3-xl);
+  padding: 0 var(--spacing-m);
+  margin: 0 auto;
+  width: 100%;
+  max-width: var(--breakpoint-xl);
+  border-top: 1px solid var(--color-black-10);
+}
+@media (max-width: 576px) {
+  .breadcrumb {
+    display: none;
   }
 }
-.breadcrumbElement {
 
+.breadcrumbElement {
+  align-self: stretch;
+  align-items: center;
+  display: flex;
+  line-height: 0;
+  outline: none;
+  padding: var(--spacing-3-xs) 0;
+  span {
+    margin: 0 var(--spacing-2-xs);
+    font-weight: 600;
+    font-size: var(--fontsize-body-s);
+    line-height: var(--lineheight-s);
+  }
 }
