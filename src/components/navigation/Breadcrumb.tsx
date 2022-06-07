@@ -1,23 +1,24 @@
-import classNames from "@/lib/classNames"
 import { IconAngleRight, IconArrowRight } from "hds-react"
-import { DrupalMenuLinkContent } from "next-drupal"
+import Link from "next/link"
 import { ReactElement } from "react"
 import { useTranslation } from 'next-i18next'
 
+import classNames from "@/lib/classNames"
+import { BreadcrumbContent } from "@/lib/types"
+
 import styles from './navigation.module.scss'
-import Link from "next/link"
 
 interface BreadcrumbProps {
-  breadcrumb: DrupalMenuLinkContent[]
+  breadcrumb: BreadcrumbContent[]
 }
 
 export const Breadcrumb = ({breadcrumb}:BreadcrumbProps): JSX.Element => {
   const { t } = useTranslation('common')
-
-  if (!breadcrumb) return <></>
+  
+  if (!breadcrumb || breadcrumb.length == 0) return <></>
 
   const crumbs: ReactElement[] = breadcrumb.map((crumb, index) => {
-    if (index == breadcrumb.length -1) {
+    if (index == breadcrumb.length-1) {
       return <li className={styles.breadcrumbElement} key={crumb.id}><span>{crumb.title}</span></li>
     }
     return (

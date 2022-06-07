@@ -28,4 +28,10 @@ export interface NavProps {
   themes?: DrupalMenuLinkContent[]
   langLinks?: any
   breadcrumb?: any
-};
+}
+
+export interface BreadcrumbContent {
+  id: string;
+  title: string;
+  url: string;
+}

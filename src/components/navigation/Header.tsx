@@ -120,7 +120,7 @@ function Header(header:NavProps): JSX.Element {
         {getNavi(menu)}
       </Navigation.Row>
     </Navigation>
-    <Breadcrumb breadcrumb={breadcrumb}/>
+    {activePath !== '/' && <Breadcrumb breadcrumb={breadcrumb}/>}
     </>
   );
 }
