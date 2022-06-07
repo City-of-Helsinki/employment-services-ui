@@ -7,7 +7,9 @@
     "button_link": "https://asiointi.mol.fi/omaasiointi/",
     "title_aria_label": "Helsinki: Employment services",
     "navigate_to_page": "Navigate to page",
-    "frontpage": "Front page"
+    "frontpage": "Front page",
+    "breadcrumb_label": "Breadcrumb",
+    "theme_dropdown": "Additional languages"
   },
   "search": {
     "filter": "Filter events",

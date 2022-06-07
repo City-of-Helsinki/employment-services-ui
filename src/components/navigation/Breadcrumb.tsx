@@ -23,17 +23,17 @@ export const Breadcrumb = ({breadcrumb}:BreadcrumbProps): JSX.Element => {
     }
     return (
       <div className={styles.breadcrumbElement} key={crumb.id}>
-        <Link href={crumb.url}><a><span>{crumb.title}</span></a></Link><IconAngleRight size='s' />
+        <Link href={crumb.url}><a><span>{crumb.title}</span></a></Link><IconAngleRight size='s' aria-hidden='true'/>
       </div>
     )
   })
 
   return (
-    <div className={classNames(styles.breadcrumb)}>
+    <nav className={classNames(styles.breadcrumb)} aria-label={t("navigation.breadcrumb_label")}>
       <div className={styles.breadcrumbElement} key='breadcrumb-frontpage'>
-        <Link href="/"><a><span>{t("navigation.frontpage")}</span></a></Link><IconAngleRight size='s' />
+        <Link href="/"><a><span>{t("navigation.frontpage")}</span></a></Link><IconAngleRight size='s' aria-hidden='true'/>
       </div>
       {crumbs}
-    </div>
+    </nav>
   )
 }

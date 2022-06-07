@@ -99,7 +99,7 @@ function Header(header:NavProps): JSX.Element {
             label="In English"
             active={langLinks.en === activePath}
           />
-          <Navigation.Dropdown label="" icon={<IconGlobe size='s'/>} key='theme_dropdown' id='theme_dropdown'>
+          <Navigation.Dropdown label="" aria-label={t("navigation.theme_dropdown")} icon={<IconGlobe size='s' aria-label="Globe"/>} key='theme_dropdown' id='theme_dropdown'>
             {getThemes(themes)}
           </Navigation.Dropdown>
 

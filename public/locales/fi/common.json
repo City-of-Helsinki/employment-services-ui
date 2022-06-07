@@ -7,7 +7,9 @@
     "button_link": "https://asiointi.mol.fi/omaasiointi/",
     "title_aria_label": "Helsinki: Työllisyyspalvelut",
     "navigate_to_page": "Siiry sivulle",
-    "frontpage": "Etusivu"
+    "frontpage": "Etusivu",
+    "breadcrumb_label": "Murupolku",
+    "theme_dropdown": "Lisäkielet"
   },
   "search": {
     "filter": "Suodata tapahtumia",
