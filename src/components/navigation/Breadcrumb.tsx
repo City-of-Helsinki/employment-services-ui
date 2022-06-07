@@ -14,17 +14,17 @@ interface BreadcrumbProps {
 
 export const Breadcrumb = ({breadcrumb}:BreadcrumbProps): JSX.Element => {
   const { t } = useTranslation('common')
-  
+
   if (!breadcrumb || breadcrumb.length == 0) return <></>
 
   const crumbs: ReactElement[] = breadcrumb.map((crumb, index) => {
     if (index == breadcrumb.length-1) {
-      return <li className={styles.breadcrumbElement} key={crumb.id}><span>{crumb.title}</span></li>
+      return <div className={styles.breadcrumbElement} key={crumb.id}><span>{crumb.title}</span></div>
     }
     return (
-      <li className={styles.breadcrumbElement} key={crumb.id}>
+      <div className={styles.breadcrumbElement} key={crumb.id}>
         <Link href={crumb.url}><a><span>{crumb.title}</span></a></Link><IconAngleRight size='s' />
-      </li>
+      </div>
     )
   })
 
