@@ -16,6 +16,7 @@
   --side-navigation-level-color-hover: var(--color-black);
   --side-navigation-mobile-menu-border-color: var(--color-white) !important;
   --side-navigation-mobile-menu-z-index: 100 !important;
+  margin-top: var(--spacing-xl);
 }
 .mainLevel {
   &:not(.active) {
