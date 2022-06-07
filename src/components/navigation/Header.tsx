@@ -77,33 +77,32 @@ function Header(header:NavProps): JSX.Element {
       titleAriaLabel={t('navigation.title_aria_label')}
     >
       <Navigation.Actions>
-        <Navigation.Row variant='inline' key='languages'>
-          <Navigation.Item
-            key="fi_lang"
-            href={langLinks.fi}
-            hrefLang='fi'
-            label="Suomeksi"
-            active={langLinks.fi === activePath}
-          />
-          <Navigation.Item
-            key="sv_lang"
-            href={langLinks.sv}
-            hrefLang='sv'
-            label="På svenska"
-            active={langLinks.sv === activePath}
-          />
-          <Navigation.Item
-            key="en_lang"
-            href={langLinks.en}
-            hrefLang='en'
-            label="In English"
-            active={langLinks.en === activePath}
-          />
+          <Navigation.LanguageSelector label={locale.toUpperCase()}>
+            <Navigation.Item
+              key="fi_lang"
+              href={langLinks.fi}
+              hrefLang='fi'
+              label="Suomeksi"
+              active={langLinks.fi === activePath}
+            />
+            <Navigation.Item
+              key="sv_lang"
+              href={langLinks.sv}
+              hrefLang='sv'
+              label="På svenska"
+              active={langLinks.sv === activePath}
+            />
+            <Navigation.Item
+              key="en_lang"
+              href={langLinks.en}
+              hrefLang='en'
+              label="In English"
+              active={langLinks.en === activePath}
+            />
+          </Navigation.LanguageSelector>
           <Navigation.Dropdown label="" aria-label={t("navigation.theme_dropdown")} icon={<IconGlobe size='s' aria-label="Globe"/>} key='theme_dropdown' id='theme_dropdown'>
             {getThemes(themes)}
           </Navigation.Dropdown>
-
-        </Navigation.Row>
         <Button
             size="small"
             id='navigation_button'
