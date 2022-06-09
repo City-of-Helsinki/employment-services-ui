@@ -62,7 +62,7 @@ function LiftupWithImage(props: LiftupWithImageProps): JSX.Element {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default LiftupWithImage;
+export default LiftupWithImage

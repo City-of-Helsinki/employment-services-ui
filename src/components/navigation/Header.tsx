@@ -1,12 +1,13 @@
 import { ReactElement } from 'react'
 import { useTranslation } from 'next-i18next'
 import { DrupalMenuLinkContent } from 'next-drupal'
-import { Navigation, Button, IconArrowTopRight, IconGlobe } from 'hds-react'
-import { NavProps } from 'src/lib/types'
+import { Navigation, IconArrowTopRight, IconGlobe } from 'hds-react'
+
+import { NavProps } from '@/lib/types'
 import { Breadcrumb } from './Breadcrumb'
 import classNames from '@/lib/classNames'
-import styles from './navigation.module.scss'
 
+import styles from './navigation.module.scss'
 
 function Header(header:NavProps): JSX.Element {
 
@@ -16,13 +17,13 @@ function Header(header:NavProps): JSX.Element {
   const activePath = langLinks[locale]
 
   const getNavi = (menuArray: DrupalMenuLinkContent[]|undefined) => {
-    const nav: ReactElement[] = [];
+    const nav: ReactElement[] = []
     if (!menuArray) {
       return <></>
     }
     menuArray.map((item: DrupalMenuLinkContent, index: number) => {
-      const subs: ReactElement[] = [];
-      let childActive = false;
+      const subs: ReactElement[] = []
+      let childActive = false
       item.items?.map((sub: DrupalMenuLinkContent, i: number) => {
         childActive = sub.url === activePath || childActive
         subs.push(
@@ -98,7 +99,7 @@ function Header(header:NavProps): JSX.Element {
           label={t('navigation.button_text')}
           icon={<IconArrowTopRight size="l" />}
           onSignIn={() => {
-            window.open(t('navigation.button_link'), '_blank')?.focus();
+            window.open(t('navigation.button_link'), '_blank')?.focus()
           }}
           className={styles.blueButton}
         />
@@ -138,7 +139,7 @@ function Header(header:NavProps): JSX.Element {
     </Navigation>
     {activePath !== '/' && <Breadcrumb breadcrumb={breadcrumb}/>}
     </>
-  );
+  )
 }
 
-export default Header;
+export default Header

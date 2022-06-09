@@ -75,7 +75,7 @@ export function ContentMapper({ content, ...props }: ContentMapperProps): JSX.El
         return <LiftupWithImage {...item} key={key} />
 
       default:
-        console.log('unmapped type: ', type);
+        console.log('unmapped type: ', type)
     }
   })
 }

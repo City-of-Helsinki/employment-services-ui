@@ -1,12 +1,11 @@
 import { Container, SideNavigation } from 'hds-react'
-import { NavProps, Node } from 'src/lib/types'
+import { NavProps, Node } from '@/lib/types'
 import ContentMapper from '@/components/ContentMapper'
-import { DrupalMenuLinkContent } from 'next-drupal';
-import { Sidebar } from '../navigation/Sidebar';
+import { Sidebar } from '@/components/navigation/Sidebar'
 
 interface NodeBasicPageProps {
-  node: Node;
-  sidebar: NavProps;
+  node: Node
+  sidebar: NavProps
 }
 
 export function NodeBasicPage({ node, sidebar, ...props }: NodeBasicPageProps): JSX.Element {

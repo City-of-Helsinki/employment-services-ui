@@ -139,8 +139,6 @@
   }
 }
 
-
-
 .wiggle {
   transform: translateX(0);
   transition: transform 0.2s;
@@ -148,7 +146,6 @@
     transform: translateX(-0.2em);
   }
 }
-
 
 .breadcrumb {
   display: flex;

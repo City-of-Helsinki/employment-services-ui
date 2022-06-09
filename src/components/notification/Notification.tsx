@@ -4,8 +4,8 @@ import { DrupalFormattedText } from "src/lib/types"
 import HtmlBlock from "@/components/HtmlBlock"
 
 interface NotificationProps {
-  field_notification_title: string;
-  field_notification_description: DrupalFormattedText;
+  field_notification_title: string
+  field_notification_description: DrupalFormattedText
 }
 
 function Notification(props: NotificationProps): JSX.Element {
@@ -18,7 +18,7 @@ function Notification(props: NotificationProps): JSX.Element {
         )}
       </HDSNotification>
     </div>
-  );
+  )
 }
 
 export default Notification

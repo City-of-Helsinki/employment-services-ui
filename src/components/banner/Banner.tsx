@@ -38,7 +38,7 @@ function Banner(props: BannerProps): JSX.Element {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Banner;
+export default Banner

@@ -17,7 +17,7 @@ function Link(props: LinkProps): JSX.Element {
       <span>{text}</span>
       {isExternalLink(href) ? <IconArrowTopRight size={iconSize} /> : <IconArrowRight size={iconSize} />}
     </a>
-  );
+  )
 }
 
-export default Link;
+export default Link

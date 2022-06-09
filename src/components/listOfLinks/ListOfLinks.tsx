@@ -13,7 +13,7 @@ interface ListOfLinksProps {
 }
 
 function ListOfLinks(props: ListOfLinksProps): JSX.Element {
-  const { field_list_of_links_design: design, field_list_of_links_links, field_list_of_links_title } = props;
+  const { field_list_of_links_design: design, field_list_of_links_links, field_list_of_links_title } = props
 
   return (
     <div className="component">
@@ -47,7 +47,7 @@ function ListOfLinks(props: ListOfLinksProps): JSX.Element {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-export default ListOfLinks;
+export default ListOfLinks

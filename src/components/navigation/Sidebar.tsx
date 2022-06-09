@@ -1,10 +1,13 @@
-import classNames from "@/lib/classNames"
-import { NavProps } from "@/lib/types"
 import { IconArrowLeft, SideNavigation } from "hds-react"
-import styles from './navigation.module.scss'
 import { useTranslation } from 'next-i18next'
 import { ReactElement } from "react"
 import { DrupalMenuLinkContent } from "next-drupal"
+
+import classNames from "@/lib/classNames"
+import { NavProps } from "@/lib/types"
+
+import styles from './navigation.module.scss'
+
 
 export function Sidebar(sidebar:NavProps): JSX.Element {
 
@@ -14,8 +17,8 @@ export function Sidebar(sidebar:NavProps): JSX.Element {
   const activePath = langLinks[locale]
 
   const getSideNavi = (menuArray: DrupalMenuLinkContent[]|undefined):{ nav: ReactElement[], defaultOpenMainLevels: number[] } => {
-    const nav: ReactElement[] = [];
-    let defaultOpenMainLevels: number[] = [];
+    const nav: ReactElement[] = []
+    let defaultOpenMainLevels: number[] = []
 
     if (!menuArray) {
       return {nav, defaultOpenMainLevels}
@@ -26,14 +29,14 @@ export function Sidebar(sidebar:NavProps): JSX.Element {
 
       second.items?.map((sub: DrupalMenuLinkContent, i: number) => {
         if (sub.url === activePath) {
-          parent = true;
+          parent = true
           defaultOpenMainLevels.push(i+1)
         }
         if (sub.items) {
           let thirds: ReactElement[] = []
           sub.items?.map((third: DrupalMenuLinkContent, idx: number) => {
             if (third.url === activePath) {
-              parent = true;
+              parent = true
             }
             thirds.push(
               <SideNavigation.SubLevel

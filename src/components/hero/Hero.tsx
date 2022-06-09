@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Koros, IconArrowDown } from 'hds-react';
+import { Koros, IconArrowDown } from 'hds-react'
 import HtmlBlock from '@/components/HtmlBlock'
 import { DrupalFormattedText } from '@/lib/types'
 import { getImageUrl } from '@/lib/helpers'
@@ -15,7 +15,7 @@ interface HeroProps {
 
 function Hero(props: HeroProps): JSX.Element {
   const { title, field_hero_desc, field_custom_hero_image } = props
-  const rootKorosStyle = { '--koros-height': '120px', '--hero-height': '480px', '--hero-width': '950px' };
+  const rootKorosStyle = { '--koros-height': '120px', '--hero-height': '480px', '--hero-width': '950px' }
 
   return (
     <>

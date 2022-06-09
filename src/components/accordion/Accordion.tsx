@@ -1,5 +1,5 @@
-import React from "react";
-import { Accordion as HDSAccordion, useAccordion, Button, Card, IconAngleUp, IconAngleDown } from 'hds-react';
+import React from "react"
+import { Accordion as HDSAccordion, useAccordion, Button, Card, IconAngleUp, IconAngleDown } from 'hds-react'
 
 import ContentMapper from '@/components/ContentMapper'
 import HtmlBlock from '@/components/HtmlBlock'
@@ -15,12 +15,12 @@ interface AccordionProps {
   field_accordion_items: Array<{
     field_accordion_item_heading: string
     field_accordion_item_content: any
-  }>;
+  }>
 }
 
 function Accordion(props: AccordionProps): JSX.Element {
-  const { field_accordion_type, field_accordion_title, field_accordion_title_level, field_accordion_text, field_accordion_items } = props;
-  const HeadingTag = field_accordion_title_level ? `h${field_accordion_title_level}` as keyof JSX.IntrinsicElements : 'h2';
+  const { field_accordion_type, field_accordion_title, field_accordion_title_level, field_accordion_text, field_accordion_items } = props
+  const HeadingTag = field_accordion_title_level ? `h${field_accordion_title_level}` as keyof JSX.IntrinsicElements : 'h2'
 
   return (
     <div className='component'>
@@ -76,7 +76,7 @@ function Accordion(props: AccordionProps): JSX.Element {
         }
       )}
     </div>
-  );
+  )
 }
 
 interface NumberedAccordionProps {
@@ -105,7 +105,7 @@ function NumberedAccordion(props: NumberedAccordionProps): JSX.Element {
         {children}
       </div>
     </div>
-  );
+  )
 }
 
 export default Accordion
