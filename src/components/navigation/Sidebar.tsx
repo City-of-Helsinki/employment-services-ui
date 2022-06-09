@@ -80,7 +80,7 @@ export function Sidebar(sidebar:NavProps): JSX.Element {
         nav.push(
           <SideNavigation.MainLevel
             key={second.title}
-            icon={<IconArrowLeft aria-hidden />}
+            icon={<IconArrowLeft aria-hidden className={styles.wiggle}/>}
             label={second.title}
             id={second.title}
             href={second.url}

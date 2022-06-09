@@ -1,15 +1,84 @@
 @import '/styles/variables.scss';
 
 .zover {
-  z-index: 101;
+  z-index: 100 !important;
 }
+.zover2 {
+  z-index: 110 !important;
+}
+.zover3 {
+  z-index: 120 !important;
+}
+
+.navigation {
+  --header-background-color: var(--color-white);
+  --header-color: var(--color-black-90);
+  --header-divider-color: var(--color-black-20);
+  --header-focus-outline-color: var(--color-black);
+  --mobile-menu-background-color: var(--color-white);
+  --mobile-menu-color: var(--color-black-90);
+  --navigation-row-background-color: var(--color-white);
+  --navigation-row-color: var(--color-metro);
+  --navigation-row-focus-outline-color: var(--color-coat-of-arms);
+  margin: 0 auto;
+  width: 100%;
+  max-width: var(--breakpoint-xl);
+  .blueButton {
+    --background-color: var(--color-bus) !important;
+  }
+}
+
+.navDropDown {
+  --item-active-color: var(--color-metro) !important;
+  --menu-item-background-color-highlighted: var(--color-white) !important;
+  --menu-item-color-highlighted: var(--color-black) !important;
+  &:hover {
+    text-decoration: underline;
+  }
+  
+  a {
+    position: relative;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &[aria-current] {
+      font-weight: 600 !important;
+    }
+
+    &::before {
+      position: absolute;
+      display: block;
+      content: "";
+      background: var(--item-active-color);
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      transition: width 0.5s;
+    }
+
+    &:hover::before, &[aria-current]::before {
+      width: var(--spacing-3-xs);
+    }
+    
+  }
+
+
+  &.active {
+    font-weight: 600;
+  }
+}
+
+
 
 .sidenav {
   --side-navigation-active-indicator-background-color: var(--color-metro) !important;
   --side-navigation-background-color: var(--color-white) !important;
   --side-navigation-level-border-color: var(--color-fog-light);
   --side-navigation-level-border-color-focus: var(--color-coat-of-arms);
-  --side-navigation-level-border-color-hover: var(--color-fog-light);
+  --side-navigation-level-border-color-hover: var(--color-white) !important;
   --side-navigation-level-background-color: var(--color-white) !important;
   --side-navigation-level-background-color-active: var(--color-white) !important;
   --side-navigation-level-background-color-hover: var(--color-white) !important;
@@ -33,14 +102,22 @@
       padding-left: var(--spacing-s);
     }
   }
+  > a, > button {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .subLevel {
   &.active {
     > a, > button {
-      font-weight: 400 !important;
+      font-weight: 600 !important;
       padding-left: var(--spacing-s);
     }
+  }
+  &:hover {
+    text-decoration: underline;
   }
 }
 
@@ -56,7 +133,18 @@
   > a {
     padding-left: 0 !important;
     font-size: var(--fontsize-heading-s);
+    &:hover {
+      text-decoration: underline;
+      .wiggle {
+        transform: translateX(-0.2em);
+      }
+    }
   }
+}
+
+.wiggle {
+  transform: translateX(0);
+  transition: transform 0.2s;
 }
 
 .breadcrumb {
