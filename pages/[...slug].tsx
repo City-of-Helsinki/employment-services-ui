@@ -22,12 +22,13 @@ import { Layout } from '@/components/layout/Layout'
 import { Node } from '@/lib/types'
 import { NODE_TYPES } from '@/lib/drupalApiTypes'
 import { getQueryParamsFor } from '@/lib/params'
-import { NavProps } from "@/lib/types"
+import { NavProps, FooterProps } from "@/lib/types"
 import { getBreadCrumb, getLanguageLinks } from '@/lib/helpers'
 
 interface PageProps {
   node: Node
   nav: NavProps
+  footer: FooterProps
 }
 
 export async function getStaticProps(context: GetStaticPropsContext): Promise<GetStaticPropsResult<PageProps>> {
@@ -59,6 +60,7 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
 
   const { tree: menu, items: menuItems } = await getMenu("main", {locale, defaultLocale})
   const { tree: themes } = await getMenu("additional-languages")
+  const { tree: footerNav } = await getMenu("footer")
 
   const breadcrumb = getBreadCrumb(menuItems, node?.path.alias, node?.title)
 
@@ -71,6 +73,10 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
         themes,
         langLinks,
         breadcrumb,
+      },
+      footer: {
+        locale,
+        footerNav,
       },
       ...(await serverSideTranslations(locale, ['common'])),
     },
@@ -88,7 +94,7 @@ export async function getStaticPaths(context: GetStaticPathsContext): Promise<Ge
   }
 }
 
-export default function Page({ node, nav }: PageProps) {
+export default function Page({ node, nav, footer }: PageProps) {
   const router = useRouter()
   if (!router.isFallback && !node?.id) {
     return <ErrorPage statusCode={404} />
@@ -97,7 +103,7 @@ export default function Page({ node, nav }: PageProps) {
   if (!node) return null
 
   return (
-    <Layout header={nav}>
+    <Layout header={nav} footer={footer}>
       <Head>
         <title>{node.title}</title>
         <meta name="description" content="A Next.js site powered by a Drupal backend."

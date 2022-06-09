@@ -91,3 +91,16 @@
     height: var(--spacing-3-xl);
   }
 }
+
+
+.footer {
+  nav {
+    @media (min-width: $breakpoint-m) {
+      display: grid !important;
+      grid-template: repeat(4, auto) / repeat(4, auto);
+      grid-auto-flow: column;
+      justify-items: left;
+    }
+  }
+}
+

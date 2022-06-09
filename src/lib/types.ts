@@ -30,6 +30,11 @@ export interface NavProps {
   breadcrumb?: any
 }
 
+export interface FooterProps {
+  locale: Locale
+  footerNav?: DrupalMenuLinkContent[]
+}
+
 export interface BreadcrumbContent {
   id: string
   title: string
