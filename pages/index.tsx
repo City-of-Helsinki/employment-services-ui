@@ -4,13 +4,14 @@ import { DrupalNode, Locale, getMenu, getResourceTypeFromContext, getResourceFro
 import getConfig from 'next/config'
 
 import { Layout } from "@/components/layout/Layout"
-import { Node, NavProps } from "@/lib/types";
-import { getLanguageLinks } from "@/lib/helpers";
-import { getQueryParamsFor } from "@/lib/params";
+import { Node, NavProps, FooterProps } from "@/lib/types"
+import { getLanguageLinks } from "@/lib/helpers"
+import { getQueryParamsFor } from "@/lib/params"
 
 interface HomePageProps {
-  node: DrupalNode;
-  nav: NavProps;
+  node: DrupalNode
+  nav: NavProps
+  footer: FooterProps
 }
 
 export async function getStaticProps(context: GetStaticPropsContext): Promise<GetStaticPropsResult<HomePageProps>> {
@@ -36,10 +37,11 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
     }
   }
 
-  const langLinks = await getLanguageLinks(node);
+  const langLinks = await getLanguageLinks(node)
 
   const { tree: menu } = await getMenu("main", {locale, defaultLocale})
   const { tree: themes } = await getMenu("additional-languages")
+  const { tree: footerNav } = await getMenu("footer")
 
   return {
     props: {
@@ -50,14 +52,18 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
         themes,
         langLinks,
       },
+      footer: {
+        locale,
+        footerNav,
+      },
     },
     revalidate: REVALIDATE_TIME
   }
 }
 
-export default function HomePage({ node, nav }: HomePageProps) {
+export default function HomePage({ node, nav, footer }: HomePageProps) {
   return (
-    <Layout header={nav}>
+    <Layout header={nav} footer={footer}>
       <Head>
         <title>Next.js for Drupal</title>
       </Head>
