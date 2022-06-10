@@ -102,5 +102,28 @@
       justify-items: left;
     }
   }
+  .backToTopButton {
+    font-size: var(--fontsize-body-l) !important;
+    text-decoration: none !important;
+    margin-left: auto;
+    > span {
+      display: flex;
+    }
+  }
+  > div > div {
+    justify-content: flex-start !important;
+    > div {
+      margin-right: var(--spacing-m) !important;
+      &:last-of-type {
+        flex: 1 1;
+        @media (min-width: $breakpoint-m) {
+          display: flex;
+        }
+      }
+      > a, > span {
+        align-self: center;
+      }
+    }
+  }
 }
 

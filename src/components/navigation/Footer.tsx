@@ -11,7 +11,7 @@ function Footer(props: FooterProps): JSX.Element {
   const { t } = useTranslation()
   const { locale, footerNav } = props
 
-  const scrollToTop = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const scrollToTop = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault()
     window.scrollTo({
       top: 0,
@@ -43,7 +43,11 @@ function Footer(props: FooterProps): JSX.Element {
         <HDSFooter.Item href="#" label={t("footer.cookie_settings")} onClick={(e: any) => {
           // deleteCookie(e ,'tyollisyyspalvelut_cookie_consent', history)
         }}/>
-        <HDSFooter.Item href="#" label={t("footer.goup")} onClick={scrollToTop} icon={<IconArrowUp/>}/>
+        <HDSFooter.Item
+          className={styles.backToTopButton}
+          onClick={(e: any) => scrollToTop(e)}
+          label={<>{t("footer.goup")}<IconArrowUp aria-hidden="true" /></>}
+        />
       </HDSFooter.Base>
     </HDSFooter>
   )
