@@ -126,7 +126,7 @@ function Header(header:NavProps): JSX.Element {
             active={langLinks.en === activePath}
           />
         </Navigation.LanguageSelector>
-        <Navigation.Dropdown 
+        {/* <Navigation.Dropdown 
           label="" 
           aria-label={t("navigation.theme_dropdown")} 
           icon={<IconGlobe size='s' aria-label="Globe"/>} 
@@ -134,7 +134,7 @@ function Header(header:NavProps): JSX.Element {
           id='theme_dropdown'
         >
           {getThemes(themes)}
-        </Navigation.Dropdown>
+        </Navigation.Dropdown> */}
       </Navigation.Actions>
     </Navigation>
     {activePath !== '/' && <Breadcrumb breadcrumb={breadcrumb}/>}
