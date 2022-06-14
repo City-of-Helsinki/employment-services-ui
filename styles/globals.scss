@@ -152,11 +152,7 @@ h5, .h5,
 
 .component {
   margin-top: var(--spacing-4-xl);
-}
-
-.lower-content-region {
-  border: 1px solid;
-  min-height: 140px;
+  margin-bottom: var(--spacing-4-xl);
 }
 
 .lead-in {

@@ -92,7 +92,7 @@ function Header(header:NavProps): JSX.Element {
         {getNavi(menu)}
       </Navigation.Row>
       <Navigation.Actions>
-        <Navigation.Search searchLabel="Search" searchPlaceholder="Search page" />
+        {/* <Navigation.Search searchLabel="Search" searchPlaceholder="Search page" /> */}
         <Navigation.User
           id='navigation_blue_button'
           key='navigation_button'
