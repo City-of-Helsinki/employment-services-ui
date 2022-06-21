@@ -19,8 +19,8 @@ export function Layout({ children, header, footer }: LayoutProps): JSX.Element {
       <div className={styles.wrapper}>
         <Header {...header} />
         <main>{children}</main>
-        <Footer {...footer} />
       </div>
+      <Footer {...footer} />
     </>
   )
 }

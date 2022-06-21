@@ -32,10 +32,7 @@
   --item-active-color: var(--color-metro) !important;
   --menu-item-background-color-highlighted: var(--color-white) !important;
   --menu-item-color-highlighted: var(--color-black) !important;
-  &:hover {
-    text-decoration: underline;
-  }
-  
+  text-align: left;
   a {
     position: relative;
 
@@ -62,16 +59,15 @@
     &:hover::before, &[aria-current]::before {
       width: var(--spacing-3-xs);
     }
-    
   }
-
 
   &.active {
     font-weight: 600;
   }
+  @media (min-width: $breakpoint-m) {
+    margin-left: var(--spacing-xs) !important;
+  }
 }
-
-
 
 .sidenav {
   --side-navigation-active-indicator-background-color: var(--color-metro) !important;
@@ -89,6 +85,33 @@
   --side-navigation-mobile-menu-z-index: 100 !important;
   margin-top: var(--spacing-xl);
   height: auto !important;
+
+  > button {
+    --border-color: var(--color-black);
+    --border-color-hover: var(--color-bus-dark);
+    --border-color-focus: var(--color-bus);
+    --border-color-hover-focus: var(--color-bus-dark);
+    --border-color-disabled: var(--color-black-50);
+    --background-color: transparent;
+    --background-color-hover: var(--color-bus-light);
+    --background-color-focus: transparent;
+    --background-color-hover-focus: var(--color-bus-light);
+    --background-color-disabled: transparent;
+    --color: var(--color-black);
+    --color-hover: var(--color-bus-dark);
+    --color-focus: var(--color-black);
+    --color-hover-focus: var(--color-bus-dark);
+    --color-disabled: var(--color-black-40);
+
+    @media (max-width: $breakpoint-m) {
+      display: flex;
+      span {
+        display: block;
+        width: 100%;
+        text-align: left;
+      }
+    }
+  }
 }
 
 .mainLevel {
@@ -124,7 +147,7 @@
 .mainLevel, .subLevel {
   padding: var(--spacing-2-xs) 0;
   &:not(:last-child) {
-    border-bottom: 1px solid var(--color-black-10);
+    border-bottom: 1px solid var(--color-black-20);
   }
 }
 
@@ -180,8 +203,8 @@
   }
 }
 
-
 .footer {
+  --footer-background: var(--color-black) !important;
   nav {
     @media (min-width: $breakpoint-m) {
       display: grid !important;
@@ -214,4 +237,3 @@
     }
   }
 }
-
