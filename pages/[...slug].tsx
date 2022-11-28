@@ -49,7 +49,6 @@ export async function getStaticPaths(context: GetStaticPathsContext): Promise<Ge
 }
 
 export async function getStaticProps(context: GetStaticPropsContext): Promise<GetStaticPropsResult<PageProps>> {
-  const { REVALIDATE_TIME } = getConfig().serverRuntimeConfig
   const { locale, defaultLocale } = context as { locale: Locale, defaultLocale: Locale }
   let withAuth = false
 
@@ -114,8 +113,7 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
         footerNav,
       },
       ...(await serverSideTranslations(locale, ['common'])),
-    },
-    revalidate: REVALIDATE_TIME
+    }
   }
 }
 
