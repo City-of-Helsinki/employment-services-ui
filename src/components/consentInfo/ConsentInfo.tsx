@@ -11,7 +11,7 @@ export default function ConsentInfo(): JSX.Element {
     <div className={styles.consentInfoWrapper}>
       <h3><IconAlertCircleFill /> {t('consent_info.title')}</h3>
       <p>{t('consent_info.text')}</p>
-      <a href={locale === 'fi' ? '/cookies' : `${locale}/cookies`}><Button variant="secondary">{t('consent_info.button')}</Button></a>
+      <a href={locale === 'fi' ? '/cookies' : `/${locale}/cookies`}><Button variant="secondary">{t('consent_info.button')}</Button></a>
     </div>
   )
 }

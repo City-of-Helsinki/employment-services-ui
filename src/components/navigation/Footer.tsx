@@ -39,7 +39,7 @@ function Footer(props: FooterProps): JSX.Element {
       </HDSFooter.Navigation>
       <HDSFooter.Base copyrightHolder={t("footer.copyright")}>
         <HDSFooter.Item href={t("footer.accessibilityLink")} label={t("footer.accessibility")} />
-        <HDSFooter.Item href={locale === 'fi' ? '/cookies' : `${locale}/cookies`} label={t("footer.cookie_settings")} />
+        <HDSFooter.Item href={locale === 'fi' ? '/cookies' : `/${locale}/cookies`} label={t("footer.cookie_settings")} />
         <HDSFooter.Item
           className={styles.backToTopButton}
           onClick={(e: any) => scrollToTop(e)}
