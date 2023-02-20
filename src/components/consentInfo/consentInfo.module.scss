@@ -15,4 +15,8 @@
   a {
     text-decoration: none;
   }
+
+  button {
+    --focus-outline-color: var(--color-black-90);
+  }
 }
