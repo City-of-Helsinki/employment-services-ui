@@ -90,7 +90,8 @@ const getPageQueryParams = () =>
       'field_metatags',
       'field_notification',
       'field_lower_content',
-      'field_hide_sidebar'
+      'field_hide_sidebar',
+      'field_hide_navigation'
     ])
     .addInclude([
       'field_content.field_accordion_items.field_accordion_item_content',
@@ -118,7 +119,8 @@ const getLandingPageQueryParams = () =>
       'field_content',
       'field_hero',
       'field_metatags',
-      'field_notification'
+      'field_notification',
+      'field_hide_navigation'
     ])
     .addInclude([
       'field_hero.field_custom_hero_image.field_media_image',

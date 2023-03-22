@@ -25,6 +25,7 @@ export interface Node extends DrupalNode {
   picture_url: string
   picture_url_override: any
   drupal_internal__id: string
+  field_hide_navigation?: boolean
 }
 
 type TextFormats = 'basic_html' | 'restricted_html' | 'plain_text'
