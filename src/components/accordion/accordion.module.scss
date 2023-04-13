@@ -14,6 +14,13 @@
     --header-focus-outline-color: var(--color-black-90);
   }
 
+  [class^="Accordion-module_accordionContent"] {
+    color: var(--color-black-90);
+    font-family: var(--font-default);
+    font-size: var(--fontsize-body-l);
+    line-height: var(--lineheight-l);
+  }
+
   @media print {
     break-inside: avoid;
   }
@@ -109,11 +116,13 @@
   }
 }
 
+
 .accordionContent {
   background-color: var(--color-fog-light);
   display: flex;
   padding-right: var(--spacing-l);
   padding-left: var(--spacing-l);
+
 
   @media print {
     background: none;
