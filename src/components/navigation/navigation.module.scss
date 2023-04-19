@@ -26,6 +26,22 @@
   .blueButton {
     --background-color: var(--color-bus) !important;
   }
+  [class*="NavigationActions-module_navigationActions"] {
+    margin-top: 0.8rem;
+  }
+  [class*="Button-module_icon"] {
+    margin-right: 0 !important;
+  }
+}
+
+.loggingButton span {
+   padding: 0;
+   font-weight: 500;
+   margin-right: 10px;
+}
+
+.actionsButton {
+  background-color: aqua !important;
 }
 
 .navDropDown {

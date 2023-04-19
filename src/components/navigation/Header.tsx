@@ -1,8 +1,8 @@
-import { ReactElement, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import { useTranslation } from 'next-i18next'
-import { DrupalMenuLinkContent } from 'next-drupal'
-import { Navigation, IconArrowTopRight } from 'hds-react'
+import { ReactElement, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { DrupalMenuLinkContent } from 'next-drupal';
+import { Navigation, IconLinkExternal, Button } from 'hds-react';
 
 import { NavProps } from '@/lib/types'
 import classNames from '@/lib/classNames'
@@ -21,6 +21,10 @@ function Header(header:NavProps): JSX.Element {
   const [ pageProps, setPageProps ]: any | null = useState(null)
   const [ isPrintable, setIsPrintable ] = useState(false)
 
+  const onClick = () => {
+    window.open(t('navigation.button_link'), '_blank')?.focus();
+  }
+
   useEffect(() => {
     setPageProps(router.components[router.route].props.pageProps)
 
@@ -31,7 +35,7 @@ function Header(header:NavProps): JSX.Element {
     }
   }, [pageProps])
 
-  const getNavi = (menuArray: DrupalMenuLinkContent[]|undefined) => {
+  const getNav = (menuArray: DrupalMenuLinkContent[]|undefined) => {
     const nav: ReactElement[] = []
     if (!menuArray) {
       return <></>
@@ -99,64 +103,70 @@ function Header(header:NavProps): JSX.Element {
 
   return (
     <>
-    <Navigation
-      menuToggleAriaLabel="Menu"
-      logoLanguage={locale === 'sv' ? 'sv' : 'fi'}
-      skipTo="#content"
-      skipToContentLabel="Skip to main content"
-      title={t('site_name')}
-      titleAriaLabel={t('navigation.title_aria_label')}
-      titleUrl={locale === 'fi' ? '/' : `/${locale}`}
-      className={classNames(styles.navigation, styles.zover)}
-    >
-      <Navigation.Row>
-        {getNavi(menu)}
-      </Navigation.Row>
-      <Navigation.Actions>
-        <Navigation.Search onSearch={onSearch} searchLabel={t('navigation.search_label')} searchPlaceholder={t('navigation.search_placeholder')} />
-        <Navigation.User
-          id='navigation_blue_button'
-          key='navigation_button'
-          label={t('navigation.button_text')}
-          icon={<IconArrowTopRight size="l" />}
-          onSignIn={() => {
-            window.open(t('navigation.button_link'), '_blank')?.focus()
-          }}
-          className={styles.blueButton}
-        />
-        <Navigation.LanguageSelector label={locale && locale.toUpperCase()}>
-          <Navigation.Item
-            lang="fi"
-            key="fi_lang"
-            href={langLinks.fi}
-            hrefLang='fi'
-            label="Suomeksi"
-            active={langLinks.fi === activePath}
-          />
-          <Navigation.Item
-            lang="sv"
-            key="sv_lang"
-            href={langLinks.sv}
-            hrefLang='sv'
-            label="På svenska"
-            active={langLinks.sv === activePath}
-          />
-          <Navigation.Item
-            lang="en"
-            key="en_lang"
-            href={langLinks.en}
-            hrefLang='en'
-            label="In English"
-            active={langLinks.en === activePath}
-          />
-        </Navigation.LanguageSelector>
-      </Navigation.Actions>
-    </Navigation>
-    {activePath !== '/' && (
-      <div className={styles.subHeader}>
-        <Breadcrumb breadcrumb={breadcrumb}/>
-        {isPrintable && <PrintButton onClick={() => window?.print()} buttonText={t('text_print')}/>}
-      </div>
+      <Navigation
+        menuToggleAriaLabel="Menu"
+        logoLanguage={locale === 'sv' ? 'sv' : 'fi'}
+        skipTo="#content"
+        skipToContentLabel="Skip to main content"
+        title={t('site_name')}
+        titleAriaLabel={t('navigation.title_aria_label')}
+        titleUrl={locale === 'fi' ? '/' : `/${locale}`}
+        className={classNames(styles.navigation, styles.zover)}
+      >
+      <Navigation.Row>{getNav(menu)}</Navigation.Row>
+        <Navigation.Row>
+          <Navigation.Actions className={styles.actionsButton}>
+          <Navigation.LanguageSelector label={locale && locale.toUpperCase()}>
+            <Navigation.Item
+              lang="fi"
+              key="fi_lang"
+              href={langLinks.fi}
+              hrefLang="fi"
+              label="Suomeksi"
+              active={langLinks.fi === activePath}
+            />
+            <Navigation.Item
+              lang="sv"
+              key="sv_lang"
+              href={langLinks.sv}
+              hrefLang="sv"
+              label="På svenska"
+              active={langLinks.sv === activePath}
+            />
+            <Navigation.Item
+              lang="en"
+              key="en_lang"
+              href={langLinks.en}
+              hrefLang="en"
+              label="In English"
+              active={langLinks.en === activePath}
+            />
+            </Navigation.LanguageSelector>
+            <Navigation.Search
+              onSearch={onSearch}
+              searchLabel={t('navigation.search_label')}
+              searchPlaceholder={t('navigation.search_placeholder')}
+            />
+            <Button
+              className={styles.loggingButton}
+              onClick={onClick}
+              iconRight={<IconLinkExternal size="s" aria-hidden="true" />}
+            >
+              {t('navigation.button_text')}
+            </Button>
+          </Navigation.Actions>
+        </Navigation.Row>
+      </Navigation>
+      {activePath !== '/' && (
+        <div className={styles.subHeader}>
+          <Breadcrumb breadcrumb={breadcrumb} />
+          {isPrintable && (
+            <PrintButton
+              onClick={() => window?.print()}
+              buttonText={t('text_print')}
+            />
+          )}
+        </div>
       )}
     </>
   )
