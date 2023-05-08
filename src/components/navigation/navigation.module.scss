@@ -207,6 +207,10 @@
   [class*="link_hds-link"] {
     --link-visited-color: var(--color-black);
     --link-color: var(--color-black);
+    font-weight: 600;
+    font-size: var(--fontsize-body-s);
+    line-height: var(--lineheight-s);
+    border: 8px solid transparent;
   }
 }
 

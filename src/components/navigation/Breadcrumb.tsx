@@ -32,7 +32,7 @@ export const Breadcrumb = ({ breadcrumb, preview }: BreadcrumbProps): JSX.Elemen
           href={crumb.url}
           onClick={() => previewNavigation(crumb.url, preview)}
         >
-          <span>{crumb.title}</span>
+          {crumb.title}
         </Link>
         <IconAngleRight size="s" aria-hidden="true" />
       </div>
@@ -46,7 +46,7 @@ export const Breadcrumb = ({ breadcrumb, preview }: BreadcrumbProps): JSX.Elemen
     >
       <div className={styles.breadcrumbElement} key="breadcrumb-frontpage">
       <Link href="/" onClick={() => previewNavigation("/", preview)}>
-            <span>{t('navigation.frontpage')}</span>
+           {t('navigation.frontpage')}
         </Link>
         <IconAngleRight size="s" aria-hidden="true" />
       </div>
