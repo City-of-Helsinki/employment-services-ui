@@ -92,6 +92,7 @@ const getPageQueryParams = () =>
       'field_lower_content',
       'field_hide_sidebar',
       'field_hide_navigation',
+      'field_content_language',
     ])
     .addInclude([
       'field_content.field_accordion_items.field_accordion_item_content',

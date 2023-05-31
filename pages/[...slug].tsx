@@ -120,12 +120,15 @@ export async function getStaticProps(
           params,
           locale,
           defaultLocale: i18n.defaultLocale,
-        });
-        link = `${prefix}${response?.path.alias}`;
+        });        
+        if(locale === response?.path.langcode){
+          link = `${prefix}${response?.path.alias}`;
+        } else {
+          link = `${prefix}`
+        }    
       }
       Object.assign(langLinks, { [locale]: link });
-    }
-
+    }    
     return langLinks;
   }
 
