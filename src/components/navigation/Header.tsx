@@ -38,31 +38,39 @@ function Header(header: NavProps): JSX.Element {
       const subs: ReactElement[] = [];
       let childActive = false;
       item.items?.map((sub: DrupalMenuLinkContent, i: number) => {
-        childActive = sub.url === activePath || childActive;
-        subs.push(
-          <Navigation.Item
-            key={sub.title}
-            as="a"
-            href={sub.url}
-            label={sub.title}
-            active={sub.url === activePath}
-          />
-        );
+        const subUrl = sub.url;
+        if (!subUrl.startsWith(`/${locale}/node` || '/node')) {
+          subs.push(
+            <Navigation.Item
+              key={sub.title}
+              as="a"
+              href={sub.url}
+              label={sub.title}
+              active={sub.url === activePath}
+            />
+          );
+        }
         return subs;
       });
       const isActive = item.url === activePath || childActive;
-      nav.push(
-        <Navigation.DropdownLink
-          label={item.title}
-          key={item.title}
-          id={item.title}
-          active={isActive}
-          className={classNames(styles.navDropDown, isActive && styles.active)}
-          href={item.url}
-        >
-          {subs}
-        </Navigation.DropdownLink>
-      );
+      const itemUrl = item.url;
+      if (!itemUrl.startsWith(`/${locale}/node` || '/node')) {
+        nav.push(
+          <Navigation.DropdownLink
+            label={item.title}
+            key={item.title}
+            id={item.title}
+            active={isActive}
+            className={classNames(
+              styles.navDropDown,
+              isActive && styles.active
+            )}
+            href={item.url}
+          >
+            {subs}
+          </Navigation.DropdownLink>
+        );
+      }
       return nav;
     });
     return nav;
@@ -79,14 +87,15 @@ function Header(header: NavProps): JSX.Element {
   return (
     <>
       <Navigation
-        menuToggleAriaLabel='Menu'
+        menuToggleAriaLabel="Menu"
         logoLanguage={locale === 'sv' ? 'sv' : 'fi'}
-        skipTo='#content'
+        skipTo="#content"
         skipToContentLabel={t('skip-to-main-content')}
         title={t('site_name')}
         titleAriaLabel={t('navigation.title_aria_label')}
         titleUrl={locale === 'fi' ? '/' : `/${locale}`}
-        className={classNames(styles.navigation, styles.zover)}>
+        className={classNames(styles.navigation, styles.zover)}
+      >
         {!hideNav && <Navigation.Row>{getNav(menu)}</Navigation.Row>}
         <Navigation.Actions>
           <Navigation.Search
@@ -95,40 +104,41 @@ function Header(header: NavProps): JSX.Element {
             searchPlaceholder={t('navigation.search_placeholder')}
           />
           <Navigation.User
-            id='navigation_blue_button'
-            key='navigation_button'
+            id="navigation_blue_button"
+            key="navigation_button"
             label={t('navigation.button_text')}
-            icon={<IconArrowTopRight size='l' />}
+            icon={<IconArrowTopRight size="l" />}
             onSignIn={() => {
-              window.open(t('navigation.button_link'), '_blank')?.focus()
+              window.open(t('navigation.button_link'), '_blank')?.focus();
             }}
             className={styles.blueButton}
           />
           <Navigation.LanguageSelector
             label={locale && locale.toUpperCase()}
-            buttonAriaLabel={t('lang-code')}>
+            buttonAriaLabel={t('lang-code')}
+          >
             <Navigation.Item
-              lang='fi'
-              key='fi_lang'
+              lang="fi"
+              key="fi_lang"
               href={langLinks.fi}
-              hrefLang='fi'
-              label='Suomeksi'
+              hrefLang="fi"
+              label="Suomeksi"
               active={langLinks.fi === activePath}
             />
             <Navigation.Item
-              lang='sv'
-              key='sv_lang'
+              lang="sv"
+              key="sv_lang"
               href={langLinks.sv}
-              hrefLang='sv'
-              label='På svenska'
+              hrefLang="sv"
+              label="På svenska"
               active={langLinks.sv === activePath}
             />
             <Navigation.Item
-              lang='en'
-              key='en_lang'
+              lang="en"
+              key="en_lang"
               href={langLinks.en}
-              hrefLang='en'
-              label='In English'
+              hrefLang="en"
+              label="In English"
               active={langLinks.en === activePath}
             />
           </Navigation.LanguageSelector>
