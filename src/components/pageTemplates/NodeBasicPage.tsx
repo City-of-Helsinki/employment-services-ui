@@ -21,18 +21,10 @@ function NodeBasicPage({
     field_hide_sidebar,
     field_lower_content,
     langcode,
-    field_content_language,
   } = node;
 
-  const contentLang =
-    field_content_language?.resourceIdObjMeta.drupal_internal__target_id;
-  const langAttribute =
-    contentLang !== langcode && contentLang !== undefined
-      ? contentLang
-      : langcode;
-
   return (
-    <article lang={langAttribute}>
+    <article>
       <Container
         className="container"
       >

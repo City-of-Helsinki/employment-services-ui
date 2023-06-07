@@ -26,13 +26,6 @@ export interface Node extends DrupalNode {
   picture_url_override: any;
   drupal_internal__id: string;
   field_hide_navigation: boolean;
-  field_content_language: {
-    id: string;
-    resourceIdObjMeta: {
-      drupal_internal__target_id: string;
-    };
-    type: string;
-  } | undefined;
 }
 
 type TextFormats = 'basic_html' | 'restricted_html' | 'plain_text'
