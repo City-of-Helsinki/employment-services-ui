@@ -1,13 +1,11 @@
-import { IconAngleRight } from 'hds-react';
 import { ReactElement } from 'react';
+import { IconAngleRight } from 'hds-react';
 import { useTranslation } from 'next-i18next';
 
+import styles from './navigation.module.scss';
 import classNames from '@/lib/classNames';
 import { BreadcrumbContent } from '@/lib/types';
-
-import styles from './navigation.module.scss';
-import { previewNavigation } from '@/lib/helpers';
-import { languageFrontPages, primaryLanguages } from '@/lib/helpers';
+import { previewNavigation , languageFrontPages, primaryLanguages} from '@/lib/helpers';
 
 interface BreadcrumbProps {
   breadcrumb: BreadcrumbContent[];

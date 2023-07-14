@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { Linkbox, IconArrowRight, Container } from 'hds-react'
 
-import { EventsQueryParams, EventListProps } from '@/lib/types'
+import { EventsQueryParams, EventListProps, EventData } from '@/lib/types'
 import { getEvents } from '@/lib/client-api'
 import { getPathAlias } from '@/lib/helpers'
 
@@ -27,7 +27,7 @@ export function EventList({ pageType, locationId, ...props }: EventListProps): J
   }
 
   const fetcher = () => getEvents(queryParams)
-  const { data, error } = useSWR(
+  const { data } = useSWR(
     `/${locale}/${asPath}`,
     fetcher
   )
@@ -63,7 +63,7 @@ export function EventList({ pageType, locationId, ...props }: EventListProps): J
           }`}
         >
           {events?.length
-            ? events.map((event: any, key: any) => (
+            ? events.map((event: EventData, key: any) => (
                 <div className={`${styles.eventCard} event-card`} key={key}>
                   <Linkbox
                     className={styles.linkBox}

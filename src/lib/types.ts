@@ -73,18 +73,19 @@ export interface EventsQueryParams {
 }
 
 export interface EventData {
-  title: string
-  url: string
-  field_image_url: string
-  field_image_alt: string
-  field_start_time: number
-  field_end_time: number
-  field_event_status: string
-  field_location: string
-  field_location_id?: string
-  field_tags: string[]
-  field_event_tags: string[]
-  field_street_address?: string
+  title: string;
+  url: string;
+  field_image_url: string;
+  field_image_alt: string;
+  field_start_time: number;
+  field_end_time: number;
+  field_event_status: string;
+  field_location: string;
+  field_location_id?: string;
+  field_tags: string[];
+  field_event_tags: string[];
+  field_street_address?: string;
+  path: string;
 }
 
 export interface TprUnitData extends DrupalNode {

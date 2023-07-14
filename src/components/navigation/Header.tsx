@@ -2,20 +2,35 @@ import { ReactElement, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { DrupalMenuLinkContent } from 'next-drupal';
-import { Navigation as NavigationHDS } from "hds-react";
-import { NavProps } from '@/lib/types';
+import { Navigation as NavigationHDS } from 'hds-react';
+
+import { FooterProps, NavProps, NavigationProps, Node } from '@/lib/types';
 import classNames from '@/lib/classNames';
-import { frontPagePaths, printablePages } from '@/lib/helpers';
-import { previewNavigation } from '@/lib/helpers';
+import {
+  frontPagePaths,
+  printablePages,
+  previewNavigation,
+} from '@/lib/helpers';
 import { Breadcrumb } from './Breadcrumb';
 import styles from './navigation.module.scss';
 import PrintButton from '../printButton/PrintButton';
 import Navigation from '../navigationComponents/Navigation';
 import MobileNavigation from '../navigationComponents/MobileNavigation';
 
+interface RouterProps {
+  components?: any;
+  route: string;
+  push: (searchValue: string, undefined: undefined, { shallow }: any) => void;
+}
+
+interface PageProps {
+ footer: FooterProps;
+ nav: NavigationProps;
+ _nextI18Next: any;
+ node: Node;
+}
 
 function Header(header: NavProps): JSX.Element {
-
   const {
     locale,
     menu,
@@ -27,10 +42,10 @@ function Header(header: NavProps): JSX.Element {
     preview,
   } = header;
   const { t } = useTranslation('common');
-  const router: any = useRouter(); // @TODO Fix type for proper
+  const router: RouterProps = useRouter(); 
   const activePath = langLinks[locale ? locale : 'fi'];
-  const [pageProps, setPageProps]: any | null = useState(null);
-  const [isPrintable, setIsPrintable] = useState(false);
+  const [pageProps, setPageProps] = useState<null | PageProps>(null);
+  const [isPrintable, setIsPrintable] = useState<Boolean>(false);
 
   useEffect(() => {
     setPageProps(router.components[router.route].props.pageProps);
@@ -52,7 +67,7 @@ function Header(header: NavProps): JSX.Element {
 
   const onClick = () => {
     window.open(t('navigation.button_link'), '_blank')?.focus();
-  }
+  };
 
   return (
     <>
@@ -80,9 +95,13 @@ function Header(header: NavProps): JSX.Element {
         menuOtherLanguages={themes}
         preview={preview}
       />
-      { !frontPagePaths.includes(activePath) && activePath !== '/' && (
+      {!frontPagePaths.includes(activePath) && activePath !== '/' && (
         <div className={styles.subHeader}>
-          <Breadcrumb breadcrumb={breadcrumb} locale={locale as string} preview={preview}/>
+          <Breadcrumb
+            breadcrumb={breadcrumb}
+            locale={locale as string}
+            preview={preview}
+          />
           {isPrintable && (
             <PrintButton
               onClick={() => window?.print()}
@@ -97,12 +116,16 @@ function Header(header: NavProps): JSX.Element {
 
 export default Header;
 
-export const getNav = (menuArray: DrupalMenuLinkContent[] | undefined, activePath: any, preview: boolean) => {
+export const getNav = (
+  menuArray: DrupalMenuLinkContent[] | undefined,
+  activePath: string,
+  preview: boolean
+) => {
   const nav: ReactElement[] = [];
   if (!menuArray) {
     return <></>;
   }
-  menuArray.map((item: DrupalMenuLinkContent, index: number) => {
+  menuArray.map((item: DrupalMenuLinkContent) => {
     const subs: ReactElement[] = [];
     let childActive = false;
     item.items?.map((sub: DrupalMenuLinkContent, i: number) => {
