@@ -1,0 +1,97 @@
+{
+  "locale": "uk",
+  "lang-code": "Мова меню: українська",
+  "choose_language": "Виберіть мову сайту",
+  "global_menu_title": "Інформація іншими мовами",
+  "other_languages": "Відкрити меню інформації на інших мовах",
+  "site_name": "Служба зайнятості",
+  "site_title": "Служба зайнятості міста Гельсінкі",
+  "link_copied": "Посилання скопійовано",
+  "text_print": "Роздрукувати",
+  "text_print_section": "Роздрукуйте цей розділ",
+  "skip-to-main-content": "Безпосередньо до змісту",
+  "navigation": {
+    "button_text": "Сервіс Oma asiointi",
+    "button_link": "https://asiointi.mol.fi/omaasiointi/",
+    "title_aria_label": "Гельсінкі: Служба зайнятості",
+    "navigate_to_page": "Перейти на сторінку",
+    "frontpage": "Головна сторінка",
+    "breadcrumb_label": "Навігаційна стежка",
+    "theme_dropdown": "Інші мови",
+    "search_label": "Search",
+    "search_placeholder": "Search for content"
+  },
+  "search": {
+    "filter": "Фільтрувати заходи",
+    "clear": "Прибрати з виділеного",
+    "title": "Search the Employment Services website",
+    "page_title": "Search",
+    "input_label": "What are you looking for?",
+    "input_placeholder": "Search text",
+    "input_submit": "Search",
+    "keyword": "Keyword",
+    "result_text": "Search results",
+    "item_link_text": "Open search result",
+    "pagination_aria_label": "Page numbers",
+    "entity_type_event": "Захід",
+    "entity_type_article": "Новина",
+    "loading_suggestions": "Loading suggestions",
+    "group_description": "Ви можете вибрати кілька з наведених нижче фільтрів одночасно."
+  },
+  "list": {
+    "load_more": "Показати більше",
+    "read_more": "Читати додатково",
+    "read_more_blogs": "Читати всі блоги",
+    "read_more_news": "Читати всі новини",
+    "blog_url": "/en/blog",
+    "events_url": "/en/event",
+    "show_all_news": "Show all news",
+    "news_url": "/en/news",
+    "results_text": "результат пошуку",
+    "show_all_events": "Показати всі заходи",
+    "events_page_url": "/en/current-matters/events",
+    "no_events": "Найближчі заходи на цю тему відсутні.",
+    "event_title": "Захід",
+    "event_link": "Посилання на захід",
+    "result_zero": "Немає результатів пошуку"
+  },
+  "event": {
+    "remote_event": "Дистанційний захід",
+    "info_url_text": "Домашня сторінка заходу",
+    "info_url_text_teams": "Відкрийте захід через Teams",
+    "cancelled_text": "Скасовано",
+    "field_offers_info_url": "Зареєструватися"
+  },
+  "video": {
+    "cookie_consent": "You have not allowed the use of cookies on this site.",
+    "link_text": "Please accept cookies to see the content."
+  },
+  "footer": {
+    "copyright": "City of Helsinki",
+    "accessibility": "Accessibility statement",
+    "accessibilityLink": "/en/accessibility-statement",
+    "feedback": "Give feedback",
+    "feedbackLink": "https://www.hel.fi/helsinki/en/administration/participate/feedback",
+    "goup": "Back to the top",
+    "cookie_settings": "Cookie settings"
+  },
+  "map": {
+    "location": "Місцезнаходження",
+    "new_window": "Відкрийте карту в новому вікні"
+  },
+  "unit": {
+    "email": "Електронна пошта",
+    "contact_information": "Контактна інформація",
+    "visit_address": "Адреса для відвідувачів",
+    "open_hours": "Години прийому",
+    "phone_service": "Телефонна служба",
+    "postal_address": "Поштова адреса",
+    "more_info": "Перегляньте години роботи та контактну інформацію",
+    "accessibility_information": "Інформація про доступність"
+  },
+  "consent_info": {
+    "title": "Feedback buttons cannot be displayed",
+    "text": "To use this feature, you must accept cookies from the site. You can provide feedback on this page by enabling statistics-related cookies.",
+    "button": "Change cookie settings"
+  }
+}

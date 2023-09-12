@@ -1,0 +1,182 @@
+@import '/styles/variables.scss';
+
+.zover {
+  z-index: 100 !important;
+}
+.zover2 {
+  z-index: 110 !important;
+}
+.zover3 {
+  z-index: 120 !important;
+}
+
+.navigation {
+  --header-background-color: var(--color-white);
+  --header-color: var(--color-black-90);
+  --header-divider-color: var(--color-black-20);
+  --header-focus-outline-color: var(--color-black-90) !important;
+  --mobile-menu-background-color: var(--color-white);
+  --mobile-menu-color: var(--color-black-90);
+  --navigation-row-background-color: var(--color-white);
+  --navigation-row-focus-outline-color: var(--color-black-90) !important;
+  margin: 0 auto;
+  width: 100%;
+  max-width: var(--breakpoint-xl);
+
+  .blueButton {
+    --background-color: var(--color-bus) !important;
+  }
+
+  button span {
+    padding: 0;
+  }
+
+  [class*='Button-module_icon'] {
+    margin-right: 0 !important;
+  }
+}
+
+.mobileNav {
+  display: none;
+  [class*='button_hds-button'] {
+    --background-color: var(--color-bus) !important;
+    --background-color-hover: var(--color-bus) !important;
+    --background-color-focus: var(--color-bus) !important;
+    --background-color-hover-focus: var(--color-bus) !important;
+    --background-color-disabled: var(--color-black-20) !important;
+    --border-color: var(--color-bus) !important;
+    --border-color-hover: var(--color-bus) !important;
+    --border-color-focus: var(--color-bus) !important;
+    --border-color-hover-focus: var(--color-bus) !important;
+    --border-color-disabled: var(--color-black-20) !important;
+    --color: var(--color-white);
+    --color-hover: var(--color-white);
+    --color-focus: var(--color-white);
+    --color-hover-focus: var(--color-white);
+    --color-disabled: var(--color-white);
+    @media (min-width: $breakpoint-s) and (max-width: $breakpoint-m) {
+      --background-color: transparent !important;
+      --border-color: transparent !important;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-m) {
+  .mobileNav {
+    display: block;
+  }
+  .mainNav {
+    display: none;
+  }
+}
+
+.mainNav {
+  .buttonGlobe {
+    background-color: var(--color-white) !important;
+  }
+  .LanguageSelector {
+    background-color: var(--color-white);
+  }
+  [class*="NavigationSearch-module_searchContainer"] {
+    width: 27rem !important;
+  }
+}
+
+.loggingButton span {
+  padding: 0;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+.LanguageSelector {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0 4px 0;
+  background-color: var(--color-black-5);
+  position: relative;
+
+  a {
+    color: #1a1a1a !important;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: var(--line-height);
+    margin-left: 0px;
+    margin-right: 8px;
+    &[aria-current=true] {
+      font-weight: 700;
+      border-bottom: 3px solid #1a1a1a !important;
+      cursor: default;
+      -webkit-text-decoration: none;
+      text-decoration: none;
+    }
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .languageSelect {
+    display: flex;
+    align-items: center;
+    margin-left: 4px;
+  }
+}
+
+nav .buttonGlobe {
+  margin-right: 5px;
+  box-sizing: border-box;
+  margin-top: 0.5rem;
+  padding: 0;
+  transform: scale(1);
+  transform-origin: center;
+  background-color: var(--color-black-5) !important;
+  border-color: transparent !important;
+  --color: var(--color-black) !important;
+  --color-hover: var(--color-black) !important;
+  --color-focus: var(--color-black) !important;
+  --color-hover-focus: var(--color-black) !important;
+  --border-width: 3px !important;
+  &:active::after {
+    border-color: transparent !important;
+  }
+  &:focus {
+    transform-origin: center;
+    border-color: var(--color-black) !important;
+  }
+  span {
+    padding: 0;
+    margin-left: 5px;
+    @media (max-width: $breakpoint-m) {
+      margin-left: 1rem;
+    }
+  }
+}
+
+.globalDropDown {
+  background-color: var(--color-black-5);
+  color: var(--color-black);
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 4rem;
+  left: 0;
+  z-index: 10;
+  padding: 1rem 1.5rem 0 1.5rem;
+  
+  .globalLink {
+    width: 100%;
+  }
+  a:first-of-type {
+    margin-top: 3PX;
+  }
+
+  .headerLanguageLink {
+    --line-height: 1.5;
+    font-size: 1rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 1.5rem
+  }
+  @media (max-width: $breakpoint-m) {
+    top: 3.35rem;
+  }
+}

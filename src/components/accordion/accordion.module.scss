@@ -28,7 +28,9 @@
   --color: var(--color-black-90);
   --color-hover: var(--color-black-90);
   --color-focus: var(--color-black-90);
-  --color-hover-focus: var(--color-black-90);  
+  --color-hover-focus: var(--color-black-90);
+
+  --focus-outline-color: var(--color-black-90) !important;
 
   --focus-outline-color: var(--color-black-90) !important;
 
@@ -135,6 +137,30 @@
     margin-left: 0 !important;
   }
 }
+.iconAccordionButton {
+  border: none !important;
+  width: 100%;
+  --color: var(--color-black-90);
+  --color-hover: var(--color-black-90);
+  --color-focus: var(--color-black-90);
+  --color-hover-focus: var(--color-black-90);
+  --focus-outline-color: var(--color-black-90) !important;
+
+  > span {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    color: var(--color-black);
+    align-items: center;
+  }
+
+  .iconAccordionHeaderText {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+  }
+}
+
 
 @media (min-width: $breakpoint-s) {
   .button[id="numbered-accordion-button"] {

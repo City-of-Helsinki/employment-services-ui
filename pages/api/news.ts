@@ -10,9 +10,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
-  const { limit, locale }:any = req?.query
+  const { limit, filter, locale }:any = req?.query
 
-  news = await getNews(limit, locale).catch((e) => {
+  news = await getNews(limit, filter, locale).catch((e) => {
     console.log('Error fetching news from Drupal: ', e)
     throw e
   })

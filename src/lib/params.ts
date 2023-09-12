@@ -90,7 +90,8 @@ const getPageQueryParams = () =>
       'field_metatags',
       'field_notification',
       'field_lower_content',
-      'field_hide_sidebar'
+      'field_hide_sidebar',
+      'field_hide_navigation',
     ])
     .addInclude([
       'field_content.field_accordion_items.field_accordion_item_content',
@@ -118,7 +119,8 @@ const getLandingPageQueryParams = () =>
       'field_content',
       'field_hero',
       'field_metatags',
-      'field_notification'
+      'field_notification',
+      'field_hide_navigation'
     ])
     .addInclude([
       'field_hero.field_custom_hero_image.field_media_image',
@@ -133,11 +135,12 @@ const getLandingPageQueryParams = () =>
       'field_events_list_short',
       'field_event_tag_filter',
       'field_background_color',
-      'field_events_list_desc'
+      'field_events_list_desc',
     ])
     .addFields(CONTENT_TYPES.NEWS_LIST, [
       'field_title',
       'field_short_list',
+      'field_news_filter',
       'field_news_list_desc',
       'field_background_color',
     ])
@@ -145,10 +148,17 @@ const getLandingPageQueryParams = () =>
 
 export const baseEventQueryParams = () =>
   new DrupalJsonApiParams()
+  .addInclude([
+    'field_event_tags.content_translation_uid',
+    'field_event_tags.parent',
+    'field_in_language.content_translation_uid',
+    'field_in_language.parent',
+  ])
     .addFields(NODE_TYPES.EVENT, [
       'id',
       'title',
       'path',
+      'langcode',
       'field_text',
       'field_location',
       'field_location_id',
@@ -164,7 +174,13 @@ export const baseEventQueryParams = () =>
       'field_short_description',
       'field_street_address',
       'field_location_extra_info',
-      'field_offers_info_url'
+      'field_offers_info_url',
+      'field_event_tags',
+      'field_provider',
+      'field_super_event',
+      'field_publisher',
+      'field_provider',
+      'field_in_language'
     ])
 
 const getEventPageQueryParams = () =>
@@ -176,6 +192,9 @@ export const baseArticlePageQueryParams = () =>
     .addInclude([
       'field_content.field_list_of_links_links.field_list_of_links_image.field_media_image',
       'field_content.field_image.field_media_image',
+      'field_content.field_liftup_with_image_image.field_media_image',
+      'field_content.field_background_color',
+      'field_content.field_accordion_items.field_accordion_item_content',
     ])
     .addFields(NODE_TYPES.ARTICLE, [
       'id',
@@ -186,6 +205,7 @@ export const baseArticlePageQueryParams = () =>
       'langcode',
       'field_lead',
       'field_content',
+      'field_article_category',
       'status',
       'published_at',
     ])
@@ -205,6 +225,27 @@ export const baseArticlePageQueryParams = () =>
       'field_quote_author_first_name',
       'field_quote_author_last_name',
       'field_quote_author_title'
+    ])
+    .addFields(CONTENT_TYPES.MEDIA_IMAGE, [
+      'field_media_image',
+      'field_photographer',
+    ])
+    .addFields(CONTENT_TYPES.ACCORDION, [
+      'field_accordion_type',
+      'field_accordion_title_level',
+      'field_accordion_text',
+      'field_accordion_title',
+      'field_accordion_items'
+    ])
+    .addFields(CONTENT_TYPES.ACCORDION_ITEM, [
+      'field_accordion_item_content',
+      'field_accordion_item_heading'
+    ])
+    .addFields(CONTENT_TYPES.BANNER, [
+      'field_background_color',
+      'field_banner_desc',
+      'field_banner_title',
+      'field_icon'
     ])
     .addFields(CONTENT_TYPES.LIST_OF_LINKS, [
       'field_list_of_links_design',
@@ -237,10 +278,12 @@ export const baseTprUnitQueryParams = () =>
       'name',
       'name_override',
       'description',
+      'langcode',
       'field_metatags',
       'field_content',
       'field_lower_content',
       'phone',
+      'email',
       'address',
       'address_postal',
       'opening_hours',
@@ -248,7 +291,8 @@ export const baseTprUnitQueryParams = () =>
       'service_map_embed',
       'picture_url_override',
       'picture_url',
-      'drupal_internal__id'
+      'drupal_internal__id',
+      'accessibility_sentences',
     ])
     .addFields(CONTENT_TYPES.ACCORDION, [
       'field_accordion_type',

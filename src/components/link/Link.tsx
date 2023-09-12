@@ -1,4 +1,4 @@
-import { IconArrowRight, IconArrowTopRight } from 'hds-react'
+import { IconArrowRight, IconLinkExternal } from 'hds-react'
 import { isExternalLink } from '@/lib/helpers'
 import styles from './link.module.scss'
 
@@ -15,7 +15,7 @@ function Link(props: LinkProps): JSX.Element {
   return (
     <a href={href} className={`${styles.link} ${fullAreaLink ? styles.fullAreaLink : '' } ${isExternalLink(href) ? styles.external : styles.internal }`}>
       <span>{text}</span>
-      {isExternalLink(href) ? <IconArrowTopRight size={iconSize} /> : <IconArrowRight size={iconSize} />}
+      {isExternalLink(href) ? <IconLinkExternal size={iconSize} /> : <IconArrowRight size={iconSize} />}
     </a>
   )
 }

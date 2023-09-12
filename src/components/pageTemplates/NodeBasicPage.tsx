@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react'
 import { Container } from 'hds-react'
 import { NavProps, Node } from '@/lib/types'
 import ContentMapper from '@/components/ContentMapper'
 import { Sidebar } from '@/components/navigation/Sidebar'
 
 interface NodeBasicPageProps {
-  node: Node
-  sidebar: NavProps
+  node: Node;
+  sidebar: NavProps;
+  preview: boolean | undefined;
 }
 
-function NodeBasicPage({ node, sidebar, ...props }: NodeBasicPageProps): JSX.Element {
+function NodeBasicPage({ node, sidebar, preview, ...props }: NodeBasicPageProps): JSX.Element {
   const {
     title,
     field_lead_in,
@@ -18,12 +18,17 @@ function NodeBasicPage({ node, sidebar, ...props }: NodeBasicPageProps): JSX.Ele
     field_hide_sidebar,
     field_lower_content,
     langcode,
-  } = node;
+  } = node
 
   return (
     <article>
       <Container className="container">
         <div className="columns">
+          {!field_hide_sidebar &&
+          <div className="sidebar col col-4 flex-order-first">
+            <Sidebar {...sidebar} preview={preview}/>
+          </div>
+          }
           <div className={`content-region col col-8${!field_hide_sidebar ? " flex-grow" : "" }`}>
             {field_notification?.length > 0 && (
               <ContentMapper content={node.field_notification} />
@@ -36,11 +41,6 @@ function NodeBasicPage({ node, sidebar, ...props }: NodeBasicPageProps): JSX.Ele
               <ContentMapper content={node.field_content} pageType='basic' />
             )}
           </div>
-          {!field_hide_sidebar &&
-          <div className="sidebar col col-4 flex-order-first">
-            <Sidebar {...sidebar}/>
-          </div>
-          }
         </div>
         <div className="columns">
           <div className="lower-content-region col col-12">

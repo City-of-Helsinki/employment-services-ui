@@ -1,0 +1,14 @@
+.dateTime {
+    padding: 0;
+  
+    div {
+      display: flex;
+      font-size: var(--fontsize-body-m);
+      margin-top: var(--spacing-3-xs);
+      align-items: flex-end;
+    }
+  
+    svg {
+      margin-right: var(--spacing-xs);
+    }
+  }

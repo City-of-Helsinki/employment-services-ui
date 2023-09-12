@@ -23,9 +23,9 @@ function Hero(props: HeroProps): JSX.Element {
         <div className={styles.heroTextContainer}>
           <div className={styles.heroTextContent}>
             <h1>{title}</h1>
-            { field_hero_desc && 
+            { field_hero_desc &&
               <HtmlBlock field_text={field_hero_desc} />
-            }      
+            }
           </div>
           <Koros
             className={styles.heroMobileKoros}
@@ -40,7 +40,7 @@ function Hero(props: HeroProps): JSX.Element {
           <span className={styles.heroArrow} aria-hidden='true'>
             <IconArrowDown
               size="xl"
-              style={{ 
+              style={{
                 color: 'var(--color-metro)',
                 width: '150px',
                 height: '150px'

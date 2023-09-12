@@ -1,0 +1,96 @@
+{
+  "locale": "ru",
+  "lang-code": "Меню языков по-русски",
+  "choose_language": "Выбрать язык сайта",
+  "global_menu_title": "Информация на других языках",
+  "other_languages": "Открыть меню информации на других языках",
+  "site_name": "Служба занятости",
+  "site_title": "Служба занятости Хельсинки",
+  "link_copied": "Ссылка скопирована",
+  "text_print": "Распечатать",
+  "text_print_section": "Распечатать этот раздел",
+  "skip-to-main-content": "Прямо к содержанию",
+  "navigation": {
+    "button_text": "Самообслуживание",
+    "button_link": "https://asiointi.mol.fi/omaasiointi/",
+    "title_aria_label": "Хельсинки: Служба занятости",
+    "navigate_to_page": "Перейти на страницу",
+    "frontpage": "Главная страница",
+    "breadcrumb_label": "Цепочка навигации",
+    "theme_dropdown": "Другие языки",
+    "search_label": "Search",
+    "search_placeholder": "Search for content"
+  },
+  "search": {
+    "filter": "Фильтровать события",
+    "clear": "Снять выбор",
+    "title": "Search the Employment Services website",
+    "page_title": "Search",
+    "input_label": "What are you looking for?",
+    "input_placeholder": "Search text",
+    "input_submit": "Search",
+    "keyword": "Keyword",
+    "result_text": "Search results",
+    "item_link_text": "Open search result",
+    "pagination_aria_label": "Page numbers",
+    "entity_type_event": "Событие",
+    "entity_type_article": "Новость",
+    "loading_suggestions": "Loading suggestions",
+    "group_description": "Вы можете выбрать из следующих фильтров несколько раз"
+  },
+  "list": {
+    "load_more": "Показать больше",
+    "read_more": "Узнать подробнее",
+    "read_more_blogs": "Читать все блоги",
+    "read_more_news": "Читать все новости",
+    "blog_url": "/en/blog",
+    "events_url": "/en/event",
+    "show_all_news": "Show all news",
+    "news_url": "/en/news",
+    "results_text": "результат поиска",
+    "show_all_events": "Отобразить все события",
+    "events_page_url": "/en/current-matters/events",
+    "no_events": "Нет предстоящих событий по этой теме.",
+    "event_title": "Событие",
+    "event_link": "Ссылка на событие"
+  },
+  "event": {
+    "remote_event": "Мероприятия по удаленной связи",
+    "info_url_text": "Домашние страницы событий",
+    "info_url_text_teams": "Открыть событие через Teams",
+    "cancelled_text": "Отменено",
+    "field_offers_info_url": "Зарегистрировано"
+  },
+  "video": {
+    "cookie_consent": "You have not allowed the use of cookies on this site.",
+    "link_text": "Please accept cookies to see the content."
+  },
+  "footer": {
+    "copyright": "City of Helsinki",
+    "accessibility": "Accessibility statement",
+    "accessibilityLink": "/en/accessibility-statement",
+    "feedback": "Give feedback",
+    "feedbackLink": "https://www.hel.fi/helsinki/en/administration/participate/feedback",
+    "goup": "Back to the top",
+    "cookie_settings": "Cookie settings"
+  },
+  "map": {
+    "location": "Местонахождение",
+    "new_window": "Открыть карту в новом окне"
+  },
+  "unit": {
+    "email": " Электронная почта",
+    "contact_information": "Контактная информация",
+    "visit_address": "Фактический адрес,",
+    "open_hours": "Время работы",
+    "phone_service": "Обслуживание по телефону",
+    "postal_address": "Почтовый адрес",
+    "more_info": "Смотреть время работы и контактную информацию,",
+    "accessibility_information": "Информация о доступной среде для маломобильных групп населения"
+  },
+  "consent_info": {
+    "title": "Feedback buttons cannot be displayed",
+    "text": "To use this feature, you must accept cookies from the site. You can provide feedback on this page by enabling statistics-related cookies.",
+    "button": "Change cookie settings"
+  }
+}

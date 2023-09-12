@@ -1,32 +1,5 @@
 @import '/styles/variables.scss';
 
-.zover {
-  z-index: 100 !important;
-}
-.zover2 {
-  z-index: 110 !important;
-}
-.zover3 {
-  z-index: 120 !important;
-}
-
-.navigation {
-  --header-background-color: var(--color-white);
-  --header-color: var(--color-black-90);
-  --header-divider-color: var(--color-black-20);
-  --header-focus-outline-color: var(--color-black-90) !important;
-  --mobile-menu-background-color: var(--color-white);
-  --mobile-menu-color: var(--color-black-90);
-  --navigation-row-background-color: var(--color-white);
-  --navigation-row-focus-outline-color: var(--color-black-90) !important;
-  margin: 0 auto;
-  width: 100%;
-  max-width: var(--breakpoint-xl);
-
-  .blueButton {
-    --background-color: var(--color-bus) !important;
-  }
-}
 
 .navDropDown {
   --item-active-color: var(--color-metro) !important;
@@ -194,14 +167,19 @@
   align-self: stretch;
   align-items: center;
   display: flex;
-  line-height: 0;
+  line-height: 2;
   outline: none;
   padding: var(--spacing-3-xs) 0;
   span {
+    color: var(--color-black);
     margin: 0 var(--spacing-2-xs);
     font-weight: 600;
     font-size: var(--fontsize-body-s);
     line-height: var(--lineheight-s);
+  }
+  [class*="link_hds-link"] {
+    --link-visited-color: var(--color-black);
+    --link-color: var(--color-black);
   }
 }
 

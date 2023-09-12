@@ -184,9 +184,13 @@ export default function Search({ nav, footer }: SearchPageProps) {
     updateSearchValue(q)
 
     getSearch(pageIndex, q, locale).then((data) => {
-      setResults(data.results)
-      setTotal(data.total)
-      setPages(getPages(data.total))
+      setResults(data.results);
+      setTotal(data.total);
+      setPages(getPages(data.total));
+
+      // Track site search. Consent checking is handled in useAnalytics.ts.
+      const _paq = (window._paq = window._paq || [])
+      _paq.push(['trackSiteSearch', q, false, data.total]);
     })
 
   }, [router.isReady, q, pageIndex])

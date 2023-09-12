@@ -1,0 +1,97 @@
+{
+  "locale": "so",
+  "lang-code": "Liiska luqad xulashada ee af-soomaaliga",
+  "choose_language": "Dooro luqadda bogga",
+  "global_menu_title": "Macluumaadka ku qoran luqadaha kale",
+  "other_languages": "Macluumaadka ka fur liiska xulashada luqadaha kale",
+  "site_name": "Adeegyada shaqo helitaanka",
+  "site_title": "Adeegyada shaqo helitaanka ee Helsinki",
+  "link_copied": "Linkiga waa la koobiyay",
+  "text_print": "Daabac",
+  "text_print_section": "Qaybtaan soo daabac",
+  "skip-to-main-content": "Si toos ah dulucda ama waxyaabaha uu ka kooban yahay",
+  "navigation": {
+    "button_text": "Arrimahaaga gaarka ah",
+    "button_link": "https://asiointi.mol.fi/omaasiointi/",
+    "title_aria_label": "Helsinki: adeegyada shaqo helitaanka",
+    "navigate_to_page": "U gudub bogga",
+    "frontpage": "Bogga hore",
+    "breadcrumb_label": "Jajabka ama buruburka wadada",
+    "theme_dropdown": "Luqadaha kale",
+    "search_label": "Search",
+    "search_placeholder": "Search for content"
+  },
+  "search": {
+    "filter": "Kala saar dhacdooyinka",
+    "clear": "Ka Saar doorashada",
+    "title": "Search the Employment Services website",
+    "page_title": "Search",
+    "input_label": "What are you looking for?",
+    "input_placeholder": "Search text",
+    "input_submit": "Search",
+    "keyword": "Keyword",
+    "result_text": "Search results",
+    "item_link_text": "Open search result",
+    "pagination_aria_label": "Page numbers",
+    "entity_type_event": "Dhacdo",
+    "entity_type_article": "War",
+    "loading_suggestions": "Loading suggestions",
+    "group_description": "Dhowr mar ayaad dooran kartaa kuwaan soo socda ee la kala saaray"
+  },
+  "list": {
+    "load_more": "Wax badan muuji",
+    "read_more": "Wax badan akhri",
+    "read_more_blogs": "Akhri boloogyada oo dhan",
+    "read_more_news": "Akhri warka oo dhan",
+    "blog_url": "/en/blog",
+    "events_url": "/en/event",
+    "show_all_news": "Show all news",
+    "news_url": "/en/news",
+    "results_text": "natiijada baaritaanka",
+    "show_all_events": "Muuji dhacdooyinka oo dhan",
+    "events_page_url": "/en/current-matters/events",
+    "no_events": "Ma jirto wax dhacdooyin ah oo mowduucaan la xiriira.",
+    "event_title": "Dhacdo",
+    "event_link": "Linkiga dhacadada",
+    "result_zero": "Ma jiraan wax natiijooyin baaritaanka ah"
+  },
+  "event": {
+    "remote_event": "Dhacdo ama munaasabad dhanka internetka ah",
+    "info_url_text": "Bogga internetka ee munaasabadda ama dhacdada",
+    "info_url_text_teams": "Waxaad furtaa munaasabadda Teams-ka",
+    "cancelled_text": "Waa la baajiyay",
+    "field_offers_info_url": "Is diiwaangeli"
+  },
+  "video": {
+    "cookie_consent": "You have not allowed the use of cookies on this site.",
+    "link_text": "Please accept cookies to see the content."
+  },
+  "footer": {
+    "copyright": "City of Helsinki",
+    "accessibility": "Accessibility statement",
+    "accessibilityLink": "/en/accessibility-statement",
+    "feedback": "Give feedback",
+    "feedbackLink": "https://www.hel.fi/helsinki/en/administration/participate/feedback",
+    "goup": "Back to the top",
+    "cookie_settings": "Cookie settings"
+  },
+  "map": {
+    "location": "Meesha ama goobta",
+    "new_window": "Meesha ama goobta"
+  },
+  "unit": {
+    "email": "Iimeyl",
+    "contact_information": "Macluumaadka la soo xiriiridda",
+    "visit_address": "Cinwaanka la tago",
+    "open_hours": "Wakhtiyada furnaanshaha",
+    "phone_service": "Adeegga telefoonka",
+    "postal_address": "Cinwaanka boostada",
+    "more_info": "Eeg ama fiiri wakhtiyada furnaanshaha iyo macluumaadka la soo xiriiridda",
+    "accessibility_information": "Xannibaad la’aanta macluumaadka"
+  },
+  "consent_info": {
+    "title": "Feedback buttons cannot be displayed",
+    "text": "To use this feature, you must accept cookies from the site. You can provide feedback on this page by enabling statistics-related cookies.",
+    "button": "Change cookie settings"
+  }
+}

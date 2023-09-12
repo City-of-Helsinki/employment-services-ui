@@ -1,0 +1,28 @@
+.contentRegionWrapper {
+  margin-bottom: var(--spacing-xl);
+}
+.headerContent {
+    display: flex;
+    font-size: var(--fontsize-body-m);
+    margin-top: var(--spacing-2-xs);
+    
+    svg {
+      margin-right: var(--spacing-xs);
+    }
+
+    a svg {
+      vertical-align: bottom;
+      margin-left: var(--spacing-xs);
+      margin-right: 0;
+    }
+  }
+
+  .contentRegionSubHeader {
+    font-size: var(--fontsize-body-l);
+    font-weight: 600;
+    margin: 0 0 var(--spacing-2-xs);
+  }
+  
+  .contentRegionText {
+    margin-left: 2.2rem;
+  }

@@ -5,36 +5,39 @@ import { DrupalMenuLinkContent } from "next-drupal"
 
 import classNames from "@/lib/classNames"
 import { NavProps } from "@/lib/types"
+import { previewNavigation } from "@/lib/helpers"
 
 import styles from './navigation.module.scss'
 
 
-export function Sidebar(sidebar:NavProps): JSX.Element {
-  const { locale, menu, langLinks } = sidebar;
+export function Sidebar(sidebar: NavProps): JSX.Element {
+  const { locale, menu, langLinks, preview } = sidebar;
   const { t } = useTranslation('common');
-  const activePath = langLinks[locale ? locale : 'fi']
+  const activePath = langLinks[locale ?? 'fi'];
 
-  const getSideNav = (menuArray: DrupalMenuLinkContent[]|undefined):{ nav: ReactElement[], defaultOpenMainLevels: number[] } => {
-    const nav: ReactElement[] = []
-    let defaultOpenMainLevels: number[] = []
+  const getSideNav = (
+    menuArray: DrupalMenuLinkContent[] | undefined
+  ): { nav: ReactElement[]; defaultOpenMainLevels: number[] } => {
+    const nav: ReactElement[] = [];
+    let defaultOpenMainLevels: number[] = [];
 
     if (!menuArray) {
-      return {nav, defaultOpenMainLevels}
+      return { nav, defaultOpenMainLevels };
     }
-    menuArray.map((second: DrupalMenuLinkContent, index: number) => {
-      const subs: ReactElement[] = []
-      let parent: boolean = false
+    menuArray.forEach((second: DrupalMenuLinkContent) => {
+      const subs: ReactElement[] = [];
+      let parent: boolean = false;
 
       second.items?.map((sub: DrupalMenuLinkContent, i: number) => {
         if (sub.url === activePath) {
-          parent = true
-          defaultOpenMainLevels.push(i+1)
+          parent = true;
+          defaultOpenMainLevels.push(i + 1);
         }
         if (sub.items) {
-          let thirds: ReactElement[] = []
-          sub.items?.map((third: DrupalMenuLinkContent, idx: number) => {
+          let thirds: ReactElement[] = [];
+          sub.items?.map((third: DrupalMenuLinkContent) => {
             if (third.url === activePath) {
-              parent = true
+              parent = true;
             }
             thirds.push(
               <SideNavigation.SubLevel
@@ -42,60 +45,70 @@ export function Sidebar(sidebar:NavProps): JSX.Element {
                 id={third.title}
                 href={third.url}
                 label={third.title}
-                className={classNames(styles.subLevel, third.url === activePath && styles.active)}
+                className={classNames(
+                  styles.subLevel,
+                  third.url === activePath && styles.active
+                )}
                 active={third.url === activePath}
+                onClick={() => previewNavigation(third.url, preview)}
               />
-            )
-            return thirds
-          })
+            );
+            return thirds;
+          });
           subs.push(
             <SideNavigation.MainLevel
               key={sub.title}
               id={sub.title}
-              // href={sub.url}
-              onClick={() => window.location.href = sub.url}
+              onClick={() => (window.location.href = sub.url)}
               label={sub.title}
-              className={classNames(styles.mainLevel, sub.url === activePath && styles.active)}
+              className={classNames(
+                styles.mainLevel,
+                sub.url === activePath && styles.active
+              )}
               active={sub.url === activePath}
             >
               {thirds}
             </SideNavigation.MainLevel>
-          )
-        }
-        else {
+          );
+        } else {
           subs.push(
             <SideNavigation.MainLevel
               key={sub.title}
               id={sub.title}
               href={sub.url}
               label={sub.title}
-              className={classNames(styles.mainLevel, sub.url === activePath && styles.active)}
+              className={classNames(
+                styles.mainLevel,
+                sub.url === activePath && styles.active
+              )}
               active={sub.url === activePath}
+              onClick={() => previewNavigation(sub.url, preview)}
             />
-          )
+          );
         }
-        return subs
-      })
+        return subs;
+      });
 
       if (parent || second.url === activePath) {
         nav.push(
           <SideNavigation.MainLevel
             key={second.title}
-            icon={<IconArrowLeft aria-hidden className={styles.wiggle}/>}
+            icon={<IconArrowLeft aria-hidden className={styles.wiggle} />}
             label={second.title}
             id={second.title}
             href={second.url}
             className={classNames(styles.topLevel)}
-
-          />
-        , ...subs)
+            onClick={() => previewNavigation(second.url, preview)}
+          />,
+          ...subs
+        );
       }
-      return nav
-    })
-    return {nav, defaultOpenMainLevels}
-  }
+      return nav;
+    });
+    return { nav, defaultOpenMainLevels };
+  };
 
-  const { nav, defaultOpenMainLevels } = getSideNav(menu)
+  const { nav, defaultOpenMainLevels } = getSideNav(menu);
 
   return (
     <SideNavigation
@@ -106,5 +119,5 @@ export function Sidebar(sidebar:NavProps): JSX.Element {
     >
       {nav}
     </SideNavigation>
-  )
+  );
 }

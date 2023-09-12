@@ -135,7 +135,7 @@ h5, .h5,
   .link-external::after,
   a[data-is-external="true"]::after {
     margin-right: var(--spacing-3-xs);
-    background: url('../src/assets/arrow-top-right.svg') no-repeat center top;
+    background: url('../src/assets/link-external.svg') no-repeat center top;
 
     @media print {
       margin: 0;
@@ -207,6 +207,13 @@ h5, .h5,
 
 .flex-order-first {
   order: -1;
+}
+
+.accordion_component {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .content-region {
@@ -359,7 +366,6 @@ h5, .h5,
     background-size: contain;
     mask-repeat: no-repeat;
     mask-position: center;
-    mask-size: auto;
   }
 
   .rns-plugin .rns-reactions .reactions .rns-reaction:first-child .rns-label:after {

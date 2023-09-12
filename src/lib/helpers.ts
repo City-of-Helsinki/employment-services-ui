@@ -1,211 +1,302 @@
-import { DrupalJsonApiParams } from "drupal-jsonapi-params"
-import { DrupalMenuLinkContent, DrupalNode, getResource } from "next-drupal"
-import { Node } from '@/lib/types'
-import getConfig from 'next/config'
+import { DrupalMenuLinkContent } from 'next-drupal';
+import { GroupingProps, Node } from '@/lib/types';
+import getConfig from 'next/config';
 
-import { i18n } from "next-i18next.config"
+import { BreadcrumbContent } from './types';
+import { NODE_TYPES } from '@/lib/drupalApiTypes';
+import { NextApiResponse } from 'next';
 
-import { BreadcrumbContent } from "./types"
-import { NODE_TYPES } from '@/lib/drupalApiTypes'
 
-export const eventTags = ['maahanmuuttajat', 'nuoret', 'info', 'koulutus', 'messut', 'neuvonta', 'rekrytointi', 'työpajat', 'digitaidot', 'etätapahtuma', 'palkkatuki', 'työnhaku']
-export const printablePages = [NODE_TYPES.ARTICLE, NODE_TYPES.EVENT, NODE_TYPES.PAGE, NODE_TYPES.TPR_UNIT]
-
-export const isExternalLink = (href: string): boolean|undefined => {
-  const isExternalLink = href && (href.startsWith('https://') || href.startsWith('https://'))
-
-  return isExternalLink || false
+interface NewPage {
+  id: string;
+  title: string; 
+  url: string;
+  parent: string;
+  locale: string;
 }
+
+export const eventTags = [
+  'maahanmuuttajat',
+  'nuoret',
+  'info',
+  'koulutus',
+  'messut',
+  'neuvonta',
+  'rekrytointi',
+  'työpajat',
+  'digitaidot',
+  'etätapahtuma',
+  'palkkatuki',
+  'työnhaku',
+];
+export const printablePages = [
+  NODE_TYPES.ARTICLE,
+  NODE_TYPES.EVENT,
+  NODE_TYPES.PAGE,
+  NODE_TYPES.TPR_UNIT,
+];
+
+export const primaryLanguages = ['fi', 'en', 'sv'];
+export const frontPagePaths = [
+  '/',
+  '/en',
+  '/sv',
+  '/uk/frontpage',
+  '/so/frontpage',
+  '/ru/frontpage',
+];
+
+export const languageFrontPages = {
+  fi: '/',
+  en: '/en',
+  sv: '/sv',
+  uk: '/uk/frontpage',
+  so: '/so/frontpage',
+  ru: '/ru/frontpage',
+};
+
+/* Link and navigation helpers */
+export const previewNavigation = (
+  path: string,
+  preview: boolean | undefined
+): void => {
+  if (preview) {
+    window
+      .open(`${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/${path}`, '_parent')
+      ?.focus();
+  } else {
+    return;
+  }
+};
+
+export const isExternalLink = (href: string): boolean | undefined => {
+  const isExternalLink =
+    href && (href.startsWith('https://') || href.startsWith('http://'));
+
+  return isExternalLink || false;
+};
 
 export const getImageUrl = (url: string): string => {
   if (!url) {
-    return ''
+    return '';
   }
 
-  const host = getConfig().publicRuntimeConfig.NEXT_IMAGE_DOMAIN
-  url = url.substring(url.indexOf('/sites'))
+  const host = getConfig().publicRuntimeConfig.NEXT_IMAGE_DOMAIN;
+  url = url.substring(url.indexOf('/sites'));
 
-  return url ? `https://${host}${url}` : ''
-}
+  return url ? `https://${host}${url}` : '';
+};
 
 export const getPath = (url: string): string => {
-  const newUrl = new URL(url)
+  const newUrl = new URL(url);
 
-  return (newUrl.pathname)
-}
+  return newUrl.pathname;
+};
 
 export const getPathAlias = (path: any): string => {
   if (!path) {
-    return ''
+    return '';
   }
 
-  return path.langcode === 'fi' ? path.alias : `/${path.langcode}${path.alias}`
-}
+  return path.langcode === 'fi' ? path.alias : `/${path.langcode}${path.alias}`;
+};
 
-
-export async function getLanguageLinks(node: DrupalNode): Promise<Object> {
-  let params = new DrupalJsonApiParams().addFields(node.type, ['path']).getQueryObject()
-  const uuid = node.id
-
-  let langLinks = {}
-  for (let locale of i18n.locales) {
-    let prefix = locale !== i18n.defaultLocale ? `/${locale}` : ''
-    let link = ''
-    if (locale === node.langcode) {
-      link = `${prefix}${node?.path.alias}` // current page link
-    } else {
-      // this has the original alias if not translated
-      const response = await getResource(node.type, uuid, {params, locale, defaultLocale: i18n.defaultLocale})
-      link = `${prefix}${response?.path.alias}`
-    }
-    Object.assign(langLinks, {[locale]: link})
-  }
-
-  return langLinks
-}
-
-export const getBreadCrumb = (menuItems: DrupalMenuLinkContent[], path: string, title: string, type: string): BreadcrumbContent[] => {
-  const page = menuItems.find(({ url }) => url === path)
-
-  // TPR Unit may not have menu attachment
-  if (!page && (type === 'tpr_unit--tpr_unit')) {
-    return []
-  }
-
+export const getBreadCrumb = (
+  menuItems: DrupalMenuLinkContent[],
+  path: string,
+  title: string,
+  type: string,
+  locale: string
+): BreadcrumbContent[] => {
+  const mainMenuPage = menuItems.find(({ url }) => url === path);
   // Breadcrumb object for pages without menu attachment
-  let newPage: any = {
+  const newPage: NewPage = {
     id: 'current_page_crumb',
     title: title,
     url: path,
-    parent: ''
-  }
-
-  // Pages that are not in menus always get a breadcrumb.
-  if (!page) {
-    // Custom breadcrumb for Event pages
-    if (type !== 'node--event') {
-      return [newPage]
-    }
-
+    parent: '',
+    locale: locale,
+  };
     // Read parent from the page path
-    const parentPath = path.substring(0, path.lastIndexOf('/'))
+    const parentPath = path.substring(0, path.lastIndexOf('/'));
     // Load parent menu object
-    const parentPage = menuItems.find(({ url }) => url.includes(parentPath))
-
-    // Event page doesn't have parent
-    if (!parentPage?.id) {
-      return [newPage]
+    const parentPage = menuItems.find(({ url }) => url.includes(parentPath));
+  
+  // Pages that are not in menus always get a breadcrumb.
+  if (!mainMenuPage) {
+    // TPR Unit may not have menu attachment
+    if (type === 'tpr_unit--tpr_unit') {
+      return [];
     }
 
-    // Create parent id for the page
-    newPage.parent = parentPage.id
+    if (
+      type === 'node--page' ||
+      !parentPage?.id ||
+      (type === 'node--article' && !primaryLanguages.includes(locale))
+    ) {
+      return [newPage];
+    }
+
+    // Create parent id for the event
+    newPage.parent = parentPage.id;
   }
 
   // Landing pages don't need breadcrumb.
-  if (page?.parent === '') {
-    return []
+  if (mainMenuPage?.parent === '') {
+    return [];
   }
-
   // Create handle for the page object based on above
-  const pageHandle: any = newPage.parent !== '' ? newPage : page
+  const pageHandle: DrupalMenuLinkContent | NewPage | undefined =
+    newPage.parent !== '' ? newPage : mainMenuPage;
 
-  const breadcrumbs: BreadcrumbContent[] = [pageHandle]
-  let parentItem = menuItems.find(({ id }) => id === pageHandle.parent)
+  const breadcrumbs: BreadcrumbContent[] = [pageHandle as BreadcrumbContent];
+  let parentItem = menuItems.find(({ id }) => id === pageHandle?.parent);
 
   if (parentItem) {
-    breadcrumbs.push(parentItem)
+    breadcrumbs.push(parentItem);
     // This should always exit early and never infloop.
-    for (let i=0; i < menuItems.length; i++) {
-      parentItem = menuItems.find(({ id }) => id === parentItem?.parent)
+    for (let i = 0; i < menuItems.length; i++) {
+      parentItem = menuItems.find(({ id }) => id === parentItem?.parent);
       if (parentItem) {
-        breadcrumbs.push(parentItem)
+        breadcrumbs.push(parentItem);
       }
-      if (!parentItem?.parent) break
+      if (!parentItem?.parent) break;
     }
   }
-  return breadcrumbs.reverse()
-}
 
+  return breadcrumbs.reverse();
+};
+
+/* Cookie helpers */
 export const deleteCookie = (event: any, name: string, history: any) => {
-  event.preventDefault()
-  document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`
-  history.go(0)
-}
+  event.preventDefault();
+  document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+  history.go(0);
+};
 
+export const getCookiesUrl = (locale: string) => {
+  let cookieUrl;
+  switch (locale) {
+    case 'fi':
+      cookieUrl = '/cookies';
+      break;
+    case 'en':
+    case 'sv':
+      cookieUrl = `/${locale}/cookies`;
+      break;
+    default:
+      cookieUrl = '/en/cookies';
+  }
+  return cookieUrl;
+}; 
+
+/** Get data from node helpers */
 export const getTitle = (node: Node, suffix: String): string => {
-  let pageTitle = node.title
+  let pageTitle = node.title;
 
   if (node.type === 'tpr_unit--tpr_unit') {
-    pageTitle = node.name_override ? node.name_override : node.name
+    pageTitle = node.name_override ? node.name_override : node.name;
   }
 
-  const title = node.field_metatags?.title ? node.field_metatags.title : pageTitle
-  return suffix ? `${title} | ${suffix}` : title
-}
+  const title = node.field_metatags?.title
+    ? node.field_metatags.title
+    : pageTitle;
+  return suffix ? `${title} | ${suffix}` : title;
+};
 
 export const getDescription = (node: Node): any => {
   if (node.field_metatags?.description) {
-    return node.field_metatags.description
+    return node.field_metatags.description;
   }
 
   switch (node.type) {
     case 'node--page':
-      return node.field_lead_in
+      return node.field_lead_in;
 
     case 'node--landing_page':
       if (!node.field_hero?.field_hero_desc) {
-        break
+        break;
       }
-      return node.field_hero.field_hero_desc.processed.replace(/(<([^>]+)>)/gi, "")
+      return node.field_hero.field_hero_desc.processed.replace(
+        /(<([^>]+)>)/gi,
+        ''
+      );
 
     case 'node--event':
       if (!node?.field_short_description) {
-        break
+        break;
       }
-      return node.field_short_description.processed.replace(/(<([^>]+)>)/gi, "")
+      return node.field_short_description.processed.replace(
+        /(<([^>]+)>)/gi,
+        ''
+      );
 
     case 'node--article':
       if (!node?.field_lead) {
-        break
+        break;
       }
-      return node.field_lead
+      return node.field_lead;
 
     case 'tpr_unit--tpr_unit':
       if (!node?.description) {
-        break
+        break;
       }
-      return node.description.value
+      return node.description.value;
 
     default:
-      break
+      break;
   }
 
-  return ''
-}
+  return '';
+};
 
 export const getDefaultImage = (node: Node): string => {
   switch (node.type) {
     case 'node--event':
       if (!node?.field_image_url) {
-        break
+        break;
       }
-      return node.field_image_url
+      return node.field_image_url;
 
     case 'node--landing_page':
       if (!node?.field_hero) {
-        break
+        break;
       }
-      return node.field_hero.field_custom_hero_image?.field_media_image?.image_style_uri?.['hero']
+      return node.field_hero.field_custom_hero_image?.field_media_image
+        ?.image_style_uri?.['hero'];
 
     default:
-      break
+      break;
   }
 
-  return process.env.NEXT_PUBLIC_SITE_URL + "/tyollisyyspalvelut.png"
-}
+  return process.env.NEXT_PUBLIC_SITE_URL + '/tyollisyyspalvelut.png';
+};
 
+/** Filtering helpers */
 export const sortArrayByOtherArray = (array: any[], sortArray: string[]) => {
   return [...array].sort(
-    (a , b) => sortArray.indexOf(a.name_override) - sortArray.indexOf(b.name_override)
-  )
-}
+    (a, b) =>
+      sortArray.indexOf(a.name_override) - sortArray.indexOf(b.name_override)
+  );
+};
+
+export const getLocale = (res: NextApiResponse<any>) => {
+  const host = res.req.headers.host;
+  const url = res.req.headers.referer
+    ?.replace(`http://${host}/`, '')
+    .slice(0, 2);
+  const locale = url === 'en' || url === 'sv' ? url : 'fi';
+  return locale;
+};
+
+export const groupData = (data: GroupingProps[]) => {
+  const groups: string[] = [];
+  data.forEach((item: GroupingProps) =>
+    groups.indexOf(item.group) === -1 ? groups.push(item.group) : null
+  );
+  return groups;
+};
+
+export const setInitialLocale = (locale: string): string => {
+  return primaryLanguages.includes(locale) ? locale : 'en';
+};

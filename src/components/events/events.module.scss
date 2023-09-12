@@ -81,19 +81,6 @@
   padding-bottom:  var(--spacing-2-xs);
 }
 
-.selected {
-  background-color: var(--color-fog-medium-light) !important;
-  border: none !important;
-  color: var(--color-black-90) !important;
-  margin-right: var(--spacing-xs);
-  margin-bottom: var(--spacing-s);
-  width: auto;
-
-  span:first-letter {
-    text-transform: capitalize;
-  }
-}
-
 .supplementary {
   --background-color-hover: var(--color-black-90) !important;  
   --background-color-focus: var(--color-black-90) !important;  
@@ -147,6 +134,17 @@
       text-transform: capitalize;
     }
   }
+
+  .selected {
+    border: none !important;
+    margin-right: var(--spacing-xs);
+    margin-bottom: var(--spacing-s);
+    width: auto;
+  
+    span:first-letter {
+      text-transform: capitalize;
+    }
+  }
 }
 
 ul.tags {
@@ -170,21 +168,6 @@ ul.tags {
   }
 }
 
-.dateTime {
-  padding: 0;
-
-  div {
-    display: flex;
-    font-size: var(--fontsize-body-m);
-    margin-top: var(--spacing-3-xs);
-    align-items: flex-end;
-  }
-
-  svg {
-    margin-right: var(--spacing-xs);
-  }
-}
-
 .loadMore {
   display: flex;
   justify-content: center;
@@ -193,6 +176,27 @@ ul.tags {
   > button {
     --border-color-focus: var(--color-black-90);
     --border-color-hover-focus: var(--color-black-90);
+  }
+}
+
+.relatedEvent  {
+  max-width: 50rem;
+  padding: var(--spacing-s);
+  border-bottom: 1px solid var(--color-black-10);
+  position: relative;
+  &:first-child {
+    border-top: 1px solid var(--color-black-10);
+  }
+  a {
+    display: flex;
+    flex-flow: row wrap;
+    text-decoration: none;
+    border: none;
+  }
+  svg {
+    position: absolute;
+    margin-left: 20px;
+    right: 0;
   }
 }
 

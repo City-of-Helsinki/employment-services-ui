@@ -4,9 +4,10 @@ import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import Link from '@/components/link/Link'
-import getMenu from '@/lib/get-menu'
 import { Layout } from '@/components/layout/Layout'
 import { NavProps, FooterProps } from '@/lib/types'
+import { getDrupalClient } from '@/lib/drupal-client'
+import { primaryLanguages } from '@/lib/helpers'
 
 const notFoundTexts = {
   fi: {
@@ -26,12 +27,37 @@ interface PageNotFoundProps {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
+  const drupal = getDrupalClient();
   const { locale, defaultLocale } = context as { locale: Locale, defaultLocale: Locale }
 
   const langLinks = { fi: '/', en: '/en', sv: '/sv'}
-  const { tree: menu } = await getMenu('main', locale, defaultLocale)
-  const { tree: themes } = await getMenu('additional-languages', locale, defaultLocale)
-  const { tree: footerNav } = await getMenu('footer', locale, defaultLocale)
+  const { tree: menu } = await drupal.getMenu('main', {
+    locale: locale,
+    defaultLocale: defaultLocale,
+  });
+  const { tree: themes } = await drupal.getMenu('additional-languages', {
+    locale: locale,
+    defaultLocale: defaultLocale,
+  });
+
+  const getFooterMenu = () => {
+    if (primaryLanguages.includes(locale)) {
+      return 'footer'
+    } else {
+      return 'footer-other-languages'; 
+    }
+  }
+  const getFooterMenuLang = () => {
+    if (primaryLanguages.includes(locale)) {
+      return locale;
+    } else {
+      return 'en'; 
+    }
+  }
+  const { tree: footerNav } = await drupal.getMenu(getFooterMenu(), {
+    locale: getFooterMenuLang(),
+    defaultLocale: defaultLocale,
+  });
 
   return {
     props: {
@@ -54,7 +80,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 export const PageNotFound = ({ nav, footer }: PageNotFoundProps) => {
   const { locale } = useRouter()
 
-  let texts = notFoundTexts.fi
+  let texts;
   switch (locale) {
     case 'sv':
       texts = notFoundTexts.sv

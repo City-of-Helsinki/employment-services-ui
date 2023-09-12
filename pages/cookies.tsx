@@ -6,11 +6,12 @@ import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { CookiePage, Container } from 'hds-react'
 
-import getMenu from '@/lib/get-menu'
 import { Layout } from '@/components/layout/Layout'
 import { NavProps, FooterProps } from '@/lib/types'
 
 import { useCookieConsents } from '@/hooks/useAnalytics';
+import { getDrupalClient } from '@/lib/drupal-client';
+import { primaryLanguages } from '@/lib/helpers';
 
 interface CookiePageProps {
   nav: NavProps
@@ -18,12 +19,38 @@ interface CookiePageProps {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext): Promise<GetStaticPropsResult<CookiePageProps>> {
+  const drupal = getDrupalClient();
   const { locale, defaultLocale } = context as { locale: Locale, defaultLocale: Locale }
   const { REVALIDATE_TIME } = getConfig().serverRuntimeConfig 
-  const langLinks = { fi: '/cookies', en: '/en/cookies', sv: '/sv/cookies'}
-  const { tree: menu } = await getMenu('main', locale, defaultLocale)
-  const { tree: themes } = await getMenu('additional-languages', locale, defaultLocale)
-  const { tree: footerNav } = await getMenu('footer', locale, defaultLocale)
+  const langLinks = { fi: '/cookies', en: '/en/cookies', sv: '/sv/cookies' };
+  const { tree: menu } = await drupal.getMenu('main', {
+    locale: locale,
+    defaultLocale: defaultLocale,
+  });
+  const { tree: themes } = await drupal.getMenu('additional-languages', {
+    locale: locale,
+    defaultLocale: defaultLocale,
+  });
+
+  const getFooterMenu = () => {
+    if (primaryLanguages.includes(locale)) {
+      return 'footer'
+    } else {
+      return 'footer-other-languages'; 
+    }
+  }
+  const getFooterMenuLang = () => {
+    if (primaryLanguages.includes(locale)) {
+      return locale;
+    } else {
+      return 'en'; 
+    }
+  }
+
+  const { tree: footerNav } = await drupal.getMenu(getFooterMenu(), {
+    locale: getFooterMenuLang(),
+    defaultLocale: defaultLocale,
+  });
 
   return {
     props: {

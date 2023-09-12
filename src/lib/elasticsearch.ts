@@ -11,7 +11,7 @@ export const getElasticClient = (): Client => {
   } = config
 
   if (!ELASTICSEARCH_URL) {
-    throw 'ERROR: ELASTICSEARCH_URL not set'
+    throw new Error('ERROR: ELASTICSEARCH_URL not set');
   }
 
   if (!config.elasticsearch_password) {

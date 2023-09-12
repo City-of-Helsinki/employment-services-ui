@@ -585,6 +585,74 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
+      {
+        source: '/uk',
+        destination: '/uk/frontpage',
+        permanent: true,
+        locale: false,
+      },
+      {
+        source: '/so',
+        destination: '/so/frontpage',
+        permanent: true,
+        locale: false,
+      },
+      {
+        source: '/ru',
+        destination: '/ru/frontpage',
+        permanent: true,
+        locale: false,
+      },
+      {
+        source: '/avaa-urasi-kouluttautumalla-tai-yrittajana',
+        destination: '/ajankohtaista/uutiskirjeet/avaa-urasi-kouluttautumalla-tai-yrittajana',
+        permanent: true,
+      },
+      {
+        source: '/vahvista-osaamistasi-varmista-paikkasi-tyomarkkinoilla',
+        destination: '/ajankohtaista/uutiskirjeet/vahvista-osaamistasi-varmista-paikkasi-tyomarkkinoilla',
+        permanent: true,
+      },
+      {
+        source: '/nyhetsbrev-december-2022',
+        destination: '/aktuellt/nyhetsbrev/nyhetsbrev-december-2022',
+        permanent: true,
+      },
+      {
+        source: '/experts-are-needed-learn-new-skills-and-grow-your-expertise',
+        destination: '/current-matters/newsletters/experts-are-needed-learn-new-skills-and-grow-your-expertise',
+        permanent: true,
+      },
+      {
+        source: '/tekijoita-tarvitaan-kartuta-taitoja-ja-petraa-osaamista',
+        destination: '/ajankohtaista/uutiskirjeet/tekijoita-tarvitaan-kartuta-taitoja-ja-petraa-osaamista',
+        permanent: true,
+      },
+      {
+        source: '/arbetstagare-behovs-utoka-dina-fardigheter-och-forbattra-dina-kunskaper',
+        destination: '/aktuellt/nyhetsbrev/arbetstagare-behovs-utoka-dina-fardigheter-och-forbattra-dina-kunskaper',
+        permanent: true,
+      },
+      {
+        source: '/experts-are-needed-learn-new-skills-and-grow-your-expertise',
+        destination: '/current-matters/newsletters/experts-are-needed-learn-new-skills-and-grow-your-expertise',
+        permanent: true,
+      },
+      {
+        source: '/asioi-kesalla-tyollisyyspalveluissa-ja-hae-syksylla-alkaviin-koulutuksiin',
+        destination: '/ajankohtaista/uutiskirjeet/asioi-kesalla-tyollisyyspalveluissa-ja-hae-syksylla-alkaviin',
+        permanent: true,
+      },
+      {
+        source: '/anvand-sysselsattningstjansterna-under-sommaren-och-ansok-till-utbildningar-som-borjar-pa-hosten',
+        destination: '/aktuellt/nyhetsbrev/anvand-sysselsattningstjansterna-under-sommaren-och-ansok-till-utbildningar-som',
+        permanent: true,
+      },
+      {
+        source: '/be-touch-employment-services-summer-and-apply-training-courses-starting-autumn',
+        destination: '/current-matters/newsletters/be-touch-employment-services-summer-and-apply-training-courses-starting',
+        permanent: true,
+      },
     ]
   },
   sentry: {

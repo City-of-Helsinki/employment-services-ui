@@ -18,6 +18,15 @@
   h1 {
     font-size: var(--fontsize-heading-xl);
   }
+  @media (max-width: $breakpoint-s) {
+    h1 {
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      -webkit-hyphens: auto;
+      -moz-hyphens: auto;
+      hyphens: auto;
+    }
+  }
 }
 
 .heroTextContent {

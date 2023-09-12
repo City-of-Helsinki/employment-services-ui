@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import { Locale } from 'next-drupal'
 import { useCookies } from 'hds-react'
+import { setInitialLocale } from '@/lib/helpers'
 
 export const useConsentStatus = (cookieId: string) => {
   const { getAllConsents } = useCookies();
@@ -14,7 +15,7 @@ export const useConsentStatus = (cookieId: string) => {
 export const useCookieConsents = (): any => {
   const { locale } = useRouter()
   const { t } = useTranslation()
-  const [language, setLanguage] = useState(locale);
+  const [language, setLanguage] = useState<string>(setInitialLocale(locale ? locale : ''));
   const onLanguageChange = (newLang: Locale) => setLanguage(newLang);
 
   /**
@@ -143,16 +144,16 @@ export const useReactAndShare = (
   lang: string | undefined,
   pageTitle: string | undefined
 ) => {
+    const [reactAndShareApiKey, setReactAndShareApiKey] = useState(getConfig().publicRuntimeConfig.REACT_AND_SHARE_EN)
   useEffect(() => {
     if (cookieConsent !== true) {
       return
     }
 
-    let reactAndShareApiKey = getConfig().publicRuntimeConfig.REACT_AND_SHARE_FI
-    if (lang === 'en') {
-      reactAndShareApiKey = getConfig().publicRuntimeConfig.REACT_AND_SHARE_EN
+    if (lang === 'fi') {
+      setReactAndShareApiKey(getConfig().publicRuntimeConfig.REACT_AND_SHARE_FI)
     } else if (lang === 'sv') {
-      reactAndShareApiKey = getConfig().publicRuntimeConfig.REACT_AND_SHARE_SV
+      setReactAndShareApiKey(getConfig().publicRuntimeConfig.REACT_AND_SHARE_SV)
     }
 
     const script = document.createElement("script")

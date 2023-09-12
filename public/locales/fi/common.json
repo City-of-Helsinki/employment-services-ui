@@ -1,10 +1,15 @@
 {
   "locale": "fi",
+  "lang-code": "Kielivalikko Suomeksi",
+  "choose_language": "Valitse sivuston kieli",
+  "global_menu_title": "Tietoa muilla kielillä",
+  "other_languages": "Avaa tietoa muilla kielillä valikko",
   "site_name": "Työllisyyspalvelut",
   "site_title": "Helsingin työllisyyspalvelut",
   "link_copied": "Linkki kopioitu",
   "text_print": "Tulosta",
   "text_print_section": "Tulosta tämä osio",
+  "skip-to-main-content": "Suoraan sisältöön",
   "navigation": {
     "button_text": "Oma asiointi",
     "button_link": "https://asiointi.mol.fi/omaasiointi/",
@@ -30,7 +35,8 @@
     "pagination_aria_label": "Sivunumerointi",
     "entity_type_event": "Tapahtuma",
     "entity_type_article": "Uutinen",
-    "loading_suggestions": "Ladataan ehdotuksia"
+    "loading_suggestions": "Ladataan ehdotuksia",
+    "group_description": "Voit valita seuraavista suodattimista useamman kerrallaan."
   },
   "list": {
     "load_more": "Näytä lisää",
@@ -44,14 +50,28 @@
     "results_text": "hakutulosta",
     "show_all_events": "Näytä kaikki tapahtumat",
     "events_page_url": "/ajankohtaista/tapahtumat",
-    "no_events": "Ei tulevia tapahtumia tästä aiheesta."
+    "no_events": "Ei tulevia tapahtumia tästä aiheesta.",
+    "event_title": "Tapahtuma",
+    "event_link": "Tapahtuma linkki",
+    "result_zero": "Ei hakutuloksia"
   },
   "event": {
     "remote_event": "Etätapahtuma",
     "info_url_text": "Tapahtuman kotisivut",
     "info_url_text_teams": "Avaa Teams-tapahtuma",
     "cancelled_text": "Peruttu",
-    "field_offers_info_url": "Ilmoittaudu"
+    "field_offers_info_url": "Ilmoittaudu",
+    "provider": "Järjestäjän tiedot",
+    "publisher": "Julkaisijan tiedot",
+    "showAll": "Näytä kaikki",
+    "showLess": "Piilota",
+    "Other_times": "Tapahtuman muut ajat",
+    "languages": "Kielet"
+  },
+  "news": {
+    "news": "Uutinen",
+    "newsletter": "Uutiskirje",
+    "partner_jobs": "Kumppanien tarjoamat työpaikat"
   },
   "video": {
     "cookie_consent": "Et ole antanut lupaa asettaa evästeitä.",
@@ -71,17 +91,28 @@
     "new_window": "Avaa kartta uuteen ikkunaan"
   },
   "unit": {
+    "email": "Sähköposti",
     "contact_information": "Yhteystiedot",
     "visit_address": "Käyntiosoite",
     "open_hours": "Aukioloajat",
     "phone_service": "Puhelinpalvelu",
     "postal_address": "Postiosoite",
-    "more_info": "Katso aukioloajat ja yhteystiedot"
+    "more_info": "Katso aukioloajat ja yhteystiedot",
+    "accessibility_information": "Esteettömyystiedot"
   },
   "consent_info": {
     "title": "Sivun palautenappeja ei voida näyttää",
     "text": "Toiminnon käyttämiseksi vaaditaan, että hyväksyt sivuston evästeet. Pääset antamaan palautetta tästä sivusta sallimalla evästeasetuksista tilastointiin liittyvät evästeet.",
     "button": "Muokkaa evästeasetuksia"
-  }
-
+  },
+  "datetime": {
+    "time": "kl."
+  },
+  "Sun": "Su",
+  "Mon": "Ma",
+  "Tue": "Ti",
+  "Wed": "Ke",
+  "Thu": "To",
+  "Fri": "Pe",
+  "Sat": "La"
 }

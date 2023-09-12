@@ -1,10 +1,15 @@
 {
   "locale": "sv",
+  "lang-code": "Språkväljare På Svenska",
+  "choose_language": "Välj språk",
+  "other_languages": "Öppna Information på andra språk meny",
+  "global_menu_title": "Information på andra språk",
   "site_name": "Sysselsättningstjänster",
   "site_title": "Helsingfors sysselsättningstjänster",
   "link_copied": "Länken har kopierats",
   "text_print": "Skriva ut",
   "text_print_section": "Skriv ut detta avsnitt",
+  "skip-to-main-content": "Gå direkt till huvudinnehållet",
   "navigation": {
     "button_text": "E-Tjänster",
     "button_link": "https://asiointi.mol.fi/omaasiointi/?kieli=sv",
@@ -30,7 +35,8 @@
     "pagination_aria_label": "Sidnumrering",
     "entity_type_event": "Evenemang",
     "entity_type_article": "Nyhet",
-    "loading_suggestions": "Laddar förslag"
+    "loading_suggestions": "Laddar förslag",
+    "group_description": "Du kan välja flera av de olika filtren på en gång"
   },
   "list": {
     "load_more": "Visa fler",
@@ -44,14 +50,28 @@
     "results_text": "sökresultat",
     "show_all_events": "Visa alla evenemang",
     "events_page_url": "/sv/aktuellt/evenemang",
-    "no_events": "Det finns inga kommande evenemang om detta ämne."
+    "no_events": "Det finns inga kommande evenemang om detta ämne.",
+    "event_title": "Eevenemang",
+    "event_link": "Evenemangslänk till",
+    "result_zero": "Inga sökresultat"
   },
   "event": {
     "remote_event": "Distansevenemang",
     "info_url_text": "Evenemangets hemsida",
     "info_url_text_teams": "Öppna Teams-evenemanget",
     "cancelled_text": "Inställt",
-    "field_offers_info_url": "Bli Medlem"
+    "field_offers_info_url": "Bli Medlem",
+    "provider": "Arrangör",
+    "publisher": "Utgivare",
+    "showAll": "Visa Alt",
+    "showLess": "Dölj",
+    "Other_times": "Andra evenemangstider",
+    "languages": "Språk"
+  },
+  "news": {
+    "news": "Nyhet",
+    "newsletter": "Nyhetsbrev",
+    "partner_jobs": "Arbetsplatser som tillhandahålls av partner"
   },
   "video": {
     "cookie_consent": "Du har inte gett tillstånd att installera cookies.",
@@ -71,16 +91,25 @@
     "new_window": "Öppna kartan i nytt fönster"
   },
   "unit": {
+    "email": "E-post",
     "contact_information": "Kontaktuppgifter",
     "visit_address": "Besöksadress",
     "open_hours": "Öppettider",
     "phone_service": "Telefontjänst",
     "postal_address": "Postadress",
-    "more_info": "Se öppettider och kontaktuppgifter"
+    "more_info": "Se öppettider och kontaktuppgifter",
+    "accessibility_information": "Tillgänglighetsuppgifter"
   },
   "consent_info": {
     "title": "Feedbackknappar kan inte visas",
     "text": "För att använda denna funktion måste du acceptera cookies från webbplatsen. Du kan ge feedback på den här sidan genom att aktivera statistikrelaterade cookies.",
     "button": "Ändra inställningarna för cookies"
-  }
+  },
+  "Sun": "Sön",
+  "Mon": "Mån",
+  "Tue": "Tis",
+  "Wed": "Ons",
+  "Thu": "Tor",
+  "Fri": "Fre",
+  "Sat": "Lör"
 }

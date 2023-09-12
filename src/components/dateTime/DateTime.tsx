@@ -1,7 +1,7 @@
 import dateformat from 'dateformat'
 import { IconCalendar, IconClock } from 'hds-react'
 
-import styles from './events.module.scss'
+import styles from './dateTime.module.scss'
 
 export interface DateTimeProps {
   startTime: number

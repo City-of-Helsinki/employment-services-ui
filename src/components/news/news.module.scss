@@ -41,7 +41,7 @@
   flex-grow: 1;
   border-left: 0.5rem solid var(--color-metro);
   padding: 0 0 0 var(--spacing-s);
-  height: var(--spacing-layout-xl);
+  min-height: var(--spacing-layout-xl);
   overflow:hidden;
   word-wrap: break-word;
   width: 100%;
@@ -98,8 +98,6 @@
 @media (min-width: $breakpoint-xl) {
   .newsCard {
     flex-grow: 0;
-  }
-  .newsCard {
     width: calc(50% - var(--spacing-l));
   }
 }
