@@ -37,31 +37,24 @@ const getTotal = (data: EventData[]) => {
   };
 };
 
-const getAvailableTag = (events: any) => {
-  const availableTags: string[] = [];
-  events
-    ?.map((event: { field_event_tags: string[] }) => event?.field_event_tags)
-    .forEach((field_event_tag: string[]) =>
-      field_event_tag?.forEach((tag: string) =>
-        !availableTags.includes(tag) ? availableTags.push(tag) : null
-      )
-    );
-  return availableTags;
-};
-
 export default function Events(props: EventListProps): JSX.Element {
   const { field_title, field_events_list_desc } = props;
   const { t } = useTranslation();
   const { locale } = useRouter();
   const [filter, setFilter] = useState<string[]>([]);
-  const fetcher = (eventsIndex: number) =>
-    getEventsSearch(eventsIndex, filter, locale ?? 'fi');
+  const fetcher = (eventsIndex: number) => {
+    console.log('filter', filter);
+    
+   return getEventsSearch(eventsIndex, filter, locale ?? 'fi');
+  }
+ 
+
+    
   const { data, setSize } = useSWRInfinite(getKey, fetcher);
   const events = data && getEvents(data);
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
   
-
   const resultText =
     total &&
     (total.current < total.max || total.current === 0 || events?.length === 0)
@@ -84,22 +77,36 @@ export default function Events(props: EventListProps): JSX.Element {
     });
   }, [locale]);
 
-  useEffect(() => {  
+  const getAvailableTag = (events: any) => {
+    const availableTags: string[] = [];
+    events
+      ?.map((event: { field_event_tags: string[] }) => event?.field_event_tags)
+      .forEach((field_event_tag: string[]) =>
+        field_event_tag?.forEach((tag: string) =>
+          !availableTags.includes(tag) ? availableTags.push(tag) : null
+        )
+      );
+    return availableTags;
+  };
 
-    const x =  sessionStorage.getItem('screenX');
+  const keepScrollPosition = () => {
+    const screenX = sessionStorage.getItem('screenX');
+    if (screenX !== null) {
+      const position = parseInt(screenX);
+      setTimeout(() => window.scrollTo(0, position), 0);
+      sessionStorage.removeItem('screenX');
+    }
+   }
+
+  useEffect(() => {  
      const sessionFilters = sessionStorage.getItem('sessionFilter');
-     const screenX = sessionStorage.getItem('screenX');
      if (sessionFilters !== null) {
-       setFilter(JSON.parse(sessionFilters))
-     }
-     if (screenX !== null) {
-       window.scrollTo(0, parseInt(screenX));
+       setFilter(JSON.parse(sessionFilters));
      }
  },[])
-
-
+ 
    useEffect(() => {
-     updateTags();
+    updateTags();
      setSize(1);
      const handleBeforeUnload = (): void => {
        if (filter !== null && filter !== undefined) {
@@ -115,7 +122,7 @@ export default function Events(props: EventListProps): JSX.Element {
    }, [filter, setSize, updateTags]);
 
   return (
-    <div className="component">
+    <div className="component" onLoad={() => keepScrollPosition()}>
       <Container className="container">
         {field_title && <h2>{field_title}</h2>}
 
@@ -124,10 +131,8 @@ export default function Events(props: EventListProps): JSX.Element {
             <HtmlBlock field_text={field_events_list_desc} />
           </div>
         )}
-
         <div role="group">
           <div className={styles.filter}>{t('search.filter')}</div>
-
           <div
             role="group"
             aria-label={t('search.group_description')}
@@ -186,7 +191,9 @@ export default function Events(props: EventListProps): JSX.Element {
                   {event.field_image_url && (
                     <Image
                       src={event.field_image_url[0]}
-                      alt={event.field_image_alt ? event.field_image_alt[0] : ''}
+                      alt={
+                        event.field_image_alt ? event.field_image_alt[0] : ''
+                      }
                       layout="responsive"
                       objectFit="cover"
                       width={3}
