@@ -37,24 +37,52 @@ const getTotal = (data: EventData[]) => {
   };
 };
 
+const sessionFilters = () => {
+  if (typeof window !== 'undefined') {
+    const sessionFilters = sessionStorage.getItem('sessionFilter');
+    if (sessionFilters !== null) {
+     return JSON.parse(sessionFilters);
+    } else {
+      return [];
+    }
+  }
+}
+
+const getAvailableTag = (events: any) => {
+  const availableTags: string[] = [];
+  events
+    ?.map((event: { field_event_tags: string[] }) => event?.field_event_tags)
+    .forEach((field_event_tag: string[]) =>
+      field_event_tag?.forEach((tag: string) =>
+        !availableTags.includes(tag) ? availableTags.push(tag) : null
+      )
+    );
+  return availableTags;
+};
+
+const keepScrollPosition = () => {
+  const screenX = sessionStorage.getItem('screenX');
+  if (screenX !== null) {
+    const position = parseInt(screenX);
+    setTimeout(() => window.scrollTo(0, position), 0);
+    sessionStorage.removeItem('screenX');
+  }
+};
+
 export default function Events(props: EventListProps): JSX.Element {
   const { field_title, field_events_list_desc } = props;
   const { t } = useTranslation();
   const { locale } = useRouter();
-  const [filter, setFilter] = useState<string[]>([]);
+  const [filter, setFilter] = useState<string[]>(sessionFilters());
   const fetcher = (eventsIndex: number) => {
-    console.log('filter', filter);
-    
-   return getEventsSearch(eventsIndex, filter, locale ?? 'fi');
-  }
- 
+    return getEventsSearch(eventsIndex, filter, locale ?? 'fi');
+  };
 
-    
   const { data, setSize } = useSWRInfinite(getKey, fetcher);
   const events = data && getEvents(data);
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
-  
+
   const resultText =
     total &&
     (total.current < total.max || total.current === 0 || events?.length === 0)
@@ -77,49 +105,24 @@ export default function Events(props: EventListProps): JSX.Element {
     });
   }, [locale]);
 
-  const getAvailableTag = (events: any) => {
-    const availableTags: string[] = [];
-    events
-      ?.map((event: { field_event_tags: string[] }) => event?.field_event_tags)
-      .forEach((field_event_tag: string[]) =>
-        field_event_tag?.forEach((tag: string) =>
-          !availableTags.includes(tag) ? availableTags.push(tag) : null
-        )
-      );
-    return availableTags;
-  };
-
-  const keepScrollPosition = () => {
-    const screenX = sessionStorage.getItem('screenX');
-    if (screenX !== null) {
-      const position = parseInt(screenX);
-      setTimeout(() => window.scrollTo(0, position), 0);
-      sessionStorage.removeItem('screenX');
-    }
-   }
-
-  useEffect(() => {  
-     const sessionFilters = sessionStorage.getItem('sessionFilter');
-     if (sessionFilters !== null) {
-       setFilter(JSON.parse(sessionFilters));
-     }
- },[])
- 
-   useEffect(() => {
+  useEffect(() => {
     updateTags();
-     setSize(1);
-     const handleBeforeUnload = (): void => {
-       if (filter !== null && filter !== undefined) {
-         sessionStorage.setItem('sessionFilter', JSON.stringify(filter));
-       }
-       sessionStorage.setItem('screenX', document.documentElement.scrollTop.toString())
-     };
-     window.addEventListener('beforeunload', handleBeforeUnload);
+    setSize(1);
+    const handleBeforeUnload = (): void => {
+      if (filter !== null && filter !== undefined) {
+        sessionStorage.setItem('sessionFilter', JSON.stringify(filter));
+      }
+      sessionStorage.setItem(
+        'screenX',
+        document.documentElement.scrollTop.toString()
+      );
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
-     return () => {
-       window.removeEventListener('beforeunload', handleBeforeUnload);
-     };
-   }, [filter, setSize, updateTags]);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [filter, setSize, updateTags]);
 
   return (
     <div className="component" onLoad={() => keepScrollPosition()}>
