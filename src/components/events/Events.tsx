@@ -37,16 +37,36 @@ const getTotal = (data: EventData[]) => {
   };
 };
 
-const getAvailableTags = (events: EventData[], fieldName: string) => {
+const sessionFilters = () => {
+  if (typeof window !== 'undefined') {
+    const sessionFilters = sessionStorage.getItem('sessionFilter');
+    if (sessionFilters !== null) {
+     return JSON.parse(sessionFilters);
+    } else {
+      return [];
+    }
+  }
+}
+
+const getAvailableTags = (events: any) => {
   const availableTags: string[] = [];
   events
-    ?.map((event: { [field: string]: any; }) => event?.[fieldName])
-    .forEach((field: string[]) =>
-      field?.forEach((tag) =>
+    ?.map((event: { field_event_tags: string[] }) => event?.field_event_tags)
+    .forEach((field_event_tag: string[]) =>
+      field_event_tag?.forEach((tag: string) =>
         !availableTags.includes(tag) ? availableTags.push(tag) : null
       )
     );
   return availableTags;
+};
+
+const keepScrollPosition = () => {
+  const screenX = sessionStorage.getItem('screenX');
+  if (screenX !== null) {
+    const position = parseInt(screenX);
+    setTimeout(() => window.scrollTo(0, position), 0);
+    sessionStorage.removeItem('screenX');
+  }
 };
 
 export default function Events(props: EventListProps): JSX.Element {
@@ -60,14 +80,11 @@ export default function Events(props: EventListProps): JSX.Element {
    return getEventsSearch(eventsIndex, filter, languageFilter, locale ?? 'fi');
   }
  
-
-    
   const { data, setSize } = useSWRInfinite(getKey, fetcher);
   const events = data && getEvents(data);
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
   const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
-  
 
   const resultText =
     total &&
@@ -98,15 +115,6 @@ export default function Events(props: EventListProps): JSX.Element {
     });
   }, [locale]);
 
-  const keepScrollPosition = () => {
-    const screenX = sessionStorage.getItem('screenX');
-    if (screenX !== null) {
-      const position = parseInt(screenX);
-      setTimeout(() => window.scrollTo(0, position), 0);
-      sessionStorage.removeItem('screenX');
-    }
-   }
-
   useEffect(() => {  
      const sessionFilters = sessionStorage.getItem('sessionFilter');
      if (sessionFilters !== null) {
@@ -117,14 +125,17 @@ export default function Events(props: EventListProps): JSX.Element {
    useEffect(() => {
      updateLanguageTags();
     updateTags();
-     setSize(1);
-     const handleBeforeUnload = (): void => {
-       if (filter !== null && filter !== undefined) {
-         sessionStorage.setItem('sessionFilter', JSON.stringify(filter));
-       }
-       sessionStorage.setItem('screenX', document.documentElement.scrollTop.toString())
-     };
-     window.addEventListener('beforeunload', handleBeforeUnload);
+    setSize(1);
+    const handleBeforeUnload = (): void => {
+      if (filter !== null && filter !== undefined) {
+        sessionStorage.setItem('sessionFilter', JSON.stringify(filter));
+      }
+      sessionStorage.setItem(
+        'screenX',
+        document.documentElement.scrollTop.toString()
+      );
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
      return () => {
        window.removeEventListener('beforeunload', handleBeforeUnload);
