@@ -56,13 +56,18 @@ export default function Events(props: EventListProps): JSX.Element {
   const [filter, setFilter] = useState<string[]>([]);
   const [languageFilter, setLanguageFilter] = useState<string[]>([]);
 
-  const fetcher = (eventsIndex: number) =>
-    getEventsSearch(eventsIndex, filter, languageFilter, locale ?? 'fi');
+  const fetcher = (eventsIndex: number) => {    
+   return getEventsSearch(eventsIndex, filter, languageFilter, locale ?? 'fi');
+  }
+ 
+
+    
   const { data, setSize } = useSWRInfinite(getKey, fetcher);
   const events = data && getEvents(data);
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
   const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
+  
 
   const resultText =
     total &&
@@ -93,20 +98,22 @@ export default function Events(props: EventListProps): JSX.Element {
     });
   }, [locale]);
 
-  useEffect(() => {  
+  const keepScrollPosition = () => {
+    const screenX = sessionStorage.getItem('screenX');
+    if (screenX !== null) {
+      const position = parseInt(screenX);
+      setTimeout(() => window.scrollTo(0, position), 0);
+      sessionStorage.removeItem('screenX');
+    }
+   }
 
-    const x =  sessionStorage.getItem('screenX');
+  useEffect(() => {  
      const sessionFilters = sessionStorage.getItem('sessionFilter');
-     const screenX = sessionStorage.getItem('screenX');
      if (sessionFilters !== null) {
-       setFilter(JSON.parse(sessionFilters))
-     }
-     if (screenX !== null) {
-       window.scrollTo(0, parseInt(screenX));
+       setFilter(JSON.parse(sessionFilters));
      }
  },[])
-
-
+ 
    useEffect(() => {
      updateLanguageTags();
     updateTags();
@@ -125,7 +132,7 @@ export default function Events(props: EventListProps): JSX.Element {
    }, [filter, languageFilter, setSize, updateLanguageTags, updateTags]);
 
   return (
-    <div className="component">
+    <div className="component" onLoad={() => keepScrollPosition()}>
       <Container className="container">
         {field_title && <h2>{field_title}</h2>}
 
@@ -134,11 +141,9 @@ export default function Events(props: EventListProps): JSX.Element {
             <HtmlBlock field_text={field_events_list_desc} />
           </div>
         )}
-
         <div role="group">
           <h2>{t('search.header')}</h2>
           <div className={styles.filter}>{t('search.filter')}</div>
-
           <div
             role="group"
             aria-label={t('search.group_description')}
@@ -240,7 +245,9 @@ export default function Events(props: EventListProps): JSX.Element {
                   {event.field_image_url && (
                     <Image
                       src={event.field_image_url[0]}
-                      alt={event.field_image_alt ? event.field_image_alt[0] : ''}
+                      alt={
+                        event.field_image_alt ? event.field_image_alt[0] : ''
+                      }
                       layout="responsive"
                       objectFit="cover"
                       width={3}
