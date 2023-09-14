@@ -37,10 +37,11 @@ const getTotal = (data: EventData[]) => {
   };
 };
 
-const sessionFilters = () => {
+const sessionFilters = (locale: string) => {
   if (typeof window !== 'undefined') {
     const sessionFilters = sessionStorage.getItem('sessionFilter');
-    if (sessionFilters !== null) {
+    const sessionLocale = sessionStorage.getItem('locale');
+    if (sessionFilters !== null && sessionLocale === locale) {
      return JSON.parse(sessionFilters);
     } else {
       return [];
@@ -129,6 +130,7 @@ export default function Events(props: EventListProps): JSX.Element {
     const handleBeforeUnload = (): void => {
       if (filter !== null && filter !== undefined) {
         sessionStorage.setItem('sessionFilter', JSON.stringify(filter));
+        sessionStorage.setItem('locale', locale ?? 'fi');
       }
       sessionStorage.setItem(
         'screenX',
