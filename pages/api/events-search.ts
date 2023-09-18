@@ -19,7 +19,10 @@ export default async function handler(
     return;
   }
 
-  const { index, filter, locale }: Index = req?.query || {};
+  const { index, filter, languageFilter, locale }: Index = req?.query || {};
+
+
+  
     
   if (isNaN(Number(index))) {
     res.status(400);
@@ -28,12 +31,57 @@ export default async function handler(
 
   const elastic = Elastic.getElasticClient();
 
+  /*ToDo filter */
+const eventFilters = () => {
+  // if (filter && languageFilter) {
+  //   return [
+  //     { match: { field_event_tags: getQueryFilterTags(filter) } },
+  //     { match: { field_in_language: getQueryFilterTags(languageFilter) } },
+  //   ];
+  // }
+  // if (filter) {
+  //   return { match: { field_event_tags: getQueryFilterTags(filter) } };
+  // }
+  if (languageFilter) {
+
+    const array: { match: { field_in_language: string; }; }[] = [];
+
+
+  const x =
+    typeof languageFilter === 'object'
+      ? languageFilter.map((lang: any) => {
+        const object = {match: {field_in_language: lang}}
+        console.log('object', object);
+        
+        array.push(object)
+
+        return array;
+      
+        })
+      : [{ match: { field_in_language: languageFilter } }];
+  console.log('xxxxxxx', x);
+  console.log('array', array);
+const result = array === null ? array : x;
+console.log('result', result);
+
+   
+    return array;
+  }
+};
+
+
   let response: any = {};
   const body = {
     size: 200,
-    query: filter
-      ? { match: { field_event_tags: getQueryFilterTags(filter) } }
-      : { match_all: {} },
+    query:
+      filter || languageFilter
+        ? {
+            bool: {
+              must: 
+               eventFilters()
+            },
+          }
+        : { match_all: {} },
   };
 
   try {
@@ -59,9 +107,6 @@ export default async function handler(
     res.status(500);
   }
 
-  /**
-   * @TODO Is there better way to get static info about the tags and total amount of all events for filters?
-   */
   if (filter) {
     try {
       const searchRes = await elastic.search({
@@ -127,6 +172,7 @@ const getFilteredEvents = (filterTags: string[] | undefined, hits: any) => {
         field_event_tags,
         field_street_address,
         field_event_status,
+        field_in_language,
       } = hit._source as EventData;
       if (
         filterTags === undefined ||
@@ -149,6 +195,7 @@ const getFilteredEvents = (filterTags: string[] | undefined, hits: any) => {
           field_event_tags,
           field_street_address,
           field_event_status,
+          field_in_language,
         };
       } else {
         return;
