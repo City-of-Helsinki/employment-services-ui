@@ -21,9 +21,6 @@ export default async function handler(
 
   const { index, filter, languageFilter, locale }: Index = req?.query || {};
 
-
-  
-    
   if (isNaN(Number(index))) {
     res.status(400);
     return;
@@ -31,58 +28,36 @@ export default async function handler(
 
   const elastic = Elastic.getElasticClient();
 
-  /*ToDo filter */
-const eventFilters = () => {
-  // if (filter && languageFilter) {
-  //   return [
-  //     { match: { field_event_tags: getQueryFilterTags(filter) } },
-  //     { match: { field_in_language: getQueryFilterTags(languageFilter) } },
-  //   ];
-  // }
-  // if (filter) {
-  //   return { match: { field_event_tags: getQueryFilterTags(filter) } };
-  // }
-  if (languageFilter) {
-
-    const array: { match: { field_in_language: string; }; }[] = [];
-
-
-  const x =
-    typeof languageFilter === 'object'
-      ? languageFilter.map((lang: any) => {
-        const object = {match: {field_in_language: lang}}
-        console.log('object', object);
-        
-        array.push(object)
-
-        return array;
-      
-        })
-      : [{ match: { field_in_language: languageFilter } }];
-  console.log('xxxxxxx', x);
-  console.log('array', array);
-const result = array === null ? array : x;
-console.log('result', result);
-
-   
-    return array;
-  }
-};
-
-
   let response: any = {};
   const body = {
     size: 200,
-    query:
-      filter || languageFilter
-        ? {
-            bool: {
-              must: 
-               eventFilters()
-            },
-          }
-        : { match_all: {} },
+    query: {
+      bool: {
+        filter: [],
+      },
+    },
   };
+
+  const bodyFilter: any = body.query.bool.filter;
+
+  if (filter) {
+    const objectFilter = {
+      terms: {
+        field_event_tags: getQueryFilterTags(filter as string[]),
+      },
+    };
+    bodyFilter.push(objectFilter);
+  }
+
+  if (languageFilter) {
+    const objectLanguageFilter = {
+      terms: {
+        field_in_language: getQueryFilterTags(languageFilter as string[]),
+      },
+    };
+
+    bodyFilter.push(objectLanguageFilter);
+  }
 
   try {
     const searchRes = await elastic.search({
@@ -106,38 +81,12 @@ console.log('result', result);
     console.log('err', err);
     res.status(500);
   }
-
-  if (filter) {
-    try {
-      const searchRes = await elastic.search({
-        index: `events_${locale}`,
-        body: { query: { match_all: {} } },
-        sort: 'field_end_time:asc',
-      });
-      const {
-        hits: { total, hits },
-      } = searchRes as {
-        hits: { total: SearchTotalHits; hits: SearchHit<unknown>[] };
-      };
-
-      response = {
-        ...response,
-        maxTotal: total?.value,
-        tags: hits.map((hit: any) => {
-          const { field_event_tags } = hit._source as EventData;
-          return { field_event_tags };
-        }),
-      };
-    } catch (err) {
-      console.log('err', err);
-      res.status(500);
-    }
-  }
-
   res.json(response);
 }
 
-const getFilterTags = (filter: string | string[] | undefined) => {
+const getFilterTags = (
+  filter: string | string[] | undefined
+): string[] | undefined => {
   if (filter === undefined) {
     return undefined;
   } else if (Array.isArray(filter)) {
@@ -147,13 +96,15 @@ const getFilterTags = (filter: string | string[] | undefined) => {
   }
 };
 
-const getQueryFilterTags = (filter: string | string[] | undefined) => {
+const getQueryFilterTags = (
+  filter: string | string[] | undefined
+): string[] => {
   if (filter === undefined) {
-    return undefined;
+    return [];
   } else if (Array.isArray(filter)) {
-    return String(filter[0]);
+    return filter;
   } else {
-    return String(filter);
+    return [String(filter)];
   }
 };
 
