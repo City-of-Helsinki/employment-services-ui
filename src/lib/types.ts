@@ -124,6 +124,7 @@ export interface EventData  {
   tags: string[];
   total: number;
   maxTotal?: number;
+  field_in_language: string;
 }
 
 export interface EventListProps {

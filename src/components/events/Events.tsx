@@ -1,4 +1,4 @@
-import { getEventsSearch, getEventsTags } from '@/lib/client-api';
+import { getEventsLanguageTags, getEventsSearch, getEventsTags } from '@/lib/client-api';
 import { EventData, EventListProps } from '@/lib/types';
 import {
   Linkbox,
@@ -54,13 +54,15 @@ export default function Events(props: EventListProps): JSX.Element {
   const { t } = useTranslation();
   const { locale } = useRouter();
   const [filter, setFilter] = useState<string[]>([]);
+  const [languageFilter, setLanguageFilter] = useState<string[]>([]);
+
   const fetcher = (eventsIndex: number) =>
-    getEventsSearch(eventsIndex, filter, locale ?? 'fi');
+    getEventsSearch(eventsIndex, filter, languageFilter, locale ?? 'fi');
   const { data, setSize } = useSWRInfinite(getKey, fetcher);
   const events = data && getEvents(data);
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
-  
+  const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
 
   const resultText =
     total &&
@@ -84,13 +86,22 @@ export default function Events(props: EventListProps): JSX.Element {
     });
   }, [locale]);
 
+  const updateLanguageTags = useCallback(() => {
+    getEventsLanguageTags(locale ?? 'fi').then((result) => {
+      const languageTags = result.map((tag: { key: string; doc_count: number }) => tag.key)
+      setEventsLanguageTags(languageTags);
+    });
+  }, [locale]);
+
   useEffect(() => {
+    updateLanguageTags();
     updateTags();
     setSize(1);
-  }, [filter, setSize, updateTags]);
+  }, [filter, languageFilter, setSize, updateLanguageTags, updateTags]);
 
   return (
     <div className="component">
+      <button onClick={() => updateLanguageTags()}>Languages</button>
       <Container className="container">
         {field_title && <h2>{field_title}</h2>}
 
@@ -137,6 +148,51 @@ export default function Events(props: EventListProps): JSX.Element {
               className={styles.supplementary}
               onClick={() => {
                 setFilter([]);
+              }}
+            >
+              {t('search.clear')}
+            </HDSButton>
+          </div>
+          <div role="status" className={styles.results}>
+            {resultText}
+          </div>
+        </div>
+        <div role="group">
+          <div className={styles.filter}>{t('search.filter')}</div>
+
+          <div
+            role="group"
+            aria-label={t('search.group_description')}
+            className={styles.filterTags}
+          >
+            {eventsLanguageTags?.map((tag: string, i: number) => (
+              <HDSButton
+                role="checkbox"
+                aria-checked={filter.includes(tag)}
+                aria-label={`${t('search.filter')} ${tag.replace('_', ' ')}`}
+                key={`tagLanguage-${i}`}
+                className={
+                  languageFilter.includes(tag) ? styles.selected : styles.filterTag
+                }
+                onClick={() =>
+                  setLanguageFilter((current) =>
+                    current?.includes(tag)
+                      ? [...current].filter(function (item) {
+                          return item !== tag;
+                        })
+                      : [...current, tag]
+                  )
+                }
+              >
+                {tag.replace('_', ' ')}
+              </HDSButton>
+            ))}
+            <HDSButton
+              variant="supplementary"
+              iconLeft={<IconCrossCircle />}
+              className={styles.supplementary}
+              onClick={() => {
+                setLanguageFilter([]);
               }}
             >
               {t('search.clear')}
