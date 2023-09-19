@@ -36,7 +36,8 @@
     "entity_type_event": "Event",
     "entity_type_article": "News",
     "loading_suggestions": "Loading suggestions",
-    "group_description": "You can select multiple tags from the following filters at a time."
+    "group_description": "You can select multiple tags from the following filters at a time.",
+    "header": "Upcoming events"
   },
   "list": {
     "load_more": "Show more",

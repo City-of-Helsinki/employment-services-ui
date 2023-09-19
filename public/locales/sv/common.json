@@ -36,7 +36,8 @@
     "entity_type_event": "Evenemang",
     "entity_type_article": "Nyhet",
     "loading_suggestions": "Laddar förslag",
-    "group_description": "Du kan välja flera av de olika filtren på en gång"
+    "group_description": "Du kan välja flera av de olika filtren på en gång",
+    "header": "Kommande evenemang"
   },
   "list": {
     "load_more": "Visa fler",
