@@ -37,14 +37,19 @@ const getTotal = (data: EventData[]) => {
   };
 };
 
-const sessionFilters = (locale: string) => {
+const getSessionFilters = (locale: string) => {
   if (typeof window !== 'undefined') {
-    const sessionFilters = sessionStorage.getItem('sessionFilter');
-    const sessionLocale = sessionStorage.getItem('locale');
-    if (sessionFilters !== null && sessionLocale === locale) {
-     return JSON.parse(sessionFilters);
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.getAll('field_tag')) {
+      return urlParams.getAll('field_tag')
     } else {
-      return [];
+      const sessionFilters = sessionStorage.getItem('sessionFilter');
+      const sessionLocale = sessionStorage.getItem('locale');
+      if (sessionFilters !== null && sessionLocale === locale) {
+        return JSON.parse(sessionFilters);
+      } else {
+        return [];
+      }
     }
   }
 }
@@ -73,9 +78,14 @@ const keepScrollPosition = () => {
 export default function Events(props: EventListProps): JSX.Element {
   const { field_title, field_events_list_desc } = props;
   const { t } = useTranslation();
-  const { locale } = useRouter();
-  const [filter, setFilter] = useState<string[]>(sessionFilters(locale ?? 'fi'));
-  
+  const router = useRouter();
+  const { locale, query } = router;
+  const slug = query.slug as string[];
+  const basePath = locale === 'fi' ?  `${slug[0]}/${slug[1]}` : `${locale}/${slug[0]}/${slug[1]}`
+  const [filter, setFilter] = useState<string[]>(
+    getSessionFilters(locale ?? 'fi')
+  );
+
   const fetcher = (eventsIndex: number) => {
     return getEventsSearch(eventsIndex, filter, locale ?? 'fi');
   };
@@ -105,7 +115,16 @@ export default function Events(props: EventListProps): JSX.Element {
         );
       setEventsTags(tags);
     });
-  }, [locale]);
+
+    if (filter.length) {
+      const tags = filter.map((tag) =>
+        tag === filter[0] ? `field_tag=${tag}` : `&field_tag=${tag}`
+      );
+      router.push(
+        `/${basePath}?${tags.toString().replaceAll(',', '')}`
+      );
+    }
+  }, [filter, locale]);
 
   useEffect(() => {
     updateTags();
@@ -173,6 +192,10 @@ export default function Events(props: EventListProps): JSX.Element {
               className={styles.supplementary}
               onClick={() => {
                 setFilter([]);
+                router.push(
+                  `/${basePath}`
+                );
+      
               }}
             >
               {t('search.clear')}
