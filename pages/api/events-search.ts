@@ -9,6 +9,13 @@ import {
 type Data = EventState;
 type Index = Partial<{ [key: string]: string | string[] }>;
 
+interface Terms {
+  terms: {
+    field_event_tags?: string[],
+    field_in_language?: string[]
+  } 
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -33,30 +40,30 @@ export default async function handler(
     size: 200,
     query: {
       bool: {
-        filter: [],
+        filter: [] as Terms[],
       },
     },
   };
 
-  const bodyFilter: any = body.query.bool.filter;
+  const queryBody: Terms[] = body.query.bool.filter;
 
   if (filter) {
     const objectFilter = {
       terms: {
-        field_event_tags: getQueryFilterTags(filter as string[]),
+        field_event_tags: getQueryFilterTags(filter),
       },
     };
-    bodyFilter.push(objectFilter);
+    queryBody.push(objectFilter);
   }
 
   if (languageFilter) {
     const objectLanguageFilter = {
       terms: {
-        field_in_language: getQueryFilterTags(languageFilter as string[]),
+        field_in_language: getQueryFilterTags(languageFilter),
       },
     };
 
-    bodyFilter.push(objectLanguageFilter);
+    queryBody.push(objectLanguageFilter);
   }
 
   try {

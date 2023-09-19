@@ -101,7 +101,6 @@ export default function Events(props: EventListProps): JSX.Element {
 
   return (
     <div className="component">
-      <button onClick={() => updateLanguageTags()}>Languages</button>
       <Container className="container">
         {field_title && <h2>{field_title}</h2>}
 
@@ -112,6 +111,7 @@ export default function Events(props: EventListProps): JSX.Element {
         )}
 
         <div role="group">
+          <h2>{t('search.header')}</h2>
           <div className={styles.filter}>{t('search.filter')}</div>
 
           <div
