@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 import { getEventsLanguageTags, getEventsSearch, getEventsTags } from '@/lib/client-api';
 import { EventData, EventListProps } from '@/lib/types';
+=======
+import { useCallback, useEffect, useState } from 'react';
+import { getEventsSearch, getEventsTags } from '@/lib/client-api';
+import { EventListProps } from '@/lib/types';
+>>>>>>> d444ce136 (THF-610: refactor code and remove storage memory form tags)
 import {
   Linkbox,
   Button as HDSButton,
@@ -16,10 +22,18 @@ import styles from './events.module.scss';
 
 import TagList from './TagList';
 import EventStatus from './EventStatus';
-import { eventTags } from '@/lib/helpers';
-import { useCallback, useEffect, useState } from 'react';
+import {
+  eventTags,
+  getAvailableTag,
+  getEvents,
+  getKey,
+  getTotal,
+  keepScrollPosition,
+  getSessionFilters,
+} from '@/lib/helpers';
 import DateTime from '../dateTime/DateTime';
 
+<<<<<<< HEAD
 const getKey = (eventsIndex: number) => {
   return `${eventsIndex}`;
 };
@@ -75,6 +89,8 @@ const keepScrollPosition = () => {
   }
 };
 
+=======
+>>>>>>> d444ce136 (THF-610: refactor code and remove storage memory form tags)
 export default function Events(props: EventListProps): JSX.Element {
   const { field_title, field_events_list_desc } = props;
   const { t } = useTranslation();
@@ -86,20 +102,26 @@ export default function Events(props: EventListProps): JSX.Element {
   const router = useRouter();
   const { locale, query } = router;
   const slug = query.slug as string[];
-  const basePath = locale === 'fi' ?  `${slug[0]}/${slug[1]}` : `${locale}/${slug[0]}/${slug[1]}`
-  const [filter, setFilter] = useState<string[]>(
-    getSessionFilters(locale ?? 'fi')
-  );
+  const basePath =
+    locale === 'fi'
+      ? `${slug[0]}/${slug[1]}`
+      : `${locale}/${slug[0]}/${slug[1]}`;
 
+  const [filter, setFilter] = useState<string[]>(
+    getSessionFilters()
+  );
   const fetcher = (eventsIndex: number) => {
     return getEventsSearch(eventsIndex, filter, locale ?? 'fi');
   };
+<<<<<<< HEAD
 >>>>>>> a815e8dd3 (THF-610: add url parameters)
 
   const fetcher = (eventsIndex: number) => {    
    return getEventsSearch(eventsIndex, filter, languageFilter, locale ?? 'fi');
   }
  
+=======
+>>>>>>> d444ce136 (THF-610: refactor code and remove storage memory form tags)
   const { data, setSize } = useSWRInfinite(getKey, fetcher);
   const events = data && getEvents(data);
   const total = data && getTotal(data);
@@ -129,13 +151,16 @@ export default function Events(props: EventListProps): JSX.Element {
 
     if (filter.length) {
       const tags = filter.map((tag) =>
-        tag === filter[0] ? `field_tag=${tag}` : `&field_tag=${tag}`
+        tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
       );
-      router.push(
-        `/${basePath}?${tags.toString().replaceAll(',', '')}`
+      router.replace(
+        `/${basePath}?${tags.toString().replaceAll(',', '')}`,
+        undefined,
+        { shallow: true }
       );
     }
-  }, [filter, locale]);
+  }, [locale, filter]);
+
 
   const updateLanguageTags = useCallback(() => {
     getEventsLanguageTags(locale ?? 'fi').then((result) => {
@@ -156,10 +181,6 @@ export default function Events(props: EventListProps): JSX.Element {
     updateTags();
     setSize(1);
     const handleBeforeUnload = (): void => {
-      if (filter !== null && filter !== undefined) {
-        sessionStorage.setItem('sessionFilter', JSON.stringify(filter));
-        sessionStorage.setItem('locale', locale ?? 'fi');
-      }
       sessionStorage.setItem(
         'screenX',
         document.documentElement.scrollTop.toString()
@@ -219,10 +240,7 @@ export default function Events(props: EventListProps): JSX.Element {
               className={styles.supplementary}
               onClick={() => {
                 setFilter([]);
-                router.push(
-                  `/${basePath}`
-                );
-      
+                router.replace(`/${basePath}`, undefined, { shallow: true });
               }}
             >
               {t('search.clear')}
