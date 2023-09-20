@@ -6,7 +6,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { locale }: any = req?.query || {};
+  const { locale }: Partial<{ [key: string]: string | string[]; }> = req?.query || {};
 
   // No posts allowed, no missing params-errors revealed.
   if (req.method !== 'GET') {
@@ -23,7 +23,7 @@ export default async function handler(
     aggs: {
       events_tags: {
         terms: {
-          field: 'field_event_tags',
+          field: 'field_event_tags.keyword',
           size: 100,
         },
       },

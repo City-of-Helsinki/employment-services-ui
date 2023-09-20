@@ -159,5 +159,5 @@ const getFilteredEvents = (filterTags: string[] | undefined, hits: any) => {
         return;
       }
     })
-    .filter((event: any) => event !== null && event !== undefined);
+    .filter((event: EventData) => event !== null && event !== undefined);
 };

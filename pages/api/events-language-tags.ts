@@ -1,6 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import * as Elastic from '@/lib/elasticsearch';
 
+interface QueryBody {
+  query: {
+    match_all: object,
+  },
+  size: number,
+  aggs: {
+    events_language_tags: {
+      terms: {
+        field: string,
+        size: number,
+      },
+    },
+  },
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,7 +29,7 @@ export default async function handler(
   }
   const elastic = Elastic.getElasticClient();
 
-  const body: any = {
+  const body: QueryBody = {
     query: {
       match_all: {},
     },
@@ -23,7 +37,7 @@ export default async function handler(
     aggs: {
       events_language_tags: {
         terms: {
-          field: 'field_in_language',
+          field: 'field_in_language.keyword',
           size: 100,
         },
       },
@@ -37,8 +51,6 @@ export default async function handler(
     });
 
     const { events_language_tags }: any = searchRes.aggregations;
-
-    
 
     res.json(events_language_tags?.buckets);
   } catch (err) {
