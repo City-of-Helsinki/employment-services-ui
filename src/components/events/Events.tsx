@@ -1,11 +1,15 @@
 <<<<<<< HEAD
 import { getEventsLanguageTags, getEventsSearch, getEventsTags } from '@/lib/client-api';
+<<<<<<< HEAD
 import { EventData, EventListProps } from '@/lib/types';
 =======
 import { useCallback, useEffect, useState } from 'react';
 import { getEventsSearch, getEventsTags } from '@/lib/client-api';
 import { EventListProps } from '@/lib/types';
 >>>>>>> d444ce136 (THF-610: refactor code and remove storage memory form tags)
+=======
+import { EventListProps } from '@/lib/types';
+>>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
 import {
   Linkbox,
   Button as HDSButton,
@@ -17,9 +21,7 @@ import { useRouter } from 'next/router';
 import useSWRInfinite from 'swr/infinite';
 import HtmlBlock from '../HtmlBlock';
 import Image from 'next/legacy/image';
-
 import styles from './events.module.scss';
-
 import TagList from './TagList';
 import EventStatus from './EventStatus';
 import {
@@ -30,9 +32,11 @@ import {
   getTotal,
   keepScrollPosition,
   getSessionFilters,
+  getAvailableTags,
 } from '@/lib/helpers';
 import DateTime from '../dateTime/DateTime';
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 const getKey = (eventsIndex: number) => {
   return `${eventsIndex}`;
@@ -99,6 +103,11 @@ export default function Events(props: EventListProps): JSX.Element {
   const [filter, setFilter] = useState<string[]>([]);
   const [languageFilter, setLanguageFilter] = useState<string[]>([]);
 =======
+=======
+export default function Events(props: EventListProps): JSX.Element {
+  const { field_title, field_events_list_desc } = props;
+  const { t } = useTranslation();
+>>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
   const router = useRouter();
   const { locale, query } = router;
   const slug = query.slug as string[];
@@ -108,6 +117,7 @@ export default function Events(props: EventListProps): JSX.Element {
       : `${locale}/${slug[0]}/${slug[1]}`;
 
   const [filter, setFilter] = useState<string[]>(
+<<<<<<< HEAD
     getSessionFilters()
   );
   const fetcher = (eventsIndex: number) => {
@@ -122,12 +132,25 @@ export default function Events(props: EventListProps): JSX.Element {
  
 =======
 >>>>>>> d444ce136 (THF-610: refactor code and remove storage memory form tags)
+=======
+    getSessionFilters('tag')
+  );
+  const [languageFilter, setLanguageFilter] = useState<string[]>(
+    getSessionFilters('lang')
+  );
+  const fetcher = (eventsIndex: number) =>
+    getEventsSearch(eventsIndex, filter, languageFilter, locale ?? 'fi');
+>>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
   const { data, setSize } = useSWRInfinite(getKey, fetcher);
   const events = data && getEvents(data);
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
   const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
   const resultText =
     total &&
     (total.current < total.max || total.current === 0 || events?.length === 0)
@@ -148,6 +171,7 @@ export default function Events(props: EventListProps): JSX.Element {
         );
       setEventsTags(tags);
     });
+<<<<<<< HEAD
 
     if (filter.length) {
       const tags = filter.map((tag) =>
@@ -155,12 +179,30 @@ export default function Events(props: EventListProps): JSX.Element {
       );
       router.replace(
         `/${basePath}?${tags.toString().replaceAll(',', '')}`,
+=======
+    if (filter.length || languageFilter.length) {
+      const tags = filter.map((tag) =>
+        tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
+      );
+      const langTags = languageFilter.map((tag) =>
+       tag === languageFilter[0] && tags.length === 0 ? `lang=${tag}` : `&lang=${tag}`
+      );
+
+      router.replace(
+        `/${basePath}?${tags.toString().replaceAll(',', '')}${langTags
+          .toString()
+          .replaceAll(',', '')}`,
+>>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
         undefined,
         { shallow: true }
       );
     }
+<<<<<<< HEAD
   }, [locale, filter]);
 
+=======
+  }, [locale, filter, languageFilter]);
+>>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
 
   const updateLanguageTags = useCallback(() => {
     getEventsLanguageTags(locale ?? 'fi').then((result) => {
@@ -188,10 +230,17 @@ export default function Events(props: EventListProps): JSX.Element {
     };
     window.addEventListener('beforeunload', handleBeforeUnload);
 
+<<<<<<< HEAD
      return () => {
        window.removeEventListener('beforeunload', handleBeforeUnload);
      };
    }, [filter, languageFilter, setSize, updateLanguageTags, updateTags]);
+=======
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [filter, languageFilter, setSize, updateLanguageTags, updateTags]);
+>>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
 
   return (
     <div className="component" onLoad={() => keepScrollPosition()}>
@@ -284,6 +333,7 @@ export default function Events(props: EventListProps): JSX.Element {
               className={styles.supplementary}
               onClick={() => {
                 setLanguageFilter([]);
+                router.replace(`/${basePath}`, undefined, { shallow: true });
               }}
             >
               {t('search.clear')}

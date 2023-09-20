@@ -9,7 +9,7 @@ import { NextApiResponse } from 'next';
 
 interface NewPage {
   id: string;
-  title: string; 
+  title: string;
   url: string;
   parent: string;
   locale: string;
@@ -117,11 +117,11 @@ export const getBreadCrumb = (
     parent: '',
     locale: locale,
   };
-    // Read parent from the page path
-    const parentPath = path.substring(0, path.lastIndexOf('/'));
-    // Load parent menu object
-    const parentPage = menuItems.find(({ url }) => url.includes(parentPath));
-  
+  // Read parent from the page path
+  const parentPath = path.substring(0, path.lastIndexOf('/'));
+  // Load parent menu object
+  const parentPage = menuItems.find(({ url }) => url.includes(parentPath));
+
   // Pages that are not in menus always get a breadcrumb.
   if (!mainMenuPage) {
     // TPR Unit may not have menu attachment
@@ -188,7 +188,7 @@ export const getCookiesUrl = (locale: string) => {
       cookieUrl = '/en/cookies';
   }
   return cookieUrl;
-}; 
+};
 
 /** Get data from node helpers */
 export const getTitle = (node: Node, suffix: String): string => {
@@ -301,10 +301,11 @@ export const setInitialLocale = (locale: string): string => {
   return primaryLanguages.includes(locale) ? locale : 'en';
 };
 
-
-/* event helper */
-
-const urlParams =  typeof window !== 'undefined' ? new URLSearchParams(window.location.search): null;
+/* Event helpers */
+const urlParams =
+  typeof window !== 'undefined'
+    ? new URLSearchParams(window.location.search)
+    : null;
 
 export const getKey = (eventsIndex: number) => {
   return `${eventsIndex}`;
@@ -323,10 +324,10 @@ export const getTotal = (data: EventData[]) => {
   };
 };
 
-export const getSessionFilters = () => {
+export const getSessionFilters = (filterName: string) => {
   if (typeof window !== 'undefined' && urlParams !== null) {
-    if (urlParams.getAll('tag')) {
-      return urlParams.getAll('tag');
+    if (urlParams.getAll(filterName)) {
+      return urlParams.getAll(filterName);
     } else {
       return [];
     }
@@ -335,12 +336,12 @@ export const getSessionFilters = () => {
   }
 };
 
-export const getAvailableTag = (events: any) => {
+export const getAvailableTags = (events: EventData[], fieldName: string) => {
   const availableTags: string[] = [];
   events
-    ?.map((event: { field_event_tags: string[] }) => event?.field_event_tags)
-    .forEach((field_event_tag: string[]) =>
-      field_event_tag?.forEach((tag: string) =>
+    ?.map((event: { [field: string]: any }) => event?.[fieldName])
+    .forEach((field: string[]) =>
+      field?.forEach((tag: string) =>
         !availableTags.includes(tag) ? availableTags.push(tag) : null
       )
     );
