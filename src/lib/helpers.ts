@@ -351,7 +351,7 @@ export const getAvailableTags = (events: EventData[], fieldName: string) => {
 export const keepScrollPosition = () => {
   if (typeof window !== 'undefined' && urlParams !== null) {
     const screenX = sessionStorage.getItem('screenX');
-    if (screenX !== null && urlParams.get('tag')) {
+    if (screenX !== null) {
       const position = parseInt(screenX);
       window.scrollTo(0, position);
       sessionStorage.removeItem('screenX');

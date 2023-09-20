@@ -23,7 +23,7 @@ export default async function handler(
     aggs: {
       events_tags: {
         terms: {
-          field: 'field_event_tags.keyword',
+          field: 'field_event_tags',
           size: 100,
         },
       },

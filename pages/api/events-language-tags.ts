@@ -37,7 +37,7 @@ export default async function handler(
     aggs: {
       events_language_tags: {
         terms: {
-          field: 'field_in_language.keyword',
+          field: 'field_in_language',
           size: 100,
         },
       },

@@ -26,6 +26,11 @@ export const Breadcrumb = ({
   
   if (!breadcrumb || breadcrumb.length == 0) return <></>;
 
+  const breadcrumbLinkFunctions = (crumbUrl: string, preview: boolean) => {
+   typeof window !== 'undefined' ? sessionStorage.removeItem('screenX'): null;
+   previewNavigation(crumbUrl, preview)
+  }
+
   const crumbs: ReactElement[] = breadcrumb.map((crumb, index) => {
     if (index == breadcrumb.length - 1) {
       return (
@@ -36,7 +41,7 @@ export const Breadcrumb = ({
     }
     return (
       <div className={styles.breadcrumbElement} key={crumb.id}>
-        <a href={crumb.url} onClick={() => previewNavigation(crumb.url, preview)}>
+        <a href={crumb.url} onClick={() => breadcrumbLinkFunctions(crumb.url, preview as boolean)}>
           <span>{crumb.title}</span> 
         </a>
         <IconAngleRight size="s" aria-hidden="true" />
