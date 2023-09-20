@@ -1,5 +1,5 @@
 import { DrupalMenuLinkContent } from 'next-drupal';
-import { GroupingProps, Node } from '@/lib/types';
+import { EventData, GroupingProps, Node } from '@/lib/types';
 import getConfig from 'next/config';
 
 import { BreadcrumbContent } from './types';
@@ -299,4 +299,63 @@ export const groupData = (data: GroupingProps[]) => {
 
 export const setInitialLocale = (locale: string): string => {
   return primaryLanguages.includes(locale) ? locale : 'en';
+};
+
+
+/* event helper */
+
+const urlParams =  typeof window !== 'undefined' ? new URLSearchParams(window.location.search): null;
+
+export const getKey = (eventsIndex: number) => {
+  return `${eventsIndex}`;
+};
+
+export const getEvents = (data: EventData[]) => {
+  /** Filter events object from data */
+  return data.reduce((acc: any, curr: any) => acc.concat(curr.events), []);
+};
+
+export const getTotal = (data: EventData[]) => {
+  /** Filter total from data */
+  return {
+    max: data[0].maxTotal ? data[0].maxTotal : data[0].total,
+    current: data[0].total,
+  };
+};
+
+export const getSessionFilters = () => {
+  if (typeof window !== 'undefined' && urlParams !== null) {
+    if (urlParams.getAll('tag')) {
+      return urlParams.getAll('tag');
+    } else {
+      return [];
+    }
+  } else {
+    return [];
+  }
+};
+
+export const getAvailableTag = (events: any) => {
+  const availableTags: string[] = [];
+  events
+    ?.map((event: { field_event_tags: string[] }) => event?.field_event_tags)
+    .forEach((field_event_tag: string[]) =>
+      field_event_tag?.forEach((tag: string) =>
+        !availableTags.includes(tag) ? availableTags.push(tag) : null
+      )
+    );
+  return availableTags;
+};
+
+export const keepScrollPosition = () => {
+  if (typeof window !== 'undefined' && urlParams !== null) {
+    const screenX = sessionStorage.getItem('screenX');
+    if (screenX !== null && urlParams.get('tag')) {
+      const position = parseInt(screenX);
+      window.scrollTo(0, position);
+      sessionStorage.removeItem('screenX');
+    } else {
+      return;
+    }
+  }
 };

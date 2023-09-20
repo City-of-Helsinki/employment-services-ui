@@ -1,5 +1,6 @@
+import { useCallback, useEffect, useState } from 'react';
 import { getEventsSearch, getEventsTags } from '@/lib/client-api';
-import { EventData, EventListProps } from '@/lib/types';
+import { EventListProps } from '@/lib/types';
 import {
   Linkbox,
   Button as HDSButton,
@@ -16,64 +17,16 @@ import styles from './events.module.scss';
 
 import TagList from './TagList';
 import EventStatus from './EventStatus';
-import { eventTags } from '@/lib/helpers';
-import { useCallback, useEffect, useState } from 'react';
+import {
+  eventTags,
+  getAvailableTag,
+  getEvents,
+  getKey,
+  getTotal,
+  keepScrollPosition,
+  getSessionFilters,
+} from '@/lib/helpers';
 import DateTime from '../dateTime/DateTime';
-
-const getKey = (eventsIndex: number) => {
-  return `${eventsIndex}`;
-};
-
-const getEvents = (data: EventData[]) => {
-  /** Filter events object from data */
-  return data.reduce((acc: any, curr: any) => acc.concat(curr.events), []);
-};
-
-const getTotal = (data: EventData[]) => {
-  /** Filter total from data */
-  return {
-    max: data[0].maxTotal ? data[0].maxTotal : data[0].total,
-    current: data[0].total,
-  };
-};
-
-const getSessionFilters = (locale: string) => {
-  if (typeof window !== 'undefined') {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.getAll('field_tag')) {
-      return urlParams.getAll('field_tag')
-    } else {
-      const sessionFilters = sessionStorage.getItem('sessionFilter');
-      const sessionLocale = sessionStorage.getItem('locale');
-      if (sessionFilters !== null && sessionLocale === locale) {
-        return JSON.parse(sessionFilters);
-      } else {
-        return [];
-      }
-    }
-  }
-}
-
-const getAvailableTag = (events: any) => {
-  const availableTags: string[] = [];
-  events
-    ?.map((event: { field_event_tags: string[] }) => event?.field_event_tags)
-    .forEach((field_event_tag: string[]) =>
-      field_event_tag?.forEach((tag: string) =>
-        !availableTags.includes(tag) ? availableTags.push(tag) : null
-      )
-    );
-  return availableTags;
-};
-
-const keepScrollPosition = () => {
-  const screenX = sessionStorage.getItem('screenX');
-  if (screenX !== null) {
-    const position = parseInt(screenX);
-    setTimeout(() => window.scrollTo(0, position), 0);
-    sessionStorage.removeItem('screenX');
-  }
-};
 
 export default function Events(props: EventListProps): JSX.Element {
   const { field_title, field_events_list_desc } = props;
@@ -81,15 +34,17 @@ export default function Events(props: EventListProps): JSX.Element {
   const router = useRouter();
   const { locale, query } = router;
   const slug = query.slug as string[];
-  const basePath = locale === 'fi' ?  `${slug[0]}/${slug[1]}` : `${locale}/${slug[0]}/${slug[1]}`
-  const [filter, setFilter] = useState<string[]>(
-    getSessionFilters(locale ?? 'fi')
-  );
+  const basePath =
+    locale === 'fi'
+      ? `${slug[0]}/${slug[1]}`
+      : `${locale}/${slug[0]}/${slug[1]}`;
 
+  const [filter, setFilter] = useState<string[]>(
+    getSessionFilters()
+  );
   const fetcher = (eventsIndex: number) => {
     return getEventsSearch(eventsIndex, filter, locale ?? 'fi');
   };
-
   const { data, setSize } = useSWRInfinite(getKey, fetcher);
   const events = data && getEvents(data);
   const total = data && getTotal(data);
@@ -118,22 +73,21 @@ export default function Events(props: EventListProps): JSX.Element {
 
     if (filter.length) {
       const tags = filter.map((tag) =>
-        tag === filter[0] ? `field_tag=${tag}` : `&field_tag=${tag}`
+        tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
       );
-      router.push(
-        `/${basePath}?${tags.toString().replaceAll(',', '')}`
+      router.replace(
+        `/${basePath}?${tags.toString().replaceAll(',', '')}`,
+        undefined,
+        { shallow: true }
       );
     }
-  }, [filter, locale]);
+  }, [locale, filter]);
+
 
   useEffect(() => {
     updateTags();
     setSize(1);
     const handleBeforeUnload = (): void => {
-      if (filter !== null && filter !== undefined) {
-        sessionStorage.setItem('sessionFilter', JSON.stringify(filter));
-        sessionStorage.setItem('locale', locale ?? 'fi');
-      }
       sessionStorage.setItem(
         'screenX',
         document.documentElement.scrollTop.toString()
@@ -192,10 +146,7 @@ export default function Events(props: EventListProps): JSX.Element {
               className={styles.supplementary}
               onClick={() => {
                 setFilter([]);
-                router.push(
-                  `/${basePath}`
-                );
-      
+                router.replace(`/${basePath}`, undefined, { shallow: true });
               }}
             >
               {t('search.clear')}
