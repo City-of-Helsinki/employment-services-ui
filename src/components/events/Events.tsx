@@ -37,12 +37,12 @@ const getTotal = (data: EventData[]) => {
   };
 };
 
-const getAvailableTag = (events: any) => {
+const getAvailableTags = (events: EventData[], fieldName: string) => {
   const availableTags: string[] = [];
   events
-    ?.map((event: { field_event_tags: string[] }) => event?.field_event_tags)
-    .forEach((field_event_tag: string[]) =>
-      field_event_tag?.forEach((tag: string) =>
+    ?.map((event: { [field: string]: any; }) => event?.[fieldName])
+    .forEach((field: string[]) =>
+      field?.forEach((tag) =>
         !availableTags.includes(tag) ? availableTags.push(tag) : null
       )
     );
@@ -121,7 +121,7 @@ export default function Events(props: EventListProps): JSX.Element {
           >
             {eventsTags?.map((tag: string, i: number) => (
               <HDSButton
-                disabled={!getAvailableTag(events).includes(tag)}
+                disabled={!getAvailableTags(events, 'field_event_tags').includes(tag)}
                 role="checkbox"
                 aria-checked={filter.includes(tag)}
                 aria-label={`${t('search.filter')} ${tag.replace('_', ' ')}`}
@@ -153,9 +153,6 @@ export default function Events(props: EventListProps): JSX.Element {
               {t('search.clear')}
             </HDSButton>
           </div>
-          <div role="status" className={styles.results}>
-            {resultText}
-          </div>
         </div>
         <div role="group">
           <div className={styles.filter}>{t('search.filter')}</div>
@@ -167,6 +164,7 @@ export default function Events(props: EventListProps): JSX.Element {
           >
             {eventsLanguageTags?.map((tag: string, i: number) => (
               <HDSButton
+                disabled={!getAvailableTags(events, 'field_in_language').includes(tag)}
                 role="checkbox"
                 aria-checked={filter.includes(tag)}
                 aria-label={`${t('search.filter')} ${tag.replace('_', ' ')}`}
