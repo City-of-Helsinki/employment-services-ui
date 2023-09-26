@@ -2,11 +2,27 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import * as Elastic from '@/lib/elasticsearch';
 
 
+interface QueryBody {
+  query: {
+    match_all: object,
+  },
+  size: number,
+  aggs: {
+    events_tags: {
+      terms: {
+        field: string,
+        size: number,
+      },
+    },
+  },
+}
+
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { locale }: Partial<{ [key: string]: string | string[]; }> = req?.query || {};
+  const { tagField, locale }: Partial<{ [key: string]: string | string[]; }> = req?.query || {};
 
   // No posts allowed, no missing params-errors revealed.
   if (req.method !== 'GET') {
@@ -15,7 +31,7 @@ export default async function handler(
   }
   const elastic = Elastic.getElasticClient();
 
-  const body: any = {
+  const body: QueryBody = {
     query: {
       match_all: {},
     },
@@ -23,7 +39,7 @@ export default async function handler(
     aggs: {
       events_tags: {
         terms: {
-          field: 'field_event_tags',
+          field: tagField as string,
           size: 100,
         },
       },

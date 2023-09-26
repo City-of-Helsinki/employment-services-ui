@@ -88,6 +88,28 @@ export default async function handler(
     console.log('err', err);
     res.status(500);
   }
+  
+  if (filter || languageFilter) {
+    try {
+      const searchRes = await elastic.search({
+        index: `events_${locale}`,
+        body: { query: { match_all: {} } },
+      });
+      const {
+        hits: { total },
+      } = searchRes as {
+        hits: { total: SearchTotalHits };
+      };
+
+      response = {
+        ...response,
+        maxTotal: total?.value,
+      };
+    } catch (err) {
+      console.log('err', err);
+      res.status(500);
+    }
+  }
   res.json(response);
 }
 

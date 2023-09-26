@@ -78,17 +78,10 @@ export const getSearch = async (
   return data;
 };
 
-export const getEventsTags = async (locale: Locale) => {
+export const getEventsTags = async (tagField: string, locale: Locale, ) => {
   const { data } = await axios(`${EVENTS_TAGS_URL}`, {
-    params: { locale: locale },
+    params: { tagField: tagField, locale: locale},
   });
-  return data;
-};
-
-export const getEventsLanguageTags = async (locale: Locale) => {
-  const { data } = await axios(`${EVENTS_LANGUAGE_TAGS_URL}`, {
-    params: { locale: locale },
-  });  
   return data;
 };
 

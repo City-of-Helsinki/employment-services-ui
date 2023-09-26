@@ -1,8 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { getEventsLanguageTags, getEventsSearch, getEventsTags } from '@/lib/client-api';
 <<<<<<< HEAD
 import { EventData, EventListProps } from '@/lib/types';
 =======
+=======
+>>>>>>> 61c99d182 (THF-594: add sessionStorage filter handling and sessionStorage clear)
 import { useCallback, useEffect, useState } from 'react';
 import { getEventsSearch, getEventsTags } from '@/lib/client-api';
 import { EventListProps } from '@/lib/types';
@@ -31,8 +34,8 @@ import {
   getKey,
   getTotal,
   keepScrollPosition,
-  getSessionFilters,
   getAvailableTags,
+  getPageFilters,
 } from '@/lib/helpers';
 import DateTime from '../dateTime/DateTime';
 
@@ -118,6 +121,7 @@ export default function Events(props: EventListProps): JSX.Element {
 
   const [filter, setFilter] = useState<string[]>(
 <<<<<<< HEAD
+<<<<<<< HEAD
     getSessionFilters()
   );
   const fetcher = (eventsIndex: number) => {
@@ -134,9 +138,12 @@ export default function Events(props: EventListProps): JSX.Element {
 >>>>>>> d444ce136 (THF-610: refactor code and remove storage memory form tags)
 =======
     getSessionFilters('tag')
+=======
+    getPageFilters('tag', locale ?? 'fi')
+>>>>>>> 61c99d182 (THF-594: add sessionStorage filter handling and sessionStorage clear)
   );
   const [languageFilter, setLanguageFilter] = useState<string[]>(
-    getSessionFilters('lang')
+    getPageFilters('lang', locale ?? 'fi')
   );
   const fetcher = (eventsIndex: number) =>
     getEventsSearch(eventsIndex, filter, languageFilter, locale ?? 'fi');
@@ -158,7 +165,7 @@ export default function Events(props: EventListProps): JSX.Element {
       : `${total?.max} ${t('list.results_text')}`;
 
   const updateTags = useCallback(() => {
-    getEventsTags(locale ?? 'fi').then((result) => {
+    getEventsTags('field_event_tags', locale ?? 'fi').then((result) => {
       const tags: string[] = result
         .filter((item: { key: string; doc_count: number }) => {
           return item.key === undefined ? false : item;
@@ -205,7 +212,7 @@ export default function Events(props: EventListProps): JSX.Element {
 >>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
 
   const updateLanguageTags = useCallback(() => {
-    getEventsLanguageTags(locale ?? 'fi').then((result) => {
+    getEventsTags('field_in_language', locale ?? 'fi').then((result) => {
       const languageTags = result.map((tag: { key: string; doc_count: number }) => tag.key)
       setEventsLanguageTags(languageTags);
     });
@@ -223,10 +230,15 @@ export default function Events(props: EventListProps): JSX.Element {
     updateTags();
     setSize(1);
     const handleBeforeUnload = (): void => {
+      if (filter !== null && filter !== undefined) {
+        sessionStorage.setItem('tag', JSON.stringify(filter));
+        sessionStorage.setItem('lang', JSON.stringify(languageFilter));
+      }
       sessionStorage.setItem(
         'screenX',
         document.documentElement.scrollTop.toString()
       );
+      sessionStorage.setItem('locale', locale ?? 'fi');
     };
     window.addEventListener('beforeunload', handleBeforeUnload);
 
@@ -241,6 +253,12 @@ export default function Events(props: EventListProps): JSX.Element {
     };
   }, [filter, languageFilter, setSize, updateLanguageTags, updateTags]);
 >>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
+
+  const clearFilters = () => {
+    setLanguageFilter([]);
+    setFilter([]);
+    router.replace(`/${basePath}`, undefined, { shallow: true });
+  }
 
   return (
     <div className="component" onLoad={() => keepScrollPosition()}>
@@ -262,7 +280,9 @@ export default function Events(props: EventListProps): JSX.Element {
           >
             {eventsTags?.map((tag: string, i: number) => (
               <HDSButton
-                disabled={!getAvailableTags(events, 'field_event_tags').includes(tag)}
+                disabled={
+                  !getAvailableTags(events, 'field_event_tags').includes(tag)
+                }
                 role="checkbox"
                 aria-checked={filter.includes(tag)}
                 aria-label={`${t('search.filter')} ${tag.replace('_', ' ')}`}
@@ -283,17 +303,6 @@ export default function Events(props: EventListProps): JSX.Element {
                 {tag.replace('_', ' ')}
               </HDSButton>
             ))}
-            <HDSButton
-              variant="supplementary"
-              iconLeft={<IconCrossCircle />}
-              className={styles.supplementary}
-              onClick={() => {
-                setFilter([]);
-                router.replace(`/${basePath}`, undefined, { shallow: true });
-              }}
-            >
-              {t('search.clear')}
-            </HDSButton>
           </div>
         </div>
         <div role="group">
@@ -306,13 +315,21 @@ export default function Events(props: EventListProps): JSX.Element {
           >
             {eventsLanguageTags?.map((tag: string, i: number) => (
               <HDSButton
-                disabled={!getAvailableTags(events, 'field_in_language').includes(tag)}
+                disabled={
+                  filter.length > 0
+                    ? !getAvailableTags(events, 'field_in_language').includes(
+                        tag
+                      )
+                    : false
+                }
                 role="checkbox"
                 aria-checked={filter.includes(tag)}
                 aria-label={`${t('search.filter')} ${tag.replace('_', ' ')}`}
                 key={`tagLanguage-${i}`}
                 className={
-                  languageFilter.includes(tag) ? styles.selected : styles.filterTag
+                  languageFilter.includes(tag)
+                    ? styles.selected
+                    : styles.filterTag
                 }
                 onClick={() =>
                   setLanguageFilter((current) =>
@@ -331,10 +348,9 @@ export default function Events(props: EventListProps): JSX.Element {
               variant="supplementary"
               iconLeft={<IconCrossCircle />}
               className={styles.supplementary}
-              onClick={() => {
-                setLanguageFilter([]);
-                router.replace(`/${basePath}`, undefined, { shallow: true });
-              }}
+              onClick={() => 
+          clearFilters()
+              }
             >
               {t('search.clear')}
             </HDSButton>

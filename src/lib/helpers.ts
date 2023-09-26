@@ -324,10 +324,15 @@ export const getTotal = (data: EventData[]) => {
   };
 };
 
-export const getSessionFilters = (filterName: string) => {
-  if (typeof window !== 'undefined' && urlParams !== null) {
-    if (urlParams.getAll(filterName)) {
+export const getPageFilters = (filterName: string, locale: string) => {
+  if (typeof window !== 'undefined') {
+    if (urlParams !== null && urlParams.size < 0) {
       return urlParams.getAll(filterName);
+    }
+    const sessionLocale = sessionStorage.getItem('locale');
+    const sessionFilters = sessionStorage.getItem(filterName);
+    if (sessionFilters !== null && sessionLocale === locale) {
+      return JSON.parse(sessionFilters);
     } else {
       return [];
     }
@@ -358,5 +363,11 @@ export const keepScrollPosition = () => {
     } else {
       return;
     }
+  }
+};
+
+export const clearSessionStorage = () => {
+  if (typeof window !== 'undefined') {
+    sessionStorage.clear();
   }
 };

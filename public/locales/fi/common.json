@@ -23,7 +23,7 @@
   },
   "search": {
     "filter": "Suodata tapahtumia",
-    "clear": "Poista valinta",
+    "clear": "Poista kaikki valinnat",
     "title": "Hae työllisyyspalveluiden sivuilta",
     "page_title": "Haku",
     "input_label": "Mitä haet?",

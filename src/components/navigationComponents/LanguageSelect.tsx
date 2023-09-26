@@ -3,7 +3,12 @@ import { Button, IconAngleDown, IconAngleUp, IconGlobe, Link } from 'hds-react';
 import { useTranslation } from 'next-i18next';
 
 import { useBlur } from '@/hooks/useBlur';
-import { primaryLanguages, languageFrontPages, previewNavigation } from '@/lib/helpers';
+import {
+  primaryLanguages,
+  languageFrontPages,
+  previewNavigation,
+  clearSessionStorage,
+} from '@/lib/helpers';
 import styles from './navigationComponents.module.scss';
 import { LanguageSelect } from '@/lib/types';
 
@@ -12,7 +17,7 @@ function LanguageSelect({
   activePath,
   langcode,
   menuOtherLanguages,
-  preview
+  preview,
 }: LanguageSelect) {
   const { t } = useTranslation('common');
   const [open, setOpen] = useState<boolean>(false);
@@ -35,9 +40,15 @@ function LanguageSelect({
                 ? langLinks.fi
                 : languageFrontPages.fi
             }
-            onClick={() => previewNavigation(primaryLanguages.includes(langcode as string)
-              ? langLinks.fi
-              : languageFrontPages.fi, preview)}
+            onClick={() => {
+              previewNavigation(
+                primaryLanguages.includes(langcode as string)
+                  ? langLinks.fi
+                  : languageFrontPages.fi,
+                preview
+              );
+              clearSessionStorage();
+            }}
           >
             Suomi
           </Link>
@@ -48,9 +59,15 @@ function LanguageSelect({
                 ? langLinks.sv
                 : languageFrontPages.sv
             }
-            onClick={() => previewNavigation(primaryLanguages.includes(langcode as string)
-              ? langLinks.sv
-              : languageFrontPages.sv, preview)}
+            onClick={() => {
+              previewNavigation(
+                primaryLanguages.includes(langcode as string)
+                  ? langLinks.sv
+                  : languageFrontPages.sv,
+                preview
+              );
+              clearSessionStorage();
+            }}
           >
             Svenska
           </Link>
@@ -61,9 +78,15 @@ function LanguageSelect({
                 ? langLinks.en
                 : languageFrontPages.en
             }
-            onClick={() => previewNavigation(primaryLanguages.includes(langcode as string)
-              ? langLinks.en
-              : languageFrontPages.en, preview)}
+            onClick={() => {
+              previewNavigation(
+                primaryLanguages.includes(langcode as string)
+                  ? langLinks.en
+                  : languageFrontPages.en,
+                preview
+              );
+              clearSessionStorage();
+            }}
           >
             English
           </Link>
@@ -71,7 +94,10 @@ function LanguageSelect({
             <Link
               aria-current={langLinks.ru === activePath}
               href={langLinks.ru}
-              onClick={() => previewNavigation(langLinks.ru, preview)}
+              onClick={() => {
+                previewNavigation(langLinks.ru, preview);
+                clearSessionStorage();
+              }}
             >
               Россия
             </Link>
@@ -80,7 +106,10 @@ function LanguageSelect({
             <Link
               aria-current={langLinks.so === activePath}
               href={langLinks.so}
-              onClick={() => previewNavigation(langLinks.so, preview)}
+              onClick={() => {
+                previewNavigation(langLinks.so, preview);
+                clearSessionStorage();
+              }}
             >
               Soomaali
             </Link>
@@ -90,13 +119,16 @@ function LanguageSelect({
             <Link
               aria-current={langLinks.uk === activePath}
               href={langLinks.uk}
-              onClick={() => previewNavigation(langLinks.uk, preview)}
+              onClick={() => {
+                previewNavigation(langLinks.uk, preview);
+                clearSessionStorage();
+              }}
             >
               Україна
             </Link>
           )}
         </div>
-        { menuOtherLanguages && menuOtherLanguages.length > 0 &&
+        {menuOtherLanguages && menuOtherLanguages.length > 0 && (
           <div ref={wrapperRef}>
             <Button
               aria-label={t('other_languages')}
@@ -114,7 +146,14 @@ function LanguageSelect({
                   {t('global_menu_title')}
                 </div>
                 {menuOtherLanguages?.map((link: any) => (
-                  <a href={link.url} key={link.id} onClick={() => previewNavigation(link.url, preview)}>
+                  <a
+                    href={link.url}
+                    key={link.id}
+                    onClick={() => {
+                      previewNavigation(link.url, preview);
+                      clearSessionStorage();
+                    }}
+                  >
                     <div className={styles.globalLink}>
                       <span>{link.title}</span>
                     </div>
@@ -123,7 +162,7 @@ function LanguageSelect({
               </div>
             )}
           </div>
-        }
+        )}
       </nav>
     </div>
   );

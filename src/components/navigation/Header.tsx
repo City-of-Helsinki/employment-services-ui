@@ -10,6 +10,7 @@ import {
   frontPagePaths,
   printablePages,
   previewNavigation,
+  clearSessionStorage,
 } from '@/lib/helpers';
 import { Breadcrumb } from './Breadcrumb';
 import styles from './navigation.module.scss';
@@ -129,7 +130,10 @@ export const getNav = (menuArray: DrupalMenuLinkContent[] | undefined, activePat
           href={sub.url}
           label={sub.title}
           active={sub.url === activePath}
-          onClick={() => previewNavigation(sub.url, preview)}
+          onClick={() => {
+            previewNavigation(sub.url, preview);
+            clearSessionStorage();
+          }}
         />
       );
       return subs;
@@ -143,7 +147,10 @@ export const getNav = (menuArray: DrupalMenuLinkContent[] | undefined, activePat
         active={isActive}
         className={classNames(styles.navDropDown, isActive && styles.active)}
         href={item.url}
-        onClick={() => previewNavigation(item.url, preview)}
+        onClick={() => {
+          previewNavigation(item.url, preview);
+          clearSessionStorage();
+        }}
       >
         {subs}
       </NavigationHDS.DropdownLink>

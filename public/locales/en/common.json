@@ -23,7 +23,7 @@
   },
   "search": {
     "filter": "Filter events",
-    "clear": "Clear filter",
+    "clear": "Clear all filters",
     "title": "Search the Employment Services website",
     "page_title": "Search",
     "input_label": "What are you looking for?",
