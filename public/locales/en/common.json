@@ -23,6 +23,7 @@
   },
   "search": {
     "filter": "Filter events",
+    "filter_lang": "Filter by language the event is held.",
     "clear": "Clear all filters",
     "title": "Search the Employment Services website",
     "page_title": "Search",

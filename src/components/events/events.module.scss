@@ -93,7 +93,8 @@
   --color-hover-focus: var(--color-white) !important;
 
   border: none !important;
-  margin-bottom: var(--spacing-s);
+  margin-top: var(--spacing-l) !important; 
+  margin-bottom: var(--spacing-l) !important;
 }
 
 .filterTags {

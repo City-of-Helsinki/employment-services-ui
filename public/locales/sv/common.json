@@ -23,6 +23,7 @@
   },
   "search": {
     "filter": "Filtrera evenemang",
+    "filter_lang": "Filtrera efter vilket språk evenemanget hålls på.",
     "clear": "Töm alla sökfilter",
     "title": "Sök på sysselsättningstjänsternas webbplats",
     "page_title": "Sök",

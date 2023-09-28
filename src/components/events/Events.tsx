@@ -1,18 +1,6 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { getEventsLanguageTags, getEventsSearch, getEventsTags } from '@/lib/client-api';
-<<<<<<< HEAD
-import { EventData, EventListProps } from '@/lib/types';
-=======
-=======
->>>>>>> 61c99d182 (THF-594: add sessionStorage filter handling and sessionStorage clear)
 import { useCallback, useEffect, useState } from 'react';
 import { getEventsSearch, getEventsTags } from '@/lib/client-api';
 import { EventListProps } from '@/lib/types';
->>>>>>> d444ce136 (THF-610: refactor code and remove storage memory form tags)
-=======
-import { EventListProps } from '@/lib/types';
->>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
 import {
   Linkbox,
   Button as HDSButton,
@@ -29,7 +17,6 @@ import TagList from './TagList';
 import EventStatus from './EventStatus';
 import {
   eventTags,
-  getAvailableTag,
   getEvents,
   getKey,
   getTotal,
@@ -39,78 +26,9 @@ import {
 } from '@/lib/helpers';
 import DateTime from '../dateTime/DateTime';
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-const getKey = (eventsIndex: number) => {
-  return `${eventsIndex}`;
-};
-
-const getEvents = (data: EventData[]) => {
-  /** Filter events object from data */
-  return data.reduce((acc: any, curr: any) => acc.concat(curr.events), []);
-};
-
-const getTotal = (data: EventData[]) => {
-  /** Filter total from data */
-  return {
-    max: data[0].maxTotal ? data[0].maxTotal : data[0].total,
-    current: data[0].total,
-  };
-};
-
-const getSessionFilters = (locale: string) => {
-  if (typeof window !== 'undefined') {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.getAll('field_tag')) {
-      return urlParams.getAll('field_tag')
-    } else {
-      const sessionFilters = sessionStorage.getItem('sessionFilter');
-      const sessionLocale = sessionStorage.getItem('locale');
-      if (sessionFilters !== null && sessionLocale === locale) {
-        return JSON.parse(sessionFilters);
-      } else {
-        return [];
-      }
-    }
-  }
-}
-
-const getAvailableTags = (events: any) => {
-  const availableTags: string[] = [];
-  events
-    ?.map((event: { field_event_tags: string[] }) => event?.field_event_tags)
-    .forEach((field_event_tag: string[]) =>
-      field_event_tag?.forEach((tag: string) =>
-        !availableTags.includes(tag) ? availableTags.push(tag) : null
-      )
-    );
-  return availableTags;
-};
-
-const keepScrollPosition = () => {
-  const screenX = sessionStorage.getItem('screenX');
-  if (screenX !== null) {
-    const position = parseInt(screenX);
-    setTimeout(() => window.scrollTo(0, position), 0);
-    sessionStorage.removeItem('screenX');
-  }
-};
-
-=======
->>>>>>> d444ce136 (THF-610: refactor code and remove storage memory form tags)
 export default function Events(props: EventListProps): JSX.Element {
   const { field_title, field_events_list_desc } = props;
   const { t } = useTranslation();
-<<<<<<< HEAD
-  const { locale } = useRouter();
-  const [filter, setFilter] = useState<string[]>([]);
-  const [languageFilter, setLanguageFilter] = useState<string[]>([]);
-=======
-=======
-export default function Events(props: EventListProps): JSX.Element {
-  const { field_title, field_events_list_desc } = props;
-  const { t } = useTranslation();
->>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
   const router = useRouter();
   const { locale, query } = router;
   const slug = query.slug as string[];
@@ -120,49 +38,25 @@ export default function Events(props: EventListProps): JSX.Element {
       : `${locale}/${slug[0]}/${slug[1]}`;
 
   const [filter, setFilter] = useState<string[]>(
-<<<<<<< HEAD
-<<<<<<< HEAD
-    getSessionFilters()
-  );
-  const fetcher = (eventsIndex: number) => {
-    return getEventsSearch(eventsIndex, filter, locale ?? 'fi');
-  };
-<<<<<<< HEAD
->>>>>>> a815e8dd3 (THF-610: add url parameters)
-
-  const fetcher = (eventsIndex: number) => {    
-   return getEventsSearch(eventsIndex, filter, languageFilter, locale ?? 'fi');
-  }
- 
-=======
->>>>>>> d444ce136 (THF-610: refactor code and remove storage memory form tags)
-=======
-    getSessionFilters('tag')
-=======
     getPageFilters('tag', locale ?? 'fi')
->>>>>>> 61c99d182 (THF-594: add sessionStorage filter handling and sessionStorage clear)
   );
   const [languageFilter, setLanguageFilter] = useState<string[]>(
     getPageFilters('lang', locale ?? 'fi')
   );
   const fetcher = (eventsIndex: number) =>
     getEventsSearch(eventsIndex, filter, languageFilter, locale ?? 'fi');
->>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
   const { data, setSize } = useSWRInfinite(getKey, fetcher);
   const events = data && getEvents(data);
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
   const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
-  const resultText =
-    total &&
+  const resultText = () => {
+   return total &&
     (total.current < total.max || total.current === 0 || events?.length === 0)
       ? `${events.length} / ${total.max} ${t('list.results_text')}`
       : `${total?.max} ${t('list.results_text')}`;
+  }
 
   const updateTags = useCallback(() => {
     getEventsTags('field_event_tags', locale ?? 'fi').then((result) => {
@@ -178,55 +72,19 @@ export default function Events(props: EventListProps): JSX.Element {
         );
       setEventsTags(tags);
     });
-<<<<<<< HEAD
-
-    if (filter.length) {
-      const tags = filter.map((tag) =>
-        tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
-      );
-      router.replace(
-        `/${basePath}?${tags.toString().replaceAll(',', '')}`,
-=======
-    if (filter.length || languageFilter.length) {
-      const tags = filter.map((tag) =>
-        tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
-      );
-      const langTags = languageFilter.map((tag) =>
-       tag === languageFilter[0] && tags.length === 0 ? `lang=${tag}` : `&lang=${tag}`
-      );
-
-      router.replace(
-        `/${basePath}?${tags.toString().replaceAll(',', '')}${langTags
-          .toString()
-          .replaceAll(',', '')}`,
->>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
-        undefined,
-        { shallow: true }
-      );
-    }
-<<<<<<< HEAD
-  }, [locale, filter]);
-
-=======
-  }, [locale, filter, languageFilter]);
->>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
-
-  const updateLanguageTags = useCallback(() => {
+    
     getEventsTags('field_in_language', locale ?? 'fi').then((result) => {
-      const languageTags = result.map((tag: { key: string; doc_count: number }) => tag.key)
+      const languageTags = result.map(
+        (tag: { key: string; doc_count: number }) => tag.key
+      );
       setEventsLanguageTags(languageTags);
     });
-  }, [locale]);
 
-  useEffect(() => {  
-     const sessionFilters = sessionStorage.getItem('sessionFilter');
-     if (sessionFilters !== null) {
-       setFilter(JSON.parse(sessionFilters));
-     }
- },[])
- 
-   useEffect(() => {
-     updateLanguageTags();
+    handlePageURL(filter, languageFilter, router, basePath);
+
+  }, [locale, filter, languageFilter]);
+
+  useEffect(() => {
     updateTags();
     setSize(1);
     const handleBeforeUnload = (): void => {
@@ -242,23 +100,16 @@ export default function Events(props: EventListProps): JSX.Element {
     };
     window.addEventListener('beforeunload', handleBeforeUnload);
 
-<<<<<<< HEAD
-     return () => {
-       window.removeEventListener('beforeunload', handleBeforeUnload);
-     };
-   }, [filter, languageFilter, setSize, updateLanguageTags, updateTags]);
-=======
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [filter, languageFilter, setSize, updateLanguageTags, updateTags]);
->>>>>>> 21dc80dcc (THF-594: Added storage to language filters)
+  }, [filter, languageFilter, locale, setSize, updateTags]);
 
   const clearFilters = () => {
     setLanguageFilter([]);
     setFilter([]);
     router.replace(`/${basePath}`, undefined, { shallow: true });
-  }
+  };
 
   return (
     <div className="component" onLoad={() => keepScrollPosition()}>
@@ -306,7 +157,7 @@ export default function Events(props: EventListProps): JSX.Element {
           </div>
         </div>
         <div role="group">
-          <div className={styles.filter}>{t('search.filter')}</div>
+          <div className={styles.filter}>{t('search.filter_lang')}</div>
 
           <div
             role="group"
@@ -344,19 +195,17 @@ export default function Events(props: EventListProps): JSX.Element {
                 {tag.replace('_', ' ')}
               </HDSButton>
             ))}
-            <HDSButton
-              variant="supplementary"
-              iconLeft={<IconCrossCircle />}
-              className={styles.supplementary}
-              onClick={() => 
-          clearFilters()
-              }
-            >
-              {t('search.clear')}
-            </HDSButton>
           </div>
+          <HDSButton
+            variant="supplementary"
+            iconLeft={<IconCrossCircle />}
+            className={styles.supplementary}
+            onClick={() => clearFilters()}
+          >
+            {t('search.clear')}
+          </HDSButton>
           <div role="status" className={styles.results}>
-            {resultText}
+            {resultText()}
           </div>
         </div>
         <div className={styles.eventList}>
@@ -413,4 +262,23 @@ export default function Events(props: EventListProps): JSX.Element {
       </Container>
     </div>
   );
+}
+
+const handlePageURL = (filter: string[], languageFilter: string[], router: any, basePath: string) => {
+  if (filter.length || languageFilter.length) {
+    const tags = filter.map((tag) => tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
+    );
+    const langTags = languageFilter.map((tag) => tag === languageFilter[0] && tags.length === 0
+      ? `lang=${tag}`
+      : `&lang=${tag}`
+    );
+
+    router.replace(
+      `/${basePath}?${tags.toString().replaceAll(',', '')}${langTags
+        .toString()
+        .replaceAll(',', '')}`,
+      undefined,
+      { shallow: true }
+    );
+  }
 }

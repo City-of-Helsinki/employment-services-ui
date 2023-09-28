@@ -326,7 +326,7 @@ export const getTotal = (data: EventData[]) => {
 
 export const getPageFilters = (filterName: string, locale: string) => {
   if (typeof window !== 'undefined') {
-    if (urlParams !== null && urlParams.size < 0) {
+    if (urlParams !== null && urlParams.getAll(filterName).length !== 0) {
       return urlParams.getAll(filterName);
     }
     const sessionLocale = sessionStorage.getItem('locale');
@@ -367,7 +367,7 @@ export const keepScrollPosition = () => {
 };
 
 export const clearSessionStorage = () => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && sessionStorage.length !== 0) {
     sessionStorage.clear();
   }
 };
