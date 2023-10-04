@@ -178,7 +178,8 @@ export default function Events(props: EventListProps): JSX.Element {
                 aria-label={`${t('search.filter')} ${tag.replace('_', ' ')}`}
                 key={`tagLanguage-${i}`}
                 className={
-                  languageFilter.includes(tag)
+                  languageFilter.includes(tag) &&
+                  getAvailableTags(events, 'field_in_language').includes(tag)
                     ? styles.selected
                     : styles.filterTag
                 }
