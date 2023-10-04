@@ -1,30 +1,28 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getEventsSearch, getEventsTags } from '@/lib/client-api';
-import { EventListProps } from '@/lib/types';
+import { useTranslation } from 'next-i18next';
+import Image from 'next/legacy/image';
+import { useRouter } from 'next/router';
+import useSWRInfinite from 'swr/infinite';
 import {
-  Linkbox,
   Button as HDSButton,
   IconCrossCircle,
   Container,
 } from 'hds-react';
-import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
-import useSWRInfinite from 'swr/infinite';
-import HtmlBlock from '../HtmlBlock';
-import Image from 'next/legacy/image';
-import styles from './events.module.scss';
-import TagList from './TagList';
-import EventStatus from './EventStatus';
+
+import { EventListProps } from '@/lib/types';
+import { getEventsSearch, getEventsTags } from '@/lib/client-api';
 import {
   eventTags,
   getEvents,
   getKey,
   getTotal,
   keepScrollPosition,
-  getAvailableTags,
   getPageFilters,
 } from '@/lib/helpers';
-import DateTime from '../dateTime/DateTime';
+import styles from './events.module.scss';
+import ButtonFilter from '../eventsComponents/ButtonFilter';
+import EventListComponent from '../eventsComponents/EventListComponent';
+import HtmlBlock from '../HtmlBlock';
 
 export default function Events(props: EventListProps): JSX.Element {
   const { field_title, field_events_list_desc } = props;
@@ -52,11 +50,11 @@ export default function Events(props: EventListProps): JSX.Element {
   const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
 
   const resultText = () => {
-   return total &&
-    (total.current < total.max || total.current === 0 || events?.length === 0)
+    return total &&
+      (total.current < total.max || total.current === 0 || events?.length === 0)
       ? `${events.length} / ${total.max} ${t('list.results_text')}`
       : `${total?.max} ${t('list.results_text')}`;
-  }
+  };
 
   const updateTags = useCallback(() => {
     getEventsTags('field_event_tags', locale ?? 'fi').then((result) => {
@@ -72,7 +70,7 @@ export default function Events(props: EventListProps): JSX.Element {
         );
       setEventsTags(tags);
     });
-    
+
     getEventsTags('field_in_language', locale ?? 'fi').then((result) => {
       const languageTags = result.map(
         (tag: { key: string; doc_count: number }) => tag.key
@@ -123,80 +121,24 @@ export default function Events(props: EventListProps): JSX.Element {
         )}
         <div role="group">
           <h2>{t('search.header')}</h2>
-          <div className={styles.filter}>{t('search.filter')}</div>
-          <div
-            role="group"
-            aria-label={t('search.group_description')}
-            className={styles.filterTags}
-          >
-            {eventsTags?.map((tag: string, i: number) => (
-              <HDSButton
-                disabled={
-                  !getAvailableTags(events, 'field_event_tags').includes(tag)
-                }
-                role="checkbox"
-                aria-checked={filter.includes(tag)}
-                aria-label={`${t('search.filter')} ${tag.replace('_', ' ')}`}
-                key={`tagFilter-${i}`}
-                className={
-                  filter.includes(tag) ? styles.selected : styles.filterTag
-                }
-                onClick={() =>
-                  setFilter((current) =>
-                    current?.includes(tag)
-                      ? [...current].filter(function (item) {
-                          return item !== tag;
-                        })
-                      : [...current, tag]
-                  )
-                }
-              >
-                {tag.replace('_', ' ')}
-              </HDSButton>
-            ))}
-          </div>
-        </div>
-        <div role="group">
-          <div className={styles.filter}>{t('search.filter_lang')}</div>
+          <ButtonFilter
+            tags={eventsTags}
+            events={events}
+            setFilter={setFilter}
+            filter={filter}
+            filterField={'field_event_tags'}
+            filterText={'search.filter'}
+          />
+          <ButtonFilter
+            tags={eventsLanguageTags}
+            events={events}
+            setFilter={setLanguageFilter}
+            filter={languageFilter}
+            filterField={'field_in_language'}
+            filterText={'search.filter_lang'}
+            parameter={filter.length > 0}
+          />
 
-          <div
-            role="group"
-            aria-label={t('search.group_description')}
-            className={styles.filterTags}
-          >
-            {eventsLanguageTags?.map((tag: string, i: number) => (
-              <HDSButton
-                disabled={
-                  filter.length > 0
-                    ? !getAvailableTags(events, 'field_in_language').includes(
-                        tag
-                      )
-                    : false
-                }
-                role="checkbox"
-                aria-checked={filter.includes(tag)}
-                aria-label={`${t('search.filter')} ${tag.replace('_', ' ')}`}
-                key={`tagLanguage-${i}`}
-                className={
-                  languageFilter.includes(tag) &&
-                  getAvailableTags(events, 'field_in_language').includes(tag)
-                    ? styles.selected
-                    : styles.filterTag
-                }
-                onClick={() =>
-                  setLanguageFilter((current) =>
-                    current?.includes(tag)
-                      ? [...current].filter(function (item) {
-                          return item !== tag;
-                        })
-                      : [...current, tag]
-                  )
-                }
-              >
-                {tag.replace('_', ' ')}
-              </HDSButton>
-            ))}
-          </div>
           <HDSButton
             variant="supplementary"
             iconLeft={<IconCrossCircle />}
@@ -209,69 +151,27 @@ export default function Events(props: EventListProps): JSX.Element {
             {resultText()}
           </div>
         </div>
-        <div className={styles.eventList}>
-          {events && events.length > 0 ? (
-            events.map((event: any, key: any) => (
-              <div className={styles.eventCard} key={key}>
-                <Linkbox
-                  className={styles.linkBox}
-                  linkboxAriaLabel={`${t('list.event_title')} ${event.title}`}
-                  linkAriaLabel={`${t('list.event_link')} ${event.title}`}
-                  key={key}
-                  href={event.url}
-                  withBorder
-                >
-                  {event.field_image_url && (
-                    <Image
-                      src={event.field_image_url[0]}
-                      alt={
-                        event.field_image_alt ? event.field_image_alt[0] : ''
-                      }
-                      layout="responsive"
-                      objectFit="cover"
-                      width={3}
-                      height={2}
-                    />
-                  )}
 
-                  <div className={styles.eventCardContent}>
-                    {event.field_tags && event.field_tags.length !== 0 && (
-                      <TagList tags={event.field_event_tags} />
-                    )}
-                    <DateTime
-                      startTime={event.field_start_time[0]}
-                      endTime={event.field_end_time[0]}
-                    />
-                    <h3>
-                      <EventStatus {...event} />
-                      {event.title[0]}
-                    </h3>
-                    <p>
-                      {event.field_location[0]}
-                      {event.field_street_address
-                        ? `, ${event.field_street_address[0]}`
-                        : ''}
-                    </p>
-                  </div>
-                </Linkbox>
-              </div>
-            ))
-          ) : (
-            <p>{t('list.result_zero')}</p>
-          )}
-        </div>
+        <EventListComponent events={events} />
       </Container>
     </div>
   );
 }
 
-const handlePageURL = (filter: string[], languageFilter: string[], router: any, basePath: string) => {
+const handlePageURL = (
+  filter: string[],
+  languageFilter: string[],
+  router: any,
+  basePath: string
+) => {
   if (filter.length || languageFilter.length) {
-    const tags = filter.map((tag) => tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
+    const tags = filter.map((tag) =>
+      tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
     );
-    const langTags = languageFilter.map((tag) => tag === languageFilter[0] && tags.length === 0
-      ? `lang=${tag}`
-      : `&lang=${tag}`
+    const langTags = languageFilter.map((tag) =>
+      tag === languageFilter[0] && tags.length === 0
+        ? `lang=${tag}`
+        : `&lang=${tag}`
     );
 
     router.replace(
@@ -282,4 +182,4 @@ const handlePageURL = (filter: string[], languageFilter: string[], router: any, 
       { shallow: true }
     );
   }
-}
+};
