@@ -1,13 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
 import useSWRInfinite from 'swr/infinite';
-import {
-  Button as HDSButton,
-  IconCrossCircle,
-  Container,
-} from 'hds-react';
+import { Button as HDSButton, IconCrossCircle, Container } from 'hds-react';
 
 import { EventListProps } from '@/lib/types';
 import { getEventsSearch, getEventsTags } from '@/lib/client-api';
@@ -17,12 +12,15 @@ import {
   getKey,
   getTotal,
   keepScrollPosition,
-  getPageFilters,
+  getInitialFilters,
+  getAvailableTags,
+  handlePageURL,
 } from '@/lib/helpers';
 import styles from './events.module.scss';
 import ButtonFilter from '../eventsComponents/ButtonFilter';
 import EventListComponent from '../eventsComponents/EventListComponent';
 import HtmlBlock from '../HtmlBlock';
+import ResponsiveFilterMapper from '../eventsComponents/ResponsiveFilterMapper';
 
 export default function Events(props: EventListProps): JSX.Element {
   const { field_title, field_events_list_desc } = props;
@@ -36,10 +34,10 @@ export default function Events(props: EventListProps): JSX.Element {
       : `${locale}/${slug[0]}/${slug[1]}`;
 
   const [filter, setFilter] = useState<string[]>(
-    getPageFilters('tag', locale ?? 'fi')
+    getInitialFilters('tag', locale ?? 'fi')
   );
   const [languageFilter, setLanguageFilter] = useState<string[]>(
-    getPageFilters('lang', locale ?? 'fi')
+    getInitialFilters('lang', locale ?? 'fi')
   );
   const fetcher = (eventsIndex: number) =>
     getEventsSearch(eventsIndex, filter, languageFilter, locale ?? 'fi');
@@ -48,13 +46,6 @@ export default function Events(props: EventListProps): JSX.Element {
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
   const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
-
-  const resultText = () => {
-    return total &&
-      (total.current < total.max || total.current === 0 || events?.length === 0)
-      ? `${events.length} / ${total.max} ${t('list.results_text')}`
-      : `${total?.max} ${t('list.results_text')}`;
-  };
 
   const updateTags = useCallback(() => {
     getEventsTags('field_event_tags', locale ?? 'fi').then((result) => {
@@ -79,7 +70,6 @@ export default function Events(props: EventListProps): JSX.Element {
     });
 
     handlePageURL(filter, languageFilter, router, basePath);
-
   }, [locale, filter, languageFilter]);
 
   useEffect(() => {
@@ -109,6 +99,33 @@ export default function Events(props: EventListProps): JSX.Element {
     router.replace(`/${basePath}`, undefined, { shallow: true });
   };
 
+  const resultText = () => {
+    return total &&
+      (total.current < total.max || total.current === 0 || events?.length === 0)
+      ? `${events.length} / ${total.max} ${t('list.results_text')}`
+      : `${total?.max} ${t('list.results_text')}`;
+  };
+
+  const getInitialOptions = () => {
+    const dropdownOptions: { label: string }[] = [];
+    eventsLanguageTags.map((option: string) =>
+      dropdownOptions.push({ label: option })
+    );
+    return dropdownOptions;
+  };
+
+  const getSelectedOptions = () => {
+    const currentOptionSelected: { label: string }[] = [];
+    const available = getAvailableTags(events, 'field_in_language');
+
+    languageFilter.map((option: string) => {
+      available.includes(option)
+        ? currentOptionSelected.push({ label: option })
+        : null;
+    });
+    return currentOptionSelected;
+  };
+
   return (
     <div className="component" onLoad={() => keepScrollPosition()}>
       <Container className="container">
@@ -129,14 +146,15 @@ export default function Events(props: EventListProps): JSX.Element {
             filterField={'field_event_tags'}
             filterText={'search.filter'}
           />
-          <ButtonFilter
-            tags={eventsLanguageTags}
+
+          <ResponsiveFilterMapper
+            parameter={filter.length > 0}
             events={events}
             setFilter={setLanguageFilter}
+            selectedOptions={getSelectedOptions()}
+            initialOptions={getInitialOptions()}
+            tags={eventsLanguageTags}
             filter={languageFilter}
-            filterField={'field_in_language'}
-            filterText={'search.filter_lang'}
-            parameter={filter.length > 0}
           />
 
           <HDSButton
@@ -158,28 +176,3 @@ export default function Events(props: EventListProps): JSX.Element {
   );
 }
 
-const handlePageURL = (
-  filter: string[],
-  languageFilter: string[],
-  router: any,
-  basePath: string
-) => {
-  if (filter.length || languageFilter.length) {
-    const tags = filter.map((tag) =>
-      tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
-    );
-    const langTags = languageFilter.map((tag) =>
-      tag === languageFilter[0] && tags.length === 0
-        ? `lang=${tag}`
-        : `&lang=${tag}`
-    );
-
-    router.replace(
-      `/${basePath}?${tags.toString().replaceAll(',', '')}${langTags
-        .toString()
-        .replaceAll(',', '')}`,
-      undefined,
-      { shallow: true }
-    );
-  }
-};

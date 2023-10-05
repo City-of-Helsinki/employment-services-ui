@@ -324,7 +324,7 @@ export const getTotal = (data: EventData[]) => {
   };
 };
 
-export const getPageFilters = (filterName: string, locale: string) => {
+export const getInitialFilters = (filterName: string, locale: string) => {
   if (typeof window !== 'undefined') {
     if (urlParams !== null && urlParams.getAll(filterName).length !== 0) {
       return urlParams.getAll(filterName);
@@ -338,6 +338,32 @@ export const getPageFilters = (filterName: string, locale: string) => {
     }
   } else {
     return [];
+  }
+};
+
+export const handlePageURL = (
+  filter: string[],
+  languageFilter: string[],
+  router: any,
+  basePath: string
+) => {
+  if (filter.length || languageFilter.length) {
+    const tags = filter.map((tag) =>
+      tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
+    );
+    const langTags = languageFilter.map((tag) =>
+      tag === languageFilter[0] && tags.length === 0
+        ? `lang=${tag}`
+        : `&lang=${tag}`
+    );
+
+    router.replace(
+      `/${basePath}?${tags.toString().replaceAll(',', '')}${langTags
+        .toString()
+        .replaceAll(',', '')}`,
+      undefined,
+      { shallow: true }
+    );
   }
 };
 
