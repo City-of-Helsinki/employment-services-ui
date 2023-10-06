@@ -148,7 +148,7 @@ export default function Events(props: EventListProps): JSX.Element {
           />
 
           <ResponsiveFilterMapper
-            parameter={filter.length > 0}
+            setAvailableTags={filter.length > 0}
             events={events}
             setFilter={setLanguageFilter}
             selectedOptions={getSelectedOptions()}

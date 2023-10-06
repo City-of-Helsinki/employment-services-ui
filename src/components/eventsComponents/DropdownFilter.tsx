@@ -3,21 +3,22 @@ import { useTranslation } from 'next-i18next';
 import { Combobox } from 'hds-react';
 
 import { getAvailableTags } from '@/lib/helpers';
+import { EventData } from '@/lib/types';
 import styles from '../events/events.module.scss';
 
 interface DropdownFilterProps {
-  parameter: boolean;
-  events: any;
+  setAvailableTags?: boolean;
+  events: EventData[];
   setFilter: (newFilter: any) => void;
-  selectedOptions: any;
-  initialOptions: any;
+  initialOptions: { label: string }[]
+  selectedOptions: { label: string }[];
   filterLabel: string;
   dropdownLabel: string;
   filterField: string;
 }
 
 function DropdownFilter({
-  parameter,
+  setAvailableTags = true,
   events,
   setFilter,
   selectedOptions,
@@ -42,7 +43,7 @@ function DropdownFilter({
           label={t(dropdownLabel)}
           placeholder={t(filterLabel)}
           isOptionDisabled={(option: any) => {
-            return parameter
+            return setAvailableTags
               ? !getAvailableTags(events, filterField).includes(
                   option.label
                 )

@@ -1,22 +1,24 @@
 import { useEffect, useState } from 'react';
+
 import DropdownFilter from './DropdownFilter';
 import ButtonFilter from './ButtonFilter';
+import { EventData } from '@/lib/types';
 
 interface ResponsiveFilterMapperProps {
-  parameter: boolean;
-  selectedOptions: any;
-  events: any;
-  setFilter: any;
-  filter: any;
-  initialOptions: any;
-  tags: any;
+  setAvailableTags?: boolean;
+  events: EventData[];
+  setFilter: (newFilter: any) => void; 
+  filter: string[];
+  initialOptions: { label: string }[]
+  selectedOptions: { label: string }[];
+  tags: string[];
   filterField: string;
   filterLabel: string;
   dropdownLabel: string;
 }
 
 function ResponsiveFilterMapper({
-  parameter,
+  setAvailableTags = true,
   events,
   selectedOptions,
   initialOptions,
@@ -43,7 +45,7 @@ function ResponsiveFilterMapper({
   if (isMobile) {
     return (
       <DropdownFilter
-        parameter={parameter}
+        setAvailableTags={setAvailableTags}
         events={events}
         setFilter={setFilter}
         selectedOptions={selectedOptions}
@@ -62,7 +64,7 @@ function ResponsiveFilterMapper({
         filter={filter}
         filterField={filterField}
         filterLabel={filterLabel}
-        parameter={parameter}
+        setAvailableTags={setAvailableTags}
       />
     );
   }

@@ -12,7 +12,7 @@ interface ButtonFilterProps {
   filter: string[];
   filterField: string;
   filterLabel: string;
-  parameter?: boolean;
+  setAvailableTags?: boolean;
 }
 
 function ButtonFilter({
@@ -22,7 +22,7 @@ function ButtonFilter({
   filter,
   filterField,
   filterLabel,
-  parameter = true,
+  setAvailableTags = true,
 }: ButtonFilterProps) {
   const { t } = useTranslation();
   return (
@@ -36,7 +36,7 @@ function ButtonFilter({
         {tags?.map((tag: string, i: number) => (
           <Button
             disabled={
-              parameter
+              setAvailableTags
                 ? !getAvailableTags(events, filterField).includes(tag)
                 : false
             }
