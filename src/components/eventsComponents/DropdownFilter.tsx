@@ -10,7 +10,7 @@ interface DropdownFilterProps {
   setAvailableTags?: boolean;
   events: EventData[];
   setFilter: (newFilter: any) => void;
-  initialOptions: { label: string }[]
+  initialOptions: { label: string }[];
   selectedOptions: { label: string }[];
   filterLabel: string;
   dropdownLabel: string;
@@ -49,7 +49,7 @@ function DropdownFilter({
                 )
               : false;
           }}
-          onChange={(selectedOption) => {
+          onChange={(selectedOption: { label: string }[]) => {
             setFilter(selectedOption.map((option) => option.label));
           }}
           value={selectedOptions}
