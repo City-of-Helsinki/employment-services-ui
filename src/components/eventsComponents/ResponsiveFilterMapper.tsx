@@ -10,6 +10,9 @@ interface ResponsiveFilterMapperProps {
   filter: any;
   initialOptions: any;
   tags: any;
+  filterField: string;
+  filterLabel: string;
+  dropdownLabel: string;
 }
 
 function ResponsiveFilterMapper({
@@ -20,6 +23,9 @@ function ResponsiveFilterMapper({
   setFilter,
   filter,
   tags,
+  filterField,
+  filterLabel,
+  dropdownLabel
 }: ResponsiveFilterMapperProps) {
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -42,6 +48,9 @@ function ResponsiveFilterMapper({
         setFilter={setFilter}
         selectedOptions={selectedOptions}
         initialOptions={initialOptions}
+        filterLabel={filterLabel}
+        dropdownLabel={dropdownLabel}
+        filterField={filterField}
       />
     );
   } else {
@@ -51,8 +60,8 @@ function ResponsiveFilterMapper({
         events={events}
         setFilter={setFilter}
         filter={filter}
-        filterField={'field_in_language'}
-        filterText={'search.filter_lang'}
+        filterField={filterField}
+        filterLabel={filterLabel}
         parameter={parameter}
       />
     );

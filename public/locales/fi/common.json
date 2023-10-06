@@ -22,8 +22,9 @@
     "search_placeholder": "Hae sisältöä"
   },
   "search": {
-    "filter": "Suodata tapahtumia",
-    "filter_lang": "Suodata tapahtuman ohjauskielen mukaan.",
+    "filter": "Valitse tapahtuman aiheet",
+    "filter_lang": "Valitse tapahtuman ohjauskielet",
+    "dropdown_label": "Ohjauskielet",
     "clear": "Poista kaikki valinnat",
     "title": "Hae työllisyyspalveluiden sivuilta",
     "page_title": "Haku",

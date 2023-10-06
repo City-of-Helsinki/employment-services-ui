@@ -11,7 +11,7 @@ interface ButtonFilterProps {
   setFilter: (newFilter: any) => void; 
   filter: string[];
   filterField: string;
-  filterText: string;
+  filterLabel: string;
   parameter?: boolean;
 }
 
@@ -21,13 +21,13 @@ function ButtonFilter({
   setFilter,
   filter,
   filterField,
-  filterText,
+  filterLabel,
   parameter = true,
 }: ButtonFilterProps) {
   const { t } = useTranslation();
   return (
     <div>
-      <div className={styles.filter}>{t(filterText)}</div>
+      <div className={styles.filter}>{t(filterLabel)}</div>
       <div
         role="group"
         aria-label={t('search.group_description')}
@@ -42,7 +42,7 @@ function ButtonFilter({
             }
             role="checkbox"
             aria-checked={filter.includes(tag)}
-            aria-label={`${t('search.filter')} ${tag.replace('_', ' ')}`}
+            aria-label={`${t(filterLabel)} ${tag.replace('_', ' ')}`}
             key={`tagFilter-${i}`}
             className={
               filter.includes(tag) &&

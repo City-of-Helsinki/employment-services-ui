@@ -144,7 +144,7 @@ export default function Events(props: EventListProps): JSX.Element {
             setFilter={setFilter}
             filter={filter}
             filterField={'field_event_tags'}
-            filterText={'search.filter'}
+            filterLabel={'search.filter'}
           />
 
           <ResponsiveFilterMapper
@@ -155,6 +155,9 @@ export default function Events(props: EventListProps): JSX.Element {
             initialOptions={getInitialOptions()}
             tags={eventsLanguageTags}
             filter={languageFilter}
+            filterField={'field_in_language'}
+            filterLabel={'search.filter_lang'}
+            dropdownLabel={'search.dropdown_label'}
           />
 
           <HDSButton
