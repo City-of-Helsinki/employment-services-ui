@@ -11,7 +11,7 @@ interface DropdownFilterProps {
   events: EventData[];
   setFilter: (newFilter: any) => void;
   initialOptions: any;
-  selectedOptions: { label: string }[];
+  selectedOptions: any;
   filterLabel: string;
   dropdownLabel: string;
   filterField: string;
