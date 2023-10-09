@@ -114,7 +114,7 @@ export default function Events(props: EventListProps): JSX.Element {
     return dropdownOptions;
   };
 
-  const getSelectedOptions = () => {
+  const getSelectedOptions = () : { label: string }[] => {
     const currentOptionSelected: { label: string }[] = [];
     const available = getAvailableTags(events, 'field_in_language');
 
