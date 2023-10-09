@@ -10,7 +10,7 @@ interface DropdownFilterProps {
   setAvailableTags?: boolean;
   events: EventData[];
   setFilter: (newFilter: any) => void;
-  initialOptions: { label: string }[];
+  initialOptions: any;
   selectedOptions: { label: string }[];
   filterLabel: string;
   dropdownLabel: string;
