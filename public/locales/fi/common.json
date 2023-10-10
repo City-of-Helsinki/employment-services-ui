@@ -22,8 +22,8 @@
     "search_placeholder": "Hae sisältöä"
   },
   "search": {
-    "filter": "Valitse tapahtuman aiheet",
-    "filter_lang": "Valitse tapahtuman ohjauskielet",
+    "filter": "Valitse aiheet",
+    "filter_lang": "Valitse kielet",
     "dropdown_label": "Ohjauskielet",
     "clear": "Poista kaikki valinnat",
     "title": "Hae työllisyyspalveluiden sivuilta",
