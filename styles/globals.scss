@@ -661,3 +661,15 @@ h5, .h5,
   }
 }
 
+.modified-before {
+  display: flex;
+}
+
+.modified-before::before {
+  content: url('../src/assets/shirt-solid.svg');
+  width: 30px;
+  margin-right: 10px;
+}
+
+
+
