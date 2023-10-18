@@ -31,6 +31,5 @@ export const CONTENT_TYPES = {
   SUJO_EMBEDDED: 'paragraph--sujo_embedded',
   COLOR: 'taxonomy_term--colors',
   UNITS_LIST: 'paragraph--units_list',
-  UNIT_MAP: 'paragraph--unit_map',
-  LINK_WITH_ICON: 'paragraph--link_with_icon'
+  UNIT_MAP: 'paragraph--unit_map'
 }

@@ -16,7 +16,6 @@ import { CONTENT_TYPES } from '@/lib/drupalApiTypes';
 import { NavProps } from '@/lib/types';
 import UnitsList from './tprUnits/UnitsList';
 import MapEmbedded from './mapEmbedded/MapEmbedded';
-import LinkWithIcon from './linkWithIcon/LinkWithIcon';
 
 interface ContentMapperProps {
   content: any;
@@ -38,7 +37,7 @@ export function ContentMapper({
   className,
   ...props
 }: ContentMapperProps): JSX.Element {
-    return content.map((item: any) => {
+  return content.map((item: any) => {
     const { type, id } = item;
     const key = `paragraph--${type}-${id}`;
 
@@ -66,12 +65,6 @@ export function ContentMapper({
           return null;
         }
         return <ListOfLinks {...item} key={key} />;
-
-        case CONTENT_TYPES.LINK_WITH_ICON:
-          if (!item?.id) {
-            return null;
-          }
-          return <LinkWithIcon {...item} key={key} />;
 
       case CONTENT_TYPES.BANNER:
         if (!item?.id) {
