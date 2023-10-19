@@ -11,6 +11,7 @@ const baseQueryParams = () =>
       'field_content.field_image.field_media_image',
       'field_content.field_background_color',
       'field_notification',
+      'field_content.field_accordion_items.field_accordion_item_content.field_link_list_with_description',
     ])
     .addFields(CONTENT_TYPES.MEDIA_IMAGE, [
       'field_media_image',
@@ -21,7 +22,7 @@ const baseQueryParams = () =>
       'field_accordion_title_level',
       'field_accordion_text',
       'field_accordion_title',
-      'field_accordion_items'
+      'field_accordion_items',
     ])
     .addFields(CONTENT_TYPES.ACCORDION_ITEM, [
       'field_accordion_item_content',
@@ -103,7 +104,6 @@ const getPageQueryParams = () =>
     .addInclude([
       'field_content.field_accordion_items.field_accordion_item_content',
       'field_lower_content',
-      'field_content.field_link_list_with_description',
     ])
     .addFields(CONTENT_TYPES.TEXT, [
       'field_text'

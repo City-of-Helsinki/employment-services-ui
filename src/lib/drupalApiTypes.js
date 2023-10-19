@@ -32,5 +32,6 @@ export const CONTENT_TYPES = {
   COLOR: 'taxonomy_term--colors',
   UNITS_LIST: 'paragraph--units_list',
   UNIT_MAP: 'paragraph--unit_map',
-  LINK_WITH_ICON: 'paragraph--link_with_icon'
+  LINK_WITH_ICON: 'paragraph--link_with_icon',
+  LINK_ARE: 'paragraph--link_are'
 }
