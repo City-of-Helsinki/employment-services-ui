@@ -76,6 +76,13 @@ const baseQueryParams = () =>
       'field_quote_author_last_name',
       'field_quote_author_title'
     ])
+    .addFields(CONTENT_TYPES.LINK_WITH_ICON, [
+      'field_header',
+      'field_link_list_title',
+      'field_icon',
+      'field_icon_positioning',
+      'field_link_list_with_description',
+    ])
 
 const getPageQueryParams = () =>
   baseQueryParams()
@@ -95,7 +102,8 @@ const getPageQueryParams = () =>
     ])
     .addInclude([
       'field_content.field_accordion_items.field_accordion_item_content',
-      'field_lower_content'
+      'field_lower_content',
+      'field_content.field_link_list_with_description',
     ])
     .addFields(CONTENT_TYPES.TEXT, [
       'field_text'
