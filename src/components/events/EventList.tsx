@@ -34,12 +34,11 @@ export function EventList({
     locationId: pageType === 'tpr_unit' ? locationId : null,
     locale: locale ?? 'fi',
   };
+  
 
   const fetcher = () => getEvents(queryParams);
   const { data } = useSWR(`/${locale}/${asPath}`, fetcher);
 
-  console.log('data', data);
-  
 
   return (
     <div

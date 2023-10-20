@@ -125,6 +125,7 @@ export interface EventData  {
   total: number;
   maxTotal?: number;
   field_in_language: string;
+  status: boolean;
 }
 
 export interface EventListProps {

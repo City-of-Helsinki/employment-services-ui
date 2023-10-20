@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import * as Elastic from '@/lib/elasticsearch';
-// import { getEvents } from '@/lib/ssr-api'
 import { EventData, EventsQueryParams } from '@/lib/types'
 import qs from "qs";
 import { SearchHit, SearchTotalHits } from '@elastic/elasticsearch/lib/api/types';
@@ -19,6 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     res.status(400).json(events)
     return
   }
+ const {tags, locationId, locale} = queryParams;
 
   const elastic = Elastic.getElasticClient();
 
@@ -27,8 +27,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     size: 3,
     query: { match_all: {} },
   };
-
-const locale ='fi';
 
   try {
     const searchRes = await elastic.search({

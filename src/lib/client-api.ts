@@ -39,6 +39,7 @@ export const getEventsSearch = async (
       return qs.stringify(params, { arrayFormat: 'repeat' });
     }, 
   });
+  
   return data;
 };
 
