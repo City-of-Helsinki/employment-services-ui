@@ -42,10 +42,6 @@ export default function Events(props: EventListProps): JSX.Element {
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
 
-
-      console.log('events', events);
-      
-
   const updateTags = useCallback(() => {
     getEventsTags('field_event_tags', locale ?? 'fi').then((result) => {
       const tags: string[] = result

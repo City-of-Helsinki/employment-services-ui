@@ -141,8 +141,6 @@ const getFilteredEvents = (filterTags: string[] | undefined, hits: any) => {
         field_event_tags,
         field_street_address,
         field_event_status,
-        field_in_language,
-        status,
       } = hit._source as EventData;
       if (
         filterTags === undefined ||

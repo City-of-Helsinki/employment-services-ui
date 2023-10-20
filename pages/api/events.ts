@@ -8,6 +8,14 @@ type Data = {
   name: string
 }
 
+interface Terms {
+  terms: {
+    field_event_tags?: string[],
+    field_location_id?: string[],
+  } 
+}
+
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   const query: any = req?.query
   const queryParams: EventsQueryParams = qs.parse(query)
@@ -25,8 +33,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   let response: any = {};
   const body = {
     size: 3,
-    query: { match_all: {} },
+    query: {
+      bool: {
+        filter: [] as Terms[],
+      },
+    },
   };
+
+  const queryBody: Terms[] = body.query.bool.filter;
+
+  if (tags) {
+    const objectFilter = {
+      terms: {
+        field_event_tags: [tags],
+      },
+    };
+    queryBody.push(objectFilter as Terms);
+  }
+
+  if (locationId) {
+    const objectFilter = {
+      terms: {
+        field_location_id: [locationId],
+      },
+    };
+    queryBody.push(objectFilter as Terms);
+  }
 
   try {
     const searchRes = await elastic.search({
@@ -50,13 +82,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     res.status(500);
   }
 
-  // events = await getEvents(queryParams).catch((e) => {
-  //   console.log('Error fetching events from Drupal: ', e)
-  //   throw e
-  // })
-
-  console.log('response ', response);
-  
   res.json(response);
 
 }

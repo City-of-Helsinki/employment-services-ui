@@ -35,10 +35,8 @@ export function EventList({
     locale: locale ?? 'fi',
   };
   
-
   const fetcher = () => getEvents(queryParams);
   const { data } = useSWR(`/${locale}/${asPath}`, fetcher);
-
 
   return (
     <div

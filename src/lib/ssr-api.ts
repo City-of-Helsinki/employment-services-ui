@@ -17,59 +17,6 @@ import { getDrupalClient } from './drupal-client';
 
 const drupal = getDrupalClient();
 
-// export const getEvents = async (queryParams: EventsQueryParams) => {
-//   const { tags, locationId } = queryParams;
-//   const defaultLocale: Locale = 'fi';
-//   const locale: Locale = queryParams.locale ?? defaultLocale;
-//   const eventParams = () =>
-//     baseEventQueryParams().addSort('field_end_time', 'ASC')
-//     .addFilter('status', '1')
-//     .addFilter('langcode', locale)
-//     .addPageLimit(3);
-
-//   if (tags && locationId) {
-//     const filteredEventParams = () =>
-//       eventParams()
-//         .addFilter('field_tags', tags, 'IN')
-//         .addFilter('field_location_id', locationId)
-//         .getQueryObject();
-
-//     return await drupal.getResourceCollection(NODE_TYPES.EVENT, {
-//       locale,
-//       defaultLocale,
-//       params: filteredEventParams(),
-//     });
-//   }
-
-//   if (tags) {
-//     const filteredEventParams = () =>
-//       eventParams().addFilter('field_tags', tags, 'IN').getQueryObject();
-
-//     return await drupal.getResourceCollection(NODE_TYPES.EVENT, {
-//       locale,
-//       defaultLocale,
-//       params: filteredEventParams(),
-//     });
-//   }
-
-//   if (locationId) {
-//     const filteredEventParams = () =>
-//       eventParams().addFilter('field_location_id', locationId).getQueryObject();
-
-//     return await drupal.getResourceCollection(NODE_TYPES.EVENT, {
-//       locale,
-//       defaultLocale,
-//       params: filteredEventParams(),
-//     });
-//   }
-
-//   return await drupal.getResourceCollection(NODE_TYPES.EVENT, {
-//     locale,
-//     defaultLocale,
-//     params: eventParams().getQueryObject(),
-//   });
-// };
-
 export const getRelatedEvents = async (
   queryParams: EventsRelatedQueryParams
 ) => {
