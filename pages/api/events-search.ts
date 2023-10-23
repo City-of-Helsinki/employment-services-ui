@@ -100,6 +100,7 @@ export default async function handler(
     }
   }
   res.json(response);
+  
 }
 
 const getFilterTags = (

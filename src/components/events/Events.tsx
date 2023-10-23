@@ -8,12 +8,12 @@ import { EventListProps } from '@/lib/types';
 import { getEventsSearch, getEventsTags } from '@/lib/client-api';
 import {
   eventTags,
-  getEvents,
   getKey,
   getTotal,
   keepScrollPosition,
   getInitialFilters,
   handlePageURL,
+  getContent,
 } from '@/lib/helpers';
 import styles from './events.module.scss';
 import ButtonFilter from '../eventsComponents/ButtonFilter';
@@ -38,7 +38,7 @@ export default function Events(props: EventListProps): JSX.Element {
   const fetcher = (eventsIndex: number) =>
     getEventsSearch(eventsIndex, filter, locale ?? 'fi');
   const { data, setSize } = useSWRInfinite(getKey, fetcher);
-  const events = data && getEvents(data);
+  const events = data && getContent('events', data);
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
 

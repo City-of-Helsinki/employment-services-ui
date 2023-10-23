@@ -27,6 +27,10 @@ export function NodeArticlePage({
     published_at !== null && published_at > created ? published_at : created;
   const { t } = useTranslation();  
 
+
+  console.log('published_at', published_at);
+  console.log('created', created);
+  
   return (
     <article>
       <Container className="container content-region">

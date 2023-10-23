@@ -68,9 +68,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     });
 
     const {
-      hits: { total, hits },
+      hits: { hits },
     } = searchRes as {
-      hits: { total: SearchTotalHits; hits: SearchHit<unknown>[] };
+      hits: { hits: SearchHit<unknown>[] };
     };
 
     response = {
