@@ -6,10 +6,9 @@ import {
 } from 'next-drupal';
 import { GetStaticPropsContext } from 'next';
 import { NODE_TYPES } from '@/lib/drupalApiTypes';
-import { EventsQueryParams, EventsRelatedQueryParams, Node } from '@/lib/types';
+import { EventsRelatedQueryParams, Node } from '@/lib/types';
 import {
   baseEventQueryParams,
-  baseArticlePageQueryParams,
   baseTprUnitQueryParams,
   getQueryParamsFor,
 } from '@/lib/params';
@@ -35,69 +34,6 @@ export const getRelatedEvents = async (
     locale,
     defaultLocale,
     params: eventParams().getQueryObject(),
-  });
-};
-
-export const getNews = async (
-  shortList: string,
-  newsFilter: string,
-  locale: Locale
-) => {
-  const defaultLocale: Locale = 'fi';
-
-  let newsParams = () =>
-    baseArticlePageQueryParams()
-      .addSort('created', 'DESC')
-      .addFilter('status', '1')
-      .addFilter('langcode', locale);
-
-  if (
-    shortList === 'true' &&
-    (newsFilter === 'news' ||
-      newsFilter === 'newsletter' ||
-      newsFilter === 'partner_jobs')
-  ) {
-    const newsParamsLimitedFiltered = () =>
-      newsParams()
-        .addFilter('field_article_category', newsFilter)
-        .addPageLimit(4);
-
-    return await drupal.getResourceCollection(NODE_TYPES.ARTICLE, {
-      params: newsParamsLimitedFiltered().getQueryObject(),
-      locale,
-      defaultLocale,
-    });
-  }
-
-  if (shortList === 'true') {
-    const newsParamsLimited = () => newsParams().addPageLimit(4);
-
-    return await drupal.getResourceCollection(NODE_TYPES.ARTICLE, {
-      params: newsParamsLimited().getQueryObject(),
-      locale,
-      defaultLocale,
-    });
-  }
-
-  if (
-    newsFilter === 'news' ||
-    newsFilter === 'newsletter' ||
-    newsFilter === 'partner_jobs'
-  ) {
-    const newsParamsFiltered = () =>
-      newsParams().addFilter('field_article_category', newsFilter);
-
-    return await drupal.getResourceCollection(NODE_TYPES.ARTICLE, {
-      params: newsParamsFiltered().getQueryObject(),
-      locale,
-      defaultLocale,
-    });
-  }
-
-  return await drupal.getResourceCollection(NODE_TYPES.ARTICLE, {
-    locale,
-    defaultLocale,
-    params: newsParams().getQueryObject(),
   });
 };
 

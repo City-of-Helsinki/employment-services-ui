@@ -1,13 +1,8 @@
-import { getNews } from '@/lib/client-api';
-import { getContent, getKey } from '@/lib/helpers';
-import { DrupalFormattedText } from '@/lib/types';
-import dateformat from 'dateformat';
-import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import useSWRInfinite from 'swr/infinite';
-import HtmlBlock from '../HtmlBlock';
-import styles from './news.module.scss';
-
+import dateformat from 'dateformat';
 import {
   Button as HDSButton,
   IconPlus,
@@ -15,12 +10,20 @@ import {
   Container,
 } from 'hds-react';
 
+
+import { getNews } from '@/lib/client-api';
+import { getContent, getKey } from '@/lib/helpers';
+import { DrupalFormattedText } from '@/lib/types';
+import HtmlBlock from '../HtmlBlock';
+import styles from './news.module.scss';
+
+
+
 interface NewsListProps {
   field_title: string;
   field_short_list: boolean;
   field_news_filter: string;
   field_news_list_desc: DrupalFormattedText;
-  langcode: string;
   field_background_color: {
     field_css_name: string;
   };
@@ -40,31 +43,30 @@ function NewsList({
   field_short_list,
   field_news_list_desc,
   field_news_filter,
-  langcode,
   field_background_color,
 }: NewsListProps): JSX.Element {
   const { t } = useTranslation();
+  const { locale }= useRouter();
   const [newsIndex, setNewsIndex] = useState<number>(4);
   const bgColor = field_background_color?.field_css_name ?? 'white';
 
   const fetcher = (index: number) =>
-    getNews(index, newsIndex, field_news_filter, langcode ?? 'fi');
+    getNews(index, newsIndex, field_news_filter, locale ?? 'fi');
 
   const { data, size, setSize } = useSWRInfinite(getKey, fetcher);
   const total = data && data[0].total;
   const news = data && getContent('news', data);
 
-  const loadMoreText = t('list.load_more');
+  useEffect(() => {
+    setSize(1);
+  }, [newsIndex]); // eslint-disable-line
 
-  const getArticleDate = (published_at: string | null, created: string) => {
+  const getDateTimeFi = (published_at: string | null, created: string) => {
     const timestamp: any =
       published_at !== null && published_at > created ? published_at : created;
     return dateformat(new Date(timestamp * 1000), 'dd.mm.yyyy');
   };
 
-  useEffect(() => {
-    setSize(1);
-  }, [newsIndex]); // eslint-disable-line
 
   return (
     <div
@@ -99,9 +101,9 @@ function NewsList({
               {news.published_at && (
                 <p className={styles.articleDate}>
                   <time
-                    dateTime={getArticleDate(news.published_at, news.created)}
+                    dateTime={getDateTimeFi(news.published_at, news.created)}
                   >
-                    {getArticleDate(news.published_at, news.created)}
+                    {getDateTimeFi(news.published_at, news.created)}
                   </time>
                 </p>
               )}
@@ -120,7 +122,7 @@ function NewsList({
                 setSize(size + 1);
               }}
             >
-              {loadMoreText}
+              {t('list.load_more')}
             </HDSButton>
           </div>
         )}
