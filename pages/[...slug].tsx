@@ -206,9 +206,6 @@ export async function getStaticProps(
 }
 
 export default function Page({ node, nav, footer, preview }: PageProps) {
-
-  console.log('node', node);
-  
   const ConsentInfo = dynamic(() => import('../src/components/consentInfo/ConsentInfo'));
   const router = useRouter();
   const { t } = useTranslation('common');
