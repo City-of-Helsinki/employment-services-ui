@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import IconLink from '../link/IconLink';
 
 import styles from './linkWithIcon.module.scss';
@@ -11,6 +12,7 @@ interface LinkWithIconProps {
 }
 
 function LinkWithIcon({
+  field_header,
   field_icon,
   field_icon_positioning,
   field_link_list_with_description,
@@ -27,19 +29,22 @@ function LinkWithIcon({
   };
   return (
     <>
+      <h2>{field_header}</h2>
       {field_link_list_with_description?.map((item: any, key: number) => (
         <div key={key}>
           {item.field_link_list_title && <h3>{item.field_link_list_title}</h3>}
           {item.field_description && <p>{item.field_description}</p>}
           {item.field_links?.map((link: any, key: number) => (
             <div key={key} className={styles.iconLink}>
-              {field_icon && (
+              {field_icon !== null ? (
                 <IconLink
                   url={link.full_url}
                   icon={field_icon}
                   title={linkTitle(link.title, link.full_url)}
                   iconPosition={field_icon_positioning}
                 />
+              ) : (
+                <Link href={link.full_url}>{linkTitle(link.title, link.full_url)}</Link>
               )}
             </div>
           ))}

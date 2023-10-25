@@ -83,6 +83,7 @@ const baseQueryParams = () =>
       'field_icon',
       'field_icon_positioning',
       'field_link_list_with_description',
+      'field_header',
     ])
 
 const getPageQueryParams = () =>
