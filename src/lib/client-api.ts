@@ -39,6 +39,7 @@ export const getEventsSearch = async (
       return qs.stringify(params, { arrayFormat: 'repeat' });
     }, 
   });
+  
   return data;
 };
 
@@ -53,11 +54,16 @@ export const getRelatedEvents = async (queryParams: EventsRelatedQueryParams) =>
   return data;
 };
 
-export const getNews = async (shortList: boolean, newsFilter: string, locale: Locale) => {
-  const { data } = await axios(`${NEWS_URL}`, {
-    params: { limit: shortList, filter: newsFilter, locale: locale }
-  });
-  return data;
+export const getNews = async (index: number, shortList: any, newsFilter: string, locale: Locale) => {
+  const queryParams = { index: index, limit: shortList, filter: newsFilter, locale: locale };
+    const { data } = await axios(`${NEWS_URL}`, {
+      params:
+        queryParams,
+        paramsSerializer: params => {
+          return qs.stringify(params, { arrayFormat: 'repeat' })
+        }
+    })
+    return data;
 };
 
 export const getUnits = async (locale: Locale) => {

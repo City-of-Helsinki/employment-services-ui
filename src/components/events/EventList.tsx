@@ -6,14 +6,13 @@ import { Linkbox, IconArrowRight, Container } from 'hds-react';
 
 import { EventsQueryParams, EventListProps, EventData } from '@/lib/types';
 import { getEvents } from '@/lib/client-api';
-import { getPathAlias } from '@/lib/helpers';
 
+import { getPathAlias } from '@/lib/helpers';
 import HtmlBlock from '@/components/HtmlBlock';
 import TagList from './TagList';
 import styles from './events.module.scss';
 import EventStatus from './EventStatus';
 import DateTime from '../dateTime/DateTime';
-
 
 export function EventList({
   pageType,
@@ -33,16 +32,11 @@ export function EventList({
   const queryParams: EventsQueryParams = {
     tags: tags,
     locationId: pageType === 'tpr_unit' ? locationId : null,
-    locale: locale,
+    locale: locale ?? 'fi',
   };
-
+  
   const fetcher = () => getEvents(queryParams);
   const { data } = useSWR(`/${locale}/${asPath}`, fetcher);
-
-  const events =
-    data && (pageType === 'basic' || pageType === 'tpr_unit')
-      ? data.slice(0, 2)
-      : data;
 
   return (
     <div
@@ -69,8 +63,9 @@ export function EventList({
             field_events_list_short && styles.short
           }`}
         >
-          {events?.length
-            ? events?.map((event: EventData) => (
+          {data?.events?.length
+            ? data?.events?.map((event: EventData) => (
+              
                 <div
                   className={`${styles.eventCard} event-card`}
                   key={event.id}
@@ -85,20 +80,20 @@ export function EventList({
                   >
                     {event.field_image_url && (
                       <Image
-                        src={event.field_image_url}
-                        alt={event.field_image_alt ?? ''}
+                        src={event.field_image_url[0]}
+                        alt={event.field_image_alt[0] ?? ''}
                         layout="responsive"
                         objectFit="cover"
                         width={3}
                         height={2}
                       />
-                    )}
+                    )}                    
                     <div className={styles.eventCardContent}>
                       {event.field_event_tags &&
                         event.field_event_tags.length !== 0 && (
                           <TagList
                             tags={event.field_event_tags.map(
-                              (tag: any) => tag.name
+                              (tag: any) => tag
                             )}
                           />
                         )}

@@ -100,6 +100,7 @@ export default async function handler(
     }
   }
   res.json(response);
+  
 }
 
 const getFilterTags = (
@@ -141,7 +142,6 @@ const getFilteredEvents = (filterTags: string[] | undefined, hits: any) => {
         field_event_tags,
         field_street_address,
         field_event_status,
-        field_in_language,
       } = hit._source as EventData;
       if (
         filterTags === undefined ||
@@ -164,7 +164,6 @@ const getFilteredEvents = (filterTags: string[] | undefined, hits: any) => {
           field_event_tags,
           field_street_address,
           field_event_status,
-          field_in_language,
         };
       } else {
         return;

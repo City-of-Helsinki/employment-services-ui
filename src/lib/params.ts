@@ -143,6 +143,7 @@ const getLandingPageQueryParams = () =>
       'field_news_filter',
       'field_news_list_desc',
       'field_background_color',
+      'field_news_filter',
     ])
     .getQueryObject()
 
