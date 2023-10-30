@@ -104,6 +104,7 @@ const getPageQueryParams = () =>
     ])
     .addInclude([
       'field_content.field_accordion_items.field_accordion_item_content',
+      'field_content.field_link_list_with_description',
       'field_lower_content',
     ])
     .addFields(CONTENT_TYPES.TEXT, [
@@ -114,6 +115,14 @@ const getPageQueryParams = () =>
     ])
     .addFields(CONTENT_TYPES.SUJO_EMBEDDED, [
       'field_training'
+    ])
+    .addFields(CONTENT_TYPES.LINK_WITH_ICON, [
+      'field_header',
+      'field_link_list_title',
+      'field_icon',
+      'field_icon_positioning',
+      'field_link_list_with_description',
+      'field_header',
     ])
     .getQueryObject()
 
@@ -133,7 +142,9 @@ const getLandingPageQueryParams = () =>
     ])
     .addInclude([
       'field_hero.field_custom_hero_image.field_media_image',
-      'field_content.field_accordion_items.field_accordion_item_content'
+      'field_content.field_accordion_items.field_accordion_item_content',
+      'field_content.field_accordion_items.field_accordion_item_content.field_link_list_with_description',
+      'field_content.field_link_list_with_description',
     ])
     .addFields(CONTENT_TYPES.HERO, [
       'field_hero_desc',
@@ -153,6 +164,14 @@ const getLandingPageQueryParams = () =>
       'field_news_list_desc',
       'field_background_color',
       'field_news_filter',
+    ])
+    .addFields(CONTENT_TYPES.LINK_WITH_ICON, [
+      'field_header',
+      'field_link_list_title',
+      'field_icon',
+      'field_icon_positioning',
+      'field_link_list_with_description',
+      'field_header',
     ])
     .getQueryObject()
 
@@ -205,6 +224,8 @@ export const baseArticlePageQueryParams = () =>
       'field_content.field_liftup_with_image_image.field_media_image',
       'field_content.field_background_color',
       'field_content.field_accordion_items.field_accordion_item_content',
+      'field_content.field_link_list_with_description',
+      'field_content.field_accordion_items.field_accordion_item_content.field_link_list_with_description',
     ])
     .addFields(NODE_TYPES.ARTICLE, [
       'id',
@@ -267,6 +288,14 @@ export const baseArticlePageQueryParams = () =>
       'field_list_of_links_link',
       'field_list_of_links_image',
       'field_list_of_links_desc',
+    ])
+    .addFields(CONTENT_TYPES.LINK_WITH_ICON, [
+      'field_header',
+      'field_link_list_title',
+      'field_icon',
+      'field_icon_positioning',
+      'field_link_list_with_description',
+      'field_header',
     ])
 
 const getArticlePageQueryParams = () =>

@@ -18,10 +18,7 @@ function LinkWithIcon({
   field_link_list_with_description,
 }: LinkWithIconProps) {
   const linkTitle = (title: string, url: string) => {
-    if (
-      (url.slice(-4) === '.doc' || url.slice(-4) === '.pdf') &&
-      field_icon_positioning === 'Before'
-    ) {
+    if (url.slice(-4) === '.doc' || url.slice(-4) === '.pdf') {
       return `${title} (${url.slice(-4)})`;
     } else {
       return title;
@@ -41,7 +38,6 @@ function LinkWithIcon({
                   url={link.full_url}
                   icon={field_icon}
                   title={linkTitle(link.title, link.full_url)}
-                  iconPosition={field_icon_positioning}
                 />
               ) : (
                 <Link href={link.full_url}>{linkTitle(link.title, link.full_url)}</Link>
