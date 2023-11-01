@@ -24,7 +24,7 @@ function NodeBasicPage({ node, sidebar, preview, ...props }: NodeBasicPageProps)
     <article>
       <Container className="container">
         <div className="columns">
-          {!field_hide_sidebar &&
+          {!field_hide_sidebar && sidebar.breadcrumb.length < 4 &&
           <div className="sidebar col col-4 flex-order-first">
             <Sidebar {...sidebar} preview={preview}/>
           </div>
