@@ -4,7 +4,7 @@ import * as Elastic from '@/lib/elasticsearch';
 
 interface QueryBody {
   query: {
-    match_all: object,
+    match: object,
   },
   size: number,
   aggs: {
@@ -33,7 +33,7 @@ export default async function handler(
 
   const body: QueryBody = {
     query: {
-      match_all: {},
+      match: { langcode: String(locale) ?? 'fi' } ,
     },
     size: 0,
     aggs: {
@@ -48,7 +48,7 @@ export default async function handler(
 
   try {
     const searchRes = await elastic.search({
-      index: `events_${locale}`,
+      index: `event_index`,
       body: body,
     });
 

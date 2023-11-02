@@ -1,10 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import * as Elastic from '@/lib/elasticsearch';
-import { EventState, EventData } from '@/lib/types';
 import {
   SearchHit,
   SearchTotalHits,
 } from '@elastic/elasticsearch/lib/api/types';
+
+import * as Elastic from '@/lib/elasticsearch';
+import { EventState, EventData } from '@/lib/types';
 
 type Data = EventState;
 type Index = Partial<{ [key: string]: string | string[] }>;
@@ -12,6 +13,7 @@ type Index = Partial<{ [key: string]: string | string[] }>;
 interface Terms {
   terms: {
     field_event_tags?: string[],
+    langcode?: string[],
   } 
 }
 
@@ -55,9 +57,18 @@ export default async function handler(
     queryBody.push(objectFilter);
   }
 
+  if (locale) {
+    const objectFilter = {
+      terms: {
+        langcode: getQueryFilterTags(locale),
+      },
+    };
+    queryBody.push(objectFilter);
+  }
+
   try {
     const searchRes = await elastic.search({
-      index: `events_${locale ?? 'fi'}`,
+      index: `event_index`,
       body: body,
       sort: 'field_end_time:asc',
     });
@@ -142,6 +153,7 @@ const getFilteredEvents = (filterTags: string[] | undefined, hits: any) => {
         field_event_tags,
         field_street_address,
         field_event_status,
+        langcode,
       } = hit._source as EventData;
       if (
         filterTags === undefined ||
@@ -164,6 +176,7 @@ const getFilteredEvents = (filterTags: string[] | undefined, hits: any) => {
           field_event_tags,
           field_street_address,
           field_event_status,
+          langcode,
         };
       } else {
         return;

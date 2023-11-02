@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import qs from "qs";
+
 import * as Elastic from '@/lib/elasticsearch';
 import { EventData, EventsQueryParams } from '@/lib/types'
-import qs from "qs";
-import { SearchHit, SearchTotalHits } from '@elastic/elasticsearch/lib/api/types';
+import { SearchHit } from '@elastic/elasticsearch/lib/api/types';
 
 type Data = {
   name: string
@@ -42,6 +43,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const queryBody: Terms[] = body.query.bool.filter;
 
+  if (locale) {
+    const objectFilter = {
+      terms: {
+        langcode: [locale],
+      },
+    };
+    queryBody.push(objectFilter as Terms);
+  }
+
   if (tags) {
     const objectFilter = {
       terms: {
@@ -62,7 +72,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   try {
     const searchRes = await elastic.search({
-      index: `events_${locale ?? 'fi'}`,
+      index: `event_index`,
       body: body,
       sort: 'field_end_time:asc',
     });
