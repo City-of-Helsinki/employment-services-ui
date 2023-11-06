@@ -76,7 +76,7 @@ export function EventList({
                     linkAriaLabel={`${t('list.event_link')} ${event.title}`}
                     key={event.id}
                     href={getPathAlias(event.path)}
-                    withBorder
+                    // withBorder
                   >
                     {event.field_image_url && (
                       <Image

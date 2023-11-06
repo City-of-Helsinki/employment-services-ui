@@ -5,6 +5,8 @@ import {
   IconFacebook,
   IconInstagram,
   IconLinkedin,
+  Logo,
+  logoFi,
 } from 'hds-react';
 import { useTranslation } from 'next-i18next';
 import { DrupalMenuLinkContent } from 'next-drupal';
@@ -28,7 +30,7 @@ function Footer(props: FooterProps): JSX.Element {
     if (!nav) return <></>;
     const items = nav.map((item) => {
       return (
-        <HDSFooter.Item key={item.id} href={item.url} label={item.title} />
+        <HDSFooter.Link key={item.id} href={item.url} label={item.title} />
       );
     });
     return items;
@@ -36,44 +38,54 @@ function Footer(props: FooterProps): JSX.Element {
 
   return (
     <HDSFooter
-      logoLanguage={locale === 'sv' ? 'sv' : 'fi'}
+      // logoLanguage={locale === 'sv' ? 'sv' : 'fi'}
       title={t('site_name')}
       theme={'dark'}
       className={styles.footer}
     >
-      <HDSFooter.Navigation navigationAriaLabel="Footer navigation">
+      <HDSFooter.Navigation>
         {renderFooterNav(footerNav)}
-        <HDSFooter.SoMe>
-          <HDSFooter.Item
+        <HDSFooter.Link>
+          <HDSFooter.Link
             icon={<IconFacebook size="m" aria-label={facebook} />}
             href="https://www.facebook.com/HelsinginTyollisyyspalvelut"
           />
-          <HDSFooter.Item
+          <HDSFooter.Link
             icon={<IconInstagram size="m" aria-label={instagram} />}
             href="https://www.instagram.com/helsingintyollisyyspalvelut"
           />
-          <HDSFooter.Item
+          <HDSFooter.Link
             icon={<IconLinkedin size="m" aria-label={linkedIn} />}
             href="https://www.linkedin.com/showcase/helsingintyollisyyspalvelut"
           />
-        </HDSFooter.SoMe>
+        </HDSFooter.Link>
       </HDSFooter.Navigation>
 
-      <HDSFooter.Base copyrightHolder={t('footer.copyright')}>
-        <HDSFooter.Item
+      <HDSFooter.Base
+      copyrightHolder="Copyright"
+      copyrightText="All rights reserved"
+      backToTopLabel="Back to top"
+      logo={<Logo src={logoFi} size="medium" alt="Helsingin kaupunki" />}
+      logoHref="https://hel.fi"
+      onLogoClick={(event) => event.preventDefault()}
+    >
+      {/* <HDSFooter.Base copyrightHolder={t('footer.copyright')}
+      logo={<Logo src={locale === 'sv' ? 'sv' : 'fi'} size="medium" alt="Helsingin kaupunki" />}
+      > */}
+        <HDSFooter.Link
           href={t('footer.accessibilityLink')}
           label={t('footer.accessibility')}
         />
-        <HDSFooter.Item href={getCookiesUrl(locale)} label={t('footer.cookie_settings')} />
-        <HDSFooter.Item
+        <HDSFooter.Link href={getCookiesUrl(locale)} label={t('footer.cookie_settings')} />
+        <HDSFooter.Link
           className={styles.backToTopButton}
           onClick={scrollToTop}
-          label={
-            <>
-              {t('footer.goup')}
-              <IconArrowUp aria-hidden="true" />
-            </>
-          }
+          // label={
+          //   <>
+          //     {t('footer.goup')}
+          //     <IconArrowUp aria-hidden="true" />
+          //   </>
+          // }
         />
       </HDSFooter.Base>
     </HDSFooter>

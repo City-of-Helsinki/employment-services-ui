@@ -1,4 +1,4 @@
-import { Navigation } from 'hds-react';
+// import { Navigation } from 'hds-react';
 import { useTranslation } from 'next-i18next';
 
 import styles from './navigationComponents.module.scss';
@@ -23,7 +23,7 @@ export default function MobileNavigation({
   const { t } = useTranslation('common');
   return (
     <div className={styles.mobileNav}>
-      <Navigation
+      {/* <Navigation
         menuToggleAriaLabel="Menu"
         logoLanguage={locale === 'sv' ? 'sv' : 'fi'}
         skipTo="#content"
@@ -52,7 +52,7 @@ export default function MobileNavigation({
         {primaryLanguages.includes(langcode) && !hideNav && (
           <Navigation.Row>{getNav(menu, activePath, preview as boolean)}</Navigation.Row>
         )}
-      </Navigation>
+      </Navigation> */}
       <LanguageSelect
         langLinks={langLinks}
         activePath={activePath}

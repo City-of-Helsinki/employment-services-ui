@@ -2,8 +2,7 @@ import { Container } from 'hds-react'
 
 import { DrupalFormattedText } from '@/lib/types'
 import HtmlBlock from '@/components/HtmlBlock'
-import 'hds-core/lib/icons/icon.min.css'
-import 'hds-core/lib/icons/all.min.css'
+
 
 import styles from './banner.module.scss'
 

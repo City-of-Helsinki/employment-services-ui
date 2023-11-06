@@ -21,7 +21,7 @@ function EventListComponent({ events }: { events: EventData[] }) {
               linkAriaLabel={`${t('list.event_link')} ${event.title}`}
               key={key}
               href={event.url}
-              withBorder
+              // withBorder
             >
               {event.field_image_url && (
                 <Image

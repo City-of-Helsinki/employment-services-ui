@@ -1,4 +1,4 @@
-import { Button, IconLinkExternal, Navigation as NavigationHDS } from 'hds-react';
+import { Header, IconSearch, IconUser, Link, Logo, logoFi, logoSv, logoSvDark } from 'hds-react';
 import { useTranslation } from 'next-i18next';
 
 import { NavigationProps } from '@/lib/types';
@@ -7,6 +7,7 @@ import classNames from '@/lib/classNames';
 import { getNav } from '../navigation/Header';
 import styles from './navigationComponents.module.scss';
 import LanguageSelect from './LanguageSelect';
+import React from 'react';
 
 export default function Navigation({
   locale,
@@ -21,9 +22,40 @@ export default function Navigation({
   preview,
 }: NavigationProps) {
   const { t } = useTranslation('common');
+
+
+  
+
+    const languages = [
+      { label: 'Suomi', value: 'fi', isPrimary: true },
+      { label: 'Svenska', value: 'sv', isPrimary: true },
+      { label: 'English', value: 'en', isPrimary: true },
+      { label: 'Français', value: 'fr' },
+    ]
+
+
+
+    const searchAction = () => {
+      console.log('Open search page');
+    };
+  
+    const [href, setHref] = React.useState('');
+    const [lang, setLang] = React.useState('fi');
+  
+    const languageChangedStateAction = (language: React.SetStateAction<string>) => {
+      setLang(language);
+    };
+  
+    const [I18n, setI18n] = React.useState(lang);
+  
+    React.useEffect(() => {
+      setI18n(lang);
+    }, [lang]);
   return (
     <div className={styles.mainNav}>
-      <NavigationHDS
+
+
+      {/* <NavigationHDS
         menuToggleAriaLabel="Menu"
         logoLanguage={locale === 'sv' ? 'sv' : 'fi'}
         skipTo="#content"
@@ -59,7 +91,9 @@ export default function Navigation({
         {primaryLanguages.includes(langcode) && !hideNav && (
           <NavigationHDS.Row>{getNav(menu, activePath, preview as boolean)}</NavigationHDS.Row>
         )}
-      </NavigationHDS>
+      </NavigationHDS> */}
+  
+113   
     </div>
   );
 }
