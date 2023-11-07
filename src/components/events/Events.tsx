@@ -5,7 +5,7 @@ import useSWRInfinite from 'swr/infinite';
 import { Button as HDSButton, IconCrossCircle, Container } from 'hds-react';
 
 import { EventListProps } from '@/lib/types';
-import { getEventsSearch, getEventsTags } from '@/lib/client-api';
+import { getEventsSearch, getEventsTags} from '@/lib/client-api';
 import {
   eventTags,
   getKey,
@@ -14,7 +14,10 @@ import {
   getInitialFilters,
   handlePageURL,
   getContent,
+  getAvailableTags,
 } from '@/lib/helpers';
+
+
 import styles from './events.module.scss';
 import ButtonFilter from '../eventsComponents/ButtonFilter';
 import EventListComponent from '../eventsComponents/EventListComponent';
@@ -31,34 +34,50 @@ export default function Events(props: EventListProps): JSX.Element {
       ? `${slug[0]}/${slug[1]}`
       : `${locale}/${slug[0]}/${slug[1]}`;
 
+  const [languageFilter, setLanguageFilter] = useState<string[]>(
+    getInitialFilters('lang', locale ?? 'fi')
+  );
+
   const [filter, setFilter] = useState<string[]>(
     getInitialFilters('tag', locale ?? 'fi')
   );
 
   const fetcher = (eventsIndex: number) =>
-    getEventsSearch(eventsIndex, filter, locale ?? 'fi');
+    getEventsSearch(eventsIndex, filter, languageFilter, locale ?? 'fi');
   const { data, setSize } = useSWRInfinite(getKey, fetcher);
   const events = data && getContent('events', data);
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
+  const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
 
-  const updateTags = useCallback(() => {
-    getEventsTags('field_event_tags', locale ?? 'fi').then((result) => {
+
+const updateTags = useCallback(() => {
+  getEventsTags('event_languages')
+  .then((response) => response.data)
+  .then((data) => data.map((term: any) => term.attributes))
+  .then((result) => {
+    const updatedTerms = result.map((x: { field_language_id: string, name: string }) => ({
+      id: x.field_language_id,
+      name: x.name,
+    }));
+    setEventsLanguageTags(updatedTerms);
+  });
+
+  getEventsTags('event_tags')
+    .then((response) => response.data)
+    .then((data) => data.map((term: any) => term.attributes))
+    .then((result) => {
       const tags: string[] = result
-        .filter((item: { key: string; doc_count: number }) => {
-          return item.key === undefined ? false : item;
-        })
-        .map((item: { key: string; doc_count: number }) => {
-          return item.key;
-        })
+        .map((x: { name: string }) => x.name)
         .sort(
-          (a: string, b: string) => eventTags.indexOf(a) - eventTags.indexOf(b)
+          (a: string, b: string) =>
+            eventTags.indexOf(a) - eventTags.indexOf(b)
         );
       setEventsTags(tags);
     });
 
-    handlePageURL(filter, router, basePath);
-  }, [locale, filter]);
+  handlePageURL(filter,languageFilter, router, basePath);
+}, [locale, filter, languageFilter]);
 
   useEffect(() => {
     updateTags();
@@ -66,6 +85,7 @@ export default function Events(props: EventListProps): JSX.Element {
     const handleBeforeUnload = (): void => {
       if (filter !== null && filter !== undefined) {
         sessionStorage.setItem('tag', JSON.stringify(filter));
+        sessionStorage.setItem('lang', JSON.stringify(languageFilter));
       }
       sessionStorage.setItem(
         'screenX',
@@ -78,10 +98,11 @@ export default function Events(props: EventListProps): JSX.Element {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [filter, locale, setSize, updateTags]);
+  }, [filter, languageFilter, locale, setSize, updateTags]);
 
   const clearFilters = () => {
     setFilter([]);
+    setLanguageFilter([]);
     router.replace(`/${basePath}`, undefined, { shallow: true });
   };
 
@@ -90,6 +111,26 @@ export default function Events(props: EventListProps): JSX.Element {
       (total.current < total.max || total.current === 0 || events?.length === 0)
       ? `${events.length} / ${total.max} ${t('list.results_text')}`
       : `${total?.max} ${t('list.results_text')}`;
+  };
+
+  const getInitialOptions = () => {
+    const dropdownOptions: { label: string }[] = [];
+    eventsLanguageTags.map((option: string) =>
+      dropdownOptions.push({ label: option })
+    );
+    return dropdownOptions;
+  };
+
+  const getSelectedOptions = (): { label: string }[] => {
+    const currentOptionSelected: { label: string }[] = [];
+    const available = getAvailableTags(events, 'field_in_language');
+
+    languageFilter.map((option: string) => {
+      available.includes(option)
+        ? currentOptionSelected.push({ label: option })
+        : null;
+    });
+    return currentOptionSelected;
   };
 
   return (
@@ -112,6 +153,15 @@ export default function Events(props: EventListProps): JSX.Element {
             filterField={'field_event_tags'}
             filterLabel={'search.filter'}
           />
+          <ButtonFilter
+            tags={eventsLanguageTags.map((tag: any) => tag.name)}
+            events={events}
+            setFilter={setLanguageFilter}
+            filter={languageFilter}
+            filterField={'field_in_language'}
+            filterLabel={'search.filter_lang'}
+            setAvailableTags={filter.length > 0}
+          />
 
           <HDSButton
             variant="supplementary"
@@ -131,4 +181,3 @@ export default function Events(props: EventListProps): JSX.Element {
     </div>
   );
 }
-

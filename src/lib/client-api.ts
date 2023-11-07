@@ -29,17 +29,23 @@ export const getEvents = async (queryParams: EventsQueryParams) => {
 export const getEventsSearch = async (
   eventsIndex: number,
   field_event_tags: string[] | null,
+  field_in_language: string[] | null,
   locale: Locale
-) => {  
-  const queryParams = {index: eventsIndex, filter: field_event_tags, locale: locale };
-  
+) => {
+  const queryParams = {
+    index: eventsIndex,
+    filter: field_event_tags,
+    languageFilter: field_in_language,
+    locale: locale,
+  };
+
   const { data } = await axios(`${EVENTS_SEARCH_URL}`, {
     params: queryParams,
     paramsSerializer: (params) => {
       return qs.stringify(params, { arrayFormat: 'repeat' });
-    }, 
+    },
   });
-  
+
   return data;
 };
 
@@ -82,12 +88,13 @@ export const getSearch = async (
   return data;
 };
 
-export const getEventsTags = async (tagField: string, locale: Locale, ) => {
+export const getEventsTags = async (tagField: string ) => {
   const { data } = await axios(`${EVENTS_TAGS_URL}`, {
-    params: { tagField: tagField, locale: locale},
-  });
+    params: { tagField: tagField},
+  }); 
   return data;
 };
+
 
 export const getSearchSuggestions = async (
   query: string | undefined,

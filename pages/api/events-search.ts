@@ -14,6 +14,7 @@ interface Terms {
   terms: {
     field_event_tags?: string[],
     langcode?: string[],
+    field_in_language?: string[],
   } 
 }
 
@@ -27,7 +28,7 @@ export default async function handler(
     return;
   }
 
-  const { index, filter, locale }: Index = req?.query || {};
+  const { index, filter, languageFilter, locale }: Index = req?.query || {};
 
   if (isNaN(Number(index))) {
     res.status(400);
@@ -61,6 +62,15 @@ export default async function handler(
     const objectFilter = {
       terms: {
         langcode: getQueryFilterTags(locale),
+      },
+    };
+    queryBody.push(objectFilter);
+  }
+
+  if (languageFilter) {
+    const objectFilter = {
+      terms: {
+        field_in_language: getQueryFilterTags(languageFilter),
       },
     };
     queryBody.push(objectFilter);
@@ -154,6 +164,7 @@ const getFilteredEvents = (filterTags: string[] | undefined, hits: any) => {
         field_street_address,
         field_event_status,
         langcode,
+        field_in_language,
       } = hit._source as EventData;
       if (
         filterTags === undefined ||
@@ -177,6 +188,7 @@ const getFilteredEvents = (filterTags: string[] | undefined, hits: any) => {
           field_street_address,
           field_event_status,
           langcode,
+          field_in_language,
         };
       } else {
         return;
