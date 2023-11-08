@@ -37,6 +37,7 @@ export const printablePages = [
 ];
 
 export const primaryLanguages = ['fi', 'en', 'sv'];
+export const drupalLanguages = ['fi', 'en', 'sv', 'so', 'ua', 'ru'];
 export const frontPagePaths = [
   '/',
   '/en',
@@ -343,7 +344,7 @@ export const getInitialFilters = (filterName: string, locale: string) => {
 
 export const handlePageURL = (
   filter: string[],
-  languageFilter: string[],
+  languageFilter: any,
   router: any,
   basePath: string
 ) => {
@@ -351,10 +352,10 @@ export const handlePageURL = (
     const tags = filter.map((tag) =>
       tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
     );
-    const langTags = languageFilter.map((tag) =>
+    const langTags = languageFilter.map((tag :{ name: string}) =>
       tag === languageFilter[0] && tags.length === 0
-        ? `lang=${tag}`
-        : `&lang=${tag}`
+        ? `lang=${tag.name}`
+        : `&lang=${tag.name}`
     );
 
     router.replace(
@@ -375,7 +376,7 @@ export const getAvailableTags = (events: EventData[], fieldName: string) => {
       field?.forEach((tag: string) =>
         !availableTags.includes(tag) ? availableTags.push(tag) : null
       )
-    );
+    );    
   return availableTags;
 };
 

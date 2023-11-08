@@ -34,7 +34,7 @@ export default function Events(props: EventListProps): JSX.Element {
       ? `${slug[0]}/${slug[1]}`
       : `${locale}/${slug[0]}/${slug[1]}`;
 
-  const [languageFilter, setLanguageFilter] = useState<string[]>(
+  const [languageFilter, setLanguageFilter] = useState<any>(
     getInitialFilters('lang', locale ?? 'fi')
   );
 
@@ -50,16 +50,15 @@ export default function Events(props: EventListProps): JSX.Element {
   const [eventsTags, setEventsTags] = useState<any>([]);
   const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
 
-
 const updateTags = useCallback(() => {
   getEventsTags('event_languages')
   .then((response) => response.data)
   .then((data) => data.map((term: any) => term.attributes))
   .then((result) => {
-    const updatedTerms = result.map((x: { field_language_id: string, name: string }) => ({
-      id: x.field_language_id,
-      name: x.name,
-    }));
+    const updatedTerms = result.map((tag: { field_language_id: string, name: string }) => ({
+      id: tag.field_language_id,
+      name: tag.name,
+    }))
     setEventsLanguageTags(updatedTerms);
   });
 
@@ -68,7 +67,7 @@ const updateTags = useCallback(() => {
     .then((data) => data.map((term: any) => term.attributes))
     .then((result) => {
       const tags: string[] = result
-        .map((x: { name: string }) => x.name)
+        .map((tag: { name: string }) => tag.name)
         .sort(
           (a: string, b: string) =>
             eventTags.indexOf(a) - eventTags.indexOf(b)
@@ -76,7 +75,7 @@ const updateTags = useCallback(() => {
       setEventsTags(tags);
     });
 
-  handlePageURL(filter,languageFilter, router, basePath);
+  handlePageURL(filter, languageFilter, router, basePath);
 }, [locale, filter, languageFilter]);
 
   useEffect(() => {
@@ -145,16 +144,16 @@ const updateTags = useCallback(() => {
         )}
         <div role="group">
           <h2>{t('search.header')}</h2>
-          <ButtonFilter
+          {/* <ButtonFilter
             tags={eventsTags}
             events={events}
             setFilter={setFilter}
             filter={filter}
             filterField={'field_event_tags'}
             filterLabel={'search.filter'}
-          />
+          /> */}
           <ButtonFilter
-            tags={eventsLanguageTags.map((tag: any) => tag.name)}
+            tags={eventsLanguageTags}
             events={events}
             setFilter={setLanguageFilter}
             filter={languageFilter}

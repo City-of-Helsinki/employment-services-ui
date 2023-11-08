@@ -6,6 +6,7 @@ import {
 
 import * as Elastic from '@/lib/elasticsearch';
 import { EventState, EventData } from '@/lib/types';
+import { drupalLanguages } from '@/lib/helpers';
 
 type Data = EventState;
 type Index = Partial<{ [key: string]: string | string[] }>;
@@ -14,7 +15,7 @@ interface Terms {
   terms: {
     field_event_tags?: string[],
     langcode?: string[],
-    field_in_language?: string[],
+    field_in_language?: any,
   } 
 }
 
@@ -28,7 +29,7 @@ export default async function handler(
     return;
   }
 
-  const { index, filter, languageFilter, locale }: Index = req?.query || {};
+  const { index, filter, languageFilter, languageId, locale }: Index = req?.query || {};
 
   if (isNaN(Number(index))) {
     res.status(400);
@@ -61,12 +62,14 @@ export default async function handler(
   if (locale) {
     const objectFilter = {
       terms: {
-        langcode: getQueryFilterTags(locale),
+        langcode: 
+          drupalLanguages.includes(languageId as string) && languageId ? [languageId] : [locale]
+        ,
       },
     };
-    queryBody.push(objectFilter);
+    queryBody.push(objectFilter as Terms);
   }
-
+  
   if (languageFilter) {
     const objectFilter = {
       terms: {

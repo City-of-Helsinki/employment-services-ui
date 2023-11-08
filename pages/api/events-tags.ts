@@ -1,17 +1,28 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { tagField }: Partial<{ [key: string]: string | string[] }> =
-    req?.query || {};
+  try {
+    const { tagField }: Partial<{ [key: string]: string | string[] }> =
+      req?.query || {};
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/taxonomy_term/${tagField}`
-  );
-  const data = await response.json();
+    if (!tagField) {
+      throw new Error('Invalid or missing tagField parameter');
+    }
 
-  res.status(200).json(data);
+    const apiUrl = `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/taxonomy_term/${tagField}`;
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data from ${apiUrl}`);
+    }
+
+    const data = await response.json();
+
+    res.status(200).json(data);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
 }
-  

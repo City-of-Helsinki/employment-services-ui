@@ -29,13 +29,15 @@ export const getEvents = async (queryParams: EventsQueryParams) => {
 export const getEventsSearch = async (
   eventsIndex: number,
   field_event_tags: string[] | null,
-  field_in_language: string[] | null,
+  language: [{name: string, id: string}],
   locale: Locale
 ) => {
+
   const queryParams = {
     index: eventsIndex,
     filter: field_event_tags,
-    languageFilter: field_in_language,
+    languageFilter: language.map((lang: {name: string}) => lang.name),
+    languageId: language.map((lang: {id: string}) => lang.id),
     locale: locale,
   };
 

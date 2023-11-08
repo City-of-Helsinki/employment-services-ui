@@ -33,34 +33,36 @@ function ButtonFilter({
         aria-label={t('search.group_description')}
         className={styles.filterTags}
       >
-        {tags?.map((tag: string, i: number) => (
+        {tags?.map((tag:any, i: number) => (
           <Button
+          value="value"
             disabled={
               setAvailableTags
                 ? !getAvailableTags(events, filterField).includes(tag)
                 : false
             }
             role="checkbox"
-            aria-checked={filter.includes(tag)}
-            aria-label={`${t(filterLabel)} ${tag.replace('_', ' ')}`}
+            aria-checked={filter.map((tag: any) => tag.name).includes(tag.name)}
+            aria-label={`${t(filterLabel)} ${tag.name.replace('_', ' ')}`}
             key={`tagFilter-${i}`}
             className={
-              filter.includes(tag) &&
-              getAvailableTags(events, filterField).includes(tag)
+              filter.map((tag: any) => tag.name).includes(tag.name) &&
+              getAvailableTags(events, filterField).includes(tag.name)
                 ? styles.selected
                 : styles.filterTag
             }
             onClick={() =>
-              setFilter((current: string[]) =>
-                current?.includes(tag)
-                  ? [...current].filter(function (item) {
-                      return item !== tag;
-                    })
-                  : [...current, tag]
-              )
+              // setFilter((current: string[]) =>
+              //   current?.includes(tag)
+              //     ? [...current].filter(function (item) {
+              //         return item !== tag;
+              //       })
+              //     : [...current, tag]
+              // )
+              setFilter([tag])
             }
           >
-            {tag.replace('_', ' ')}
+            {tag.name.replace('_', ' ')}
           </Button>
         ))}
       </div>
