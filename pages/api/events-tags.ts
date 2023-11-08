@@ -8,7 +8,7 @@ export default async function handler(
     req?.query || {};
 
   const response = await fetch(
-    `https://drupal-tyollisyyspalvelut-helfi.docker.so/jsonapi/taxonomy_term/${tagField}`
+    `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/taxonomy_term/${tagField}`
   );
   const data = await response.json();
 
