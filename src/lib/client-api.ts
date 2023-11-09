@@ -28,16 +28,16 @@ export const getEvents = async (queryParams: EventsQueryParams) => {
 
 export const getEventsSearch = async (
   eventsIndex: number,
-  field_event_tags: string[] | null,
-  language: [{name: string, id: string}],
+  eventTags: [{name: string, id: string}],
+  languageTag: [{name: string, id: string}],
   locale: Locale
 ) => {
 
   const queryParams = {
     index: eventsIndex,
-    filter: field_event_tags,
-    languageFilter: language.map((lang: {name: string}) => lang.name),
-    languageId: language.map((lang: {id: string}) => lang.id),
+    eventTagId: eventTags.map((tag: {id: string}) => tag.id),
+    eventTagName: eventTags.map((tag: {name: string}) => tag.name),
+    languageTagId: languageTag.map((tag: {id: string}) => tag.id),
     locale: locale,
   };
 
@@ -90,9 +90,9 @@ export const getSearch = async (
   return data;
 };
 
-export const getEventsTags = async (tagField: string ) => {
+export const getEventsTags = async (tagField: string, locale: string ) => {
   const { data } = await axios(`${EVENTS_TAGS_URL}`, {
-    params: { tagField: tagField},
+    params: { tagField: tagField, locale: locale},
   }); 
   return data;
 };

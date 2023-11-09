@@ -13,9 +13,9 @@ type Index = Partial<{ [key: string]: string | string[] }>;
 
 interface Terms {
   terms: {
-    field_event_tags?: string[],
+    field_event_tags_id?: string[],
     langcode?: string[],
-    field_in_language?: any,
+    field_language_id?: string[],
   } 
 }
 
@@ -29,7 +29,7 @@ export default async function handler(
     return;
   }
 
-  const { index, filter, languageFilter, languageId, locale }: Index = req?.query || {};
+  const { index, eventTagId, eventTagName, languageTagId, locale }: Index = req?.query || {};
 
   if (isNaN(Number(index))) {
     res.status(400);
@@ -48,35 +48,33 @@ export default async function handler(
     },
   };
 
-  const queryBody: Terms[] = body.query.bool.filter;
-
-  if (filter) {
-    const objectFilter = {
-      terms: {
-        field_event_tags: getQueryFilterTags(filter),
-      },
-    };
-    queryBody.push(objectFilter);
-  }
+  const queryBody: Terms[] = body.query.bool.filter;  
 
   if (locale) {
     const objectFilter = {
       terms: {
-        langcode: 
-          drupalLanguages.includes(languageId as string) && languageId ? [languageId] : [locale]
-        ,
+        langcode: drupalLanguages.includes(languageTagId as string) && languageTagId ? [languageTagId] : [locale]
+      },
+    };
+    queryBody.push(objectFilter as Terms);
+  }
+
+  if (eventTagId) {
+    const objectFilter = {
+      terms: {
+        field_event_tags_id: getQueryFilterTags(eventTagId),
       },
     };
     queryBody.push(objectFilter as Terms);
   }
   
-  if (languageFilter) {
+  if (languageTagId) {
     const objectFilter = {
       terms: {
-        field_in_language: getQueryFilterTags(languageFilter),
+        field_language_id: [languageTagId],
       },
     };
-    queryBody.push(objectFilter);
+    queryBody.push(objectFilter as Terms);
   }
 
   try {
@@ -95,14 +93,14 @@ export default async function handler(
     response = {
       ...response,
       total: total?.value,
-      events: getFilteredEvents(getFilterTags(filter), hits),
+      events: getFilteredEvents(getFilterTags(eventTagName), hits),
     };
   } catch (err) {
     console.log('err', err);
     res.status(500);
   }
   
-  if (filter) {
+  if (eventTagName) {
     try {
       const searchRes = await elastic.search({
         index: `events_${locale}`,
@@ -124,7 +122,6 @@ export default async function handler(
     }
   }
   res.json(response);
-  
 }
 
 const getFilterTags = (
@@ -157,17 +154,19 @@ const getFilteredEvents = (filterTags: string[] | undefined, hits: any) => {
       const {
         title,
         url,
+        field_event_tags,
+        field_event_tags_id,
+        field_in_language,
+        field_language_id,
         field_image_url,
         field_image_alt,
         field_start_time,
         field_end_time,
         field_location,
         field_tags,
-        field_event_tags,
         field_street_address,
         field_event_status,
         langcode,
-        field_in_language,
       } = hit._source as EventData;
       if (
         filterTags === undefined ||
@@ -181,17 +180,19 @@ const getFilteredEvents = (filterTags: string[] | undefined, hits: any) => {
         return {
           title,
           url,
+          field_event_tags,
+          field_event_tags_id,
+          field_in_language,
+          field_language_id,
           field_image_url,
           field_image_alt,
           field_start_time,
           field_end_time,
           field_location,
           field_tags,
-          field_event_tags,
           field_street_address,
           field_event_status,
           langcode,
-          field_in_language,
         };
       } else {
         return;

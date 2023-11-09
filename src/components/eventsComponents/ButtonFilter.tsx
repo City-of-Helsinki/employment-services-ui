@@ -1,26 +1,22 @@
-import { Button } from 'hds-react';
 import { useTranslation } from 'next-i18next';
+import { Button } from 'hds-react';
 
-import { getAvailableTags } from '@/lib/helpers';
-import { EventData } from '@/lib/types';
 import styles from '../events/events.module.scss';
 
 interface ButtonFilterProps {
   tags: string[];
-  events: EventData[];
-  setFilter: (newFilter: any) => void; 
-  filter: string[];
-  filterField: string;
+  setFilter: (newFilter: any) => void;
+  filter: [{ name: string; id: string }];
+  availableTags: any;
   filterLabel: string;
-  setAvailableTags?: boolean;
+  setAvailableTags?: any;
 }
 
 function ButtonFilter({
-    tags,
-  events,
+  tags,
   setFilter,
   filter,
-  filterField,
+  availableTags,
   filterLabel,
   setAvailableTags = true,
 }: ButtonFilterProps) {
@@ -33,34 +29,28 @@ function ButtonFilter({
         aria-label={t('search.group_description')}
         className={styles.filterTags}
       >
-        {tags?.map((tag:any, i: number) => (
+        {tags?.map((tag: any, i: number) => (
           <Button
-          value="value"
-            disabled={
-              setAvailableTags
-                ? !getAvailableTags(events, filterField).includes(tag)
-                : false
-            }
+            disabled={setAvailableTags ? !availableTags.includes(tag.id) : false}
             role="checkbox"
-            aria-checked={filter.map((tag: any) => tag.name).includes(tag.name)}
+            aria-checked={filter.map((tag: any) => tag.id).includes(tag.id)}
             aria-label={`${t(filterLabel)} ${tag.name.replace('_', ' ')}`}
             key={`tagFilter-${i}`}
             className={
-              filter.map((tag: any) => tag.name).includes(tag.name) &&
-              getAvailableTags(events, filterField).includes(tag.name)
+              filter.map((tag: any) => tag.id).includes(tag.id) &&
+              availableTags.includes(tag.id)
                 ? styles.selected
                 : styles.filterTag
             }
-            onClick={() =>
-              // setFilter((current: string[]) =>
-              //   current?.includes(tag)
-              //     ? [...current].filter(function (item) {
-              //         return item !== tag;
-              //       })
-              //     : [...current, tag]
-              // )
-              setFilter([tag])
-            }
+            onClick={() => {
+              setFilter((current: string[]) =>
+                filterLabel === 'search.filter_lang' && !(current?.includes(tag))
+                  ? [tag]
+                  : current?.includes(tag)
+                  ? current.filter((item) => item !== tag)
+                  : [...current, tag]
+              );
+            }}
           >
             {tag.name.replace('_', ' ')}
           </Button>

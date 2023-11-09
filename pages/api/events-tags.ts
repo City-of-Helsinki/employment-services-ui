@@ -5,14 +5,19 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   try {
-    const { tagField }: Partial<{ [key: string]: string | string[] }> =
+    const { tagField, locale }: Partial<{ [key: string]: string | string[] }> =
       req?.query || {};
 
     if (!tagField) {
       throw new Error('Invalid or missing tagField parameter');
     }
 
-    const apiUrl = `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/taxonomy_term/${tagField}`;
+    const localePath =
+      locale === 'fi'
+        ? `jsonapi/taxonomy_term/${tagField}`
+        : `${locale}/jsonapi/taxonomy_term/${tagField}`;
+
+    const apiUrl = `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/${localePath}`;
     const response = await fetch(apiUrl);
 
     if (!response.ok) {

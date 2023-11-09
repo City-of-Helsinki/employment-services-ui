@@ -7,7 +7,6 @@ import { Button as HDSButton, IconCrossCircle, Container } from 'hds-react';
 import { EventListProps } from '@/lib/types';
 import { getEventsSearch, getEventsTags} from '@/lib/client-api';
 import {
-  eventTags,
   getKey,
   getTotal,
   keepScrollPosition,
@@ -38,7 +37,7 @@ export default function Events(props: EventListProps): JSX.Element {
     getInitialFilters('lang', locale ?? 'fi')
   );
 
-  const [filter, setFilter] = useState<string[]>(
+  const [filter, setFilter] = useState<any>(
     getInitialFilters('tag', locale ?? 'fi')
   );
 
@@ -48,38 +47,40 @@ export default function Events(props: EventListProps): JSX.Element {
   const events = data && getContent('events', data);
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
-  const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
+  const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);  
+  
 
-const updateTags = useCallback(() => {
-  getEventsTags('event_languages')
-  .then((response) => response.data)
-  .then((data) => data.map((term: any) => term.attributes))
-  .then((result) => {
-    const updatedTerms = result.map((tag: { field_language_id: string, name: string }) => ({
-      id: tag.field_language_id,
-      name: tag.name,
-    }))
-    setEventsLanguageTags(updatedTerms);
-  });
-
-  getEventsTags('event_tags')
-    .then((response) => response.data)
-    .then((data) => data.map((term: any) => term.attributes))
-    .then((result) => {
-      const tags: string[] = result
-        .map((tag: { name: string }) => tag.name)
-        .sort(
-          (a: string, b: string) =>
-            eventTags.indexOf(a) - eventTags.indexOf(b)
-        );
-      setEventsTags(tags);
-    });
-
-  handlePageURL(filter, languageFilter, router, basePath);
+const updateURL = useCallback(() => {
+ // handlePageURL(filter, languageFilter, router, basePath);
 }, [locale, filter, languageFilter]);
 
+    useEffect(() => {
+      getEventsTags('event_languages', 'fi')
+      .then((response) => response.data)
+      .then((data) => data.map((term: any) => term.attributes))
+      .then((result) => {
+        const updatedTerms = result.map((tag: { field_language_id: string, name: string }) => ({
+          id: tag.field_language_id,
+          name: tag.name,
+        }))
+        setEventsLanguageTags(updatedTerms);
+      });
+
+      getEventsTags('event_tags', locale ?? 'fi')
+        .then((response) => response.data)
+        .then((data) => data.map((term: any) => term.attributes))
+        .then((result) => {
+          const tags: string[] =  result.map((tag: { field_id: string, name: string }) => ({
+            id: tag.field_id,
+            name: tag.name,
+          }))
+          tags.sort((a: any, b: any) => a.name.localeCompare(b.name));
+          setEventsTags(tags);
+        });
+    },[locale])
+
   useEffect(() => {
-    updateTags();
+    updateURL();
     setSize(1);
     const handleBeforeUnload = (): void => {
       if (filter !== null && filter !== undefined) {
@@ -97,7 +98,7 @@ const updateTags = useCallback(() => {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [filter, languageFilter, locale, setSize, updateTags]);
+  }, [filter, languageFilter, locale, setSize, updateURL]);
 
   const clearFilters = () => {
     setFilter([]);
@@ -112,25 +113,27 @@ const updateTags = useCallback(() => {
       : `${total?.max} ${t('list.results_text')}`;
   };
 
-  const getInitialOptions = () => {
-    const dropdownOptions: { label: string }[] = [];
-    eventsLanguageTags.map((option: string) =>
-      dropdownOptions.push({ label: option })
-    );
-    return dropdownOptions;
-  };
+  // const getInitialOptions = () => {
+  //   const dropdownOptions: { label: string }[] = [];
+  //   eventsLanguageTags.map((option: string) =>
+  //     dropdownOptions.push({ label: option })
+  //   );
+  //   return dropdownOptions;
+  // };
 
-  const getSelectedOptions = (): { label: string }[] => {
-    const currentOptionSelected: { label: string }[] = [];
-    const available = getAvailableTags(events, 'field_in_language');
+  // const getSelectedOptions = (): { label: string }[] => {
+  //   const currentOptionSelected: { label: string }[] = [];
+  //   const available = getAvailableTags(events, 'field_in_language');
 
-    languageFilter.map((option: string) => {
-      available.includes(option)
-        ? currentOptionSelected.push({ label: option })
-        : null;
-    });
-    return currentOptionSelected;
-  };
+  //   languageFilter.map((option: string) => {
+  //     available.includes(option)
+  //       ? currentOptionSelected.push({ label: option })
+  //       : null;
+  //   });
+  //   return currentOptionSelected;
+  // };
+
+
 
   return (
     <div className="component" onLoad={() => keepScrollPosition()}>
@@ -144,20 +147,18 @@ const updateTags = useCallback(() => {
         )}
         <div role="group">
           <h2>{t('search.header')}</h2>
-          {/* <ButtonFilter
+         <ButtonFilter
             tags={eventsTags}
-            events={events}
             setFilter={setFilter}
             filter={filter}
-            filterField={'field_event_tags'}
+            availableTags={getAvailableTags(events, 'field_event_tags_id')}
             filterLabel={'search.filter'}
-          /> */}
+          /> 
           <ButtonFilter
             tags={eventsLanguageTags}
-            events={events}
             setFilter={setLanguageFilter}
             filter={languageFilter}
-            filterField={'field_in_language'}
+            availableTags={getAvailableTags(events, 'field_language_id')}
             filterLabel={'search.filter_lang'}
             setAvailableTags={filter.length > 0}
           />
