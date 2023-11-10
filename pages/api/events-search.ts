@@ -13,10 +13,10 @@ type Index = Partial<{ [key: string]: string | string[] }>;
 
 interface Terms {
   terms: {
-    field_event_tags_id?: string[],
-    langcode?: string[],
-    field_language_id?: string[],
-  } 
+    field_event_tags_id?: string[];
+    langcode?: string[];
+    field_language_id?: string[];
+  };
 }
 
 export default async function handler(
@@ -29,7 +29,8 @@ export default async function handler(
     return;
   }
 
-  const { index, eventTagId, eventTagName, languageTagId, locale }: Index = req?.query || {};
+  const { index, eventTagId, eventTagName, languageTagId, locale }: Index =
+    req?.query || {};
 
   if (isNaN(Number(index))) {
     res.status(400);
@@ -48,12 +49,12 @@ export default async function handler(
     },
   };
 
-  const queryBody: Terms[] = body.query.bool.filter;  
+  const queryBody: Terms[] = body.query.bool.filter;
 
   if (locale) {
     const objectFilter = {
       terms: {
-        langcode: drupalLanguages.includes(languageTagId as string) && languageTagId ? [languageTagId] : [locale]
+        langcode: getLanguage(languageTagId as string, locale as string),
       },
     };
     queryBody.push(objectFilter as Terms);
@@ -67,7 +68,7 @@ export default async function handler(
     };
     queryBody.push(objectFilter as Terms);
   }
-  
+
   if (languageTagId) {
     const objectFilter = {
       terms: {
@@ -93,18 +94,26 @@ export default async function handler(
     response = {
       ...response,
       total: total?.value,
-      events: getFilteredEvents(getFilterTags(eventTagName), hits),
+      events: getFilteredEvents(getFilterTags(eventTagId), hits),
     };
   } catch (err) {
     console.log('err', err);
     res.status(500);
   }
-  
-  if (eventTagName) {
+
+  if (eventTagId) {
     try {
       const searchRes = await elastic.search({
-        index: `events_${locale}`,
-        body: { query: { match_all: {} } },
+        index: `event_index`,
+        body: {
+          query: {
+            match: {
+              langcode: String(
+                getLanguage(languageTagId as string, locale as string)
+              ),
+            },
+          },
+        },
       });
       const {
         hits: { total },
@@ -123,6 +132,12 @@ export default async function handler(
   }
   res.json(response);
 }
+
+const getLanguage = (languageTagId: string, locale: string) => {
+ return drupalLanguages.includes(languageTagId as string) && languageTagId !== undefined
+    ? [languageTagId]
+    : [locale];
+};
 
 const getFilterTags = (
   filter: string | string[] | undefined
@@ -174,7 +189,7 @@ const getFilteredEvents = (filterTags: string[] | undefined, hits: any) => {
         (filterTags !== undefined &&
           filterTags?.length > 1 &&
           filterTags?.every((tag) =>
-            hit._source.field_event_tags.includes(tag)
+            hit._source.field_event_tags_id.includes(tag)
           ))
       ) {
         return {

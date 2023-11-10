@@ -327,12 +327,12 @@ export const getTotal = (data: EventData[]) => {
 
 export const getInitialFilters = (filterName: string, locale: string) => {
   if (typeof window !== 'undefined') {
-    if (urlParams !== null && urlParams.getAll(filterName).length !== 0) {
-      return urlParams.getAll(filterName);
-    }
+if (urlParams !== null && urlParams.getAll(filterName).length !== 0) {
+  return urlParams.getAll(filterName);
+}
     const sessionLocale = sessionStorage.getItem('locale');
-    const sessionFilters = sessionStorage.getItem(filterName);
-    if (sessionFilters !== null && sessionLocale === locale) {
+    const sessionFilters = sessionStorage.getItem(filterName);    
+    if (sessionFilters !== null) {
       return JSON.parse(sessionFilters);
     } else {
       return [];
@@ -348,15 +348,27 @@ export const handlePageURL = (
   router: any,
   basePath: string
 ) => {
-  if (filter.length || languageFilter.length) {
-    const tags = filter.map((tag) =>
-      tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
+  if (filter?.length || languageFilter?.length) {
+    const tags = filter?.map((tag) =>{
+      if (typeof tag === 'string') {
+      return  tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
+      } else {
+       return tag === filter[0] ? `tag=${tag.name}` : `&tag=${tag.name}`
+      }
+      }
     );
-    const langTags = languageFilter.map((tag :{ name: string}) =>
-      tag === languageFilter[0] && tags.length === 0
+    const langTags = languageFilter?.map((tag: { name: string }) => {
+      if (typeof tag === 'string') {
+        return tag === languageFilter[0] && tags.length === 0
+        ? `lang=${tag}`
+        : `&lang=${tag}`;
+      } else {
+       return tag === languageFilter[0] && tags.length === 0
         ? `lang=${tag.name}`
-        : `&lang=${tag.name}`
-    );
+        : `&lang=${tag.name}`;
+      }
+  
+    });
 
     router.replace(
       `/${basePath}?${tags.toString().replaceAll(',', '')}${langTags
@@ -377,8 +389,6 @@ export const getAvailableTags = (events: EventData[], fieldName: string) => {
         !availableTags.includes(tag) ? availableTags.push(tag) : null
       )
     );    
-    console.log('availableTags', availableTags);
-    
   return availableTags;
 };
 

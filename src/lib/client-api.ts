@@ -3,12 +3,14 @@ import qs from 'qs';
 
 import { EventsQueryParams, EventsRelatedQueryParams } from '@/lib/types';
 import { Locale } from 'next-drupal';
+import { stringify } from 'querystring';
+import { drupalLanguages } from './helpers';
 
 /** The Client API urls  */
 const EVENTS_URL = '/api/events';
 const EVENTS_SEARCH_URL = '/api/events-search';
 const EVENTS_TAGS_URL = '/api/events-tags';
-const RELATED_EVENTS = '/api/related-events'
+const RELATED_EVENTS = '/api/related-events';
 const NEWS_URL = '/api/news';
 const UNITS_URL = '/api/units';
 const SEARCH_URL = '/api/search';
@@ -19,8 +21,8 @@ export const getEvents = async (queryParams: EventsQueryParams) => {
   const { data } = await axios(`${EVENTS_URL}`, {
     params:
       queryParams,
-      paramsSerializer: params => {
-        return qs.stringify(params, { arrayFormat: 'repeat' })
+    paramsSerializer: params => {
+      return qs.stringify(params, { arrayFormat: 'repeat' })
       }
   })
   return data;
@@ -28,16 +30,15 @@ export const getEvents = async (queryParams: EventsQueryParams) => {
 
 export const getEventsSearch = async (
   eventsIndex: number,
-  eventTags: [{name: string, id: string}],
-  languageTag: [{name: string, id: string}],
+  eventTags: [{ name: string; id: string }],
+  languageTag: [{ name: string; id: string }],
   locale: Locale
 ) => {
-
   const queryParams = {
     index: eventsIndex,
-    eventTagId: eventTags.map((tag: {id: string}) => tag.id),
-    eventTagName: eventTags.map((tag: {name: string}) => tag.name),
-    languageTagId: languageTag.map((tag: {id: string}) => tag.id),
+    eventTagId: eventTags.map((tag: { id: string }) => tag.id),
+    eventTagName: eventTags.map((tag: { name: string }) => tag.name),
+    languageTagId: languageTag.map((tag: { id: string }) => tag.id),
     locale: locale,
   };
 
@@ -55,8 +56,8 @@ export const getRelatedEvents = async (queryParams: EventsRelatedQueryParams) =>
   const { data } = await axios(`${RELATED_EVENTS}`, {
     params:
       queryParams,
-      paramsSerializer: params => {
-        return qs.stringify(params, { arrayFormat: 'repeat' })
+    paramsSerializer: params => {
+      return qs.stringify(params, { arrayFormat: 'repeat' })
       }
   })
   return data;
@@ -64,14 +65,14 @@ export const getRelatedEvents = async (queryParams: EventsRelatedQueryParams) =>
 
 export const getNews = async (index: number, shortList: any, newsFilter: string, locale: Locale) => {
   const queryParams = { index: index, limit: shortList, filter: newsFilter, locale: locale };
-    const { data } = await axios(`${NEWS_URL}`, {
-      params:
+  const { data } = await axios(`${NEWS_URL}`, {
+    params:
         queryParams,
-        paramsSerializer: params => {
-          return qs.stringify(params, { arrayFormat: 'repeat' })
+    paramsSerializer: params => {
+      return qs.stringify(params, { arrayFormat: 'repeat' })
         }
-    })
-    return data;
+  })
+  return data;
 };
 
 export const getUnits = async (locale: Locale) => {
@@ -90,10 +91,10 @@ export const getSearch = async (
   return data;
 };
 
-export const getEventsTags = async (tagField: string, locale: string ) => {
+export const getEventsTags = async (tagField: string, locale: string) => {
   const { data } = await axios(`${EVENTS_TAGS_URL}`, {
-    params: { tagField: tagField, locale: locale},
-  }); 
+    params: { tagField: tagField, locale: locale },
+  });
   return data;
 };
 

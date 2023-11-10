@@ -5,7 +5,7 @@ import useSWRInfinite from 'swr/infinite';
 import { Button as HDSButton, IconCrossCircle, Container } from 'hds-react';
 
 import { EventListProps } from '@/lib/types';
-import { getEventsSearch, getEventsTags} from '@/lib/client-api';
+import { getEventsSearch, getEventsTags } from '@/lib/client-api';
 import {
   getKey,
   getTotal,
@@ -15,7 +15,6 @@ import {
   getContent,
   getAvailableTags,
 } from '@/lib/helpers';
-
 
 import styles from './events.module.scss';
 import ButtonFilter from '../eventsComponents/ButtonFilter';
@@ -33,51 +32,80 @@ export default function Events(props: EventListProps): JSX.Element {
       ? `${slug[0]}/${slug[1]}`
       : `${locale}/${slug[0]}/${slug[1]}`;
 
-  const [languageFilter, setLanguageFilter] = useState<any>(
-    getInitialFilters('lang', locale ?? 'fi')
-  );
-
-  const [filter, setFilter] = useState<any>(
-    getInitialFilters('tag', locale ?? 'fi')
-  );
+  const [languageFilter, setLanguageFilter] = useState<any>(getInitialFilters('lang', locale ?? 'fi'));
+  const [filter, setFilter] = useState<any>(getInitialFilters('tag', locale ?? 'fi'));
 
   const fetcher = (eventsIndex: number) =>
-    getEventsSearch(eventsIndex, filter, languageFilter, locale ?? 'fi');
+    getEventsSearch(
+      eventsIndex,
+      filter as [{ id: string; name: string }],
+      languageFilter as any,
+      locale ?? 'fi'
+    );
   const { data, setSize } = useSWRInfinite(getKey, fetcher);
   const events = data && getContent('events', data);
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
-  const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);  
-  
+  const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
 
-const updateURL = useCallback(() => {
- // handlePageURL(filter, languageFilter, router, basePath);
-}, [locale, filter, languageFilter]);
-
-    useEffect(() => {
-      getEventsTags('event_languages', 'fi')
+  useEffect(() => {
+    getEventsTags('event_languages', 'fi')
       .then((response) => response.data)
       .then((data) => data.map((term: any) => term.attributes))
       .then((result) => {
-        const updatedTerms = result.map((tag: { field_language_id: string, name: string }) => ({
-          id: tag.field_language_id,
-          name: tag.name,
-        }))
+        const updatedTerms = result.map(
+          (tag: { field_language_id: string; name: string }) => ({
+            id: tag.field_language_id,
+            name: tag.name,
+          })
+        );
         setEventsLanguageTags(updatedTerms);
       });
 
-      getEventsTags('event_tags', locale ?? 'fi')
-        .then((response) => response.data)
-        .then((data) => data.map((term: any) => term.attributes))
-        .then((result) => {
-          const tags: string[] =  result.map((tag: { field_id: string, name: string }) => ({
+    getEventsTags('event_tags', locale ?? 'fi')
+      .then((response) => response.data)
+      .then((data) => data.map((term: any) => term.attributes))
+      .then((result) => {
+        const tags: string[] = result.map(
+          (tag: { field_id: string; name: string }) => ({
             id: tag.field_id,
             name: tag.name,
-          }))
-          tags.sort((a: any, b: any) => a.name.localeCompare(b.name));
-          setEventsTags(tags);
-        });
-    },[locale])
+          })
+        );
+        tags.sort((a: any, b: any) => a.name.localeCompare(b.name));
+        setEventsTags(tags);
+      });
+  }, [locale]);
+
+  useEffect(() => {
+    if (eventsTags && eventsTags.length > 0) {
+      const tagEvent = isFirstElementString(filter)
+        ? eventsTags.filter((tag: any) => filter.includes(tag.name))
+        : [...filter];
+      setFilter(tagEvent);
+    }
+    if (eventsLanguageTags && eventsLanguageTags.length > 0) {
+      const tagEvent = isFirstElementString(languageFilter)
+        ? eventsLanguageTags.filter((tag: any) => languageFilter.includes(tag.name))
+        : [...languageFilter];
+      setLanguageFilter(tagEvent);
+    }
+    
+  }, [eventsTags, eventsLanguageTags]);
+  
+
+  const isFirstElementString = (array: any) => {
+    return typeof array[0] === 'string' ? true : false;
+  };
+
+  const updateURL = useCallback(() => {
+    handlePageURL(
+      filter as [{ id: string; name: string }],
+      languageFilter as any,
+      router,
+      basePath
+    );
+  }, [locale, filter, languageFilter]);
 
   useEffect(() => {
     updateURL();
@@ -133,8 +161,6 @@ const updateURL = useCallback(() => {
   //   return currentOptionSelected;
   // };
 
-
-
   return (
     <div className="component" onLoad={() => keepScrollPosition()}>
       <Container className="container">
@@ -147,20 +173,20 @@ const updateURL = useCallback(() => {
         )}
         <div role="group">
           <h2>{t('search.header')}</h2>
-         <ButtonFilter
+          <ButtonFilter
             tags={eventsTags}
             setFilter={setFilter}
-            filter={filter}
+            filter={filter as any}
             availableTags={getAvailableTags(events, 'field_event_tags_id')}
             filterLabel={'search.filter'}
-          /> 
+          />
           <ButtonFilter
             tags={eventsLanguageTags}
             setFilter={setLanguageFilter}
-            filter={languageFilter}
+            filter={languageFilter as any}
             availableTags={getAvailableTags(events, 'field_language_id')}
             filterLabel={'search.filter_lang'}
-            setAvailableTags={filter.length > 0}
+            setAvailableTags={filter?.length > 0}
           />
 
           <HDSButton

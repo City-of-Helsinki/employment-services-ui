@@ -20,7 +20,24 @@ function ButtonFilter({
   filterLabel,
   setAvailableTags = true,
 }: ButtonFilterProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation();  
+
+  const handleFilterLang = (
+    current: { id: string; name: string }[],
+    tag: { id: string; name: string }
+  ) => (current.findIndex((item) => item.id === tag.id) !== -1 ? [] : [tag]);
+
+  const handleFilterEvent = (
+    current: { id: string; name: string }[],
+    tag: { id: string; name: string }
+  ) => {
+    const tagIndex = current.findIndex((item) => item.id === tag.id);
+    return tagIndex !== -1
+      ? [...current.slice(0, tagIndex), ...current.slice(tagIndex + 1)]
+      : [...current, tag];
+  };
+  
+
   return (
     <div>
       <div className={styles.filter}>{t(filterLabel)}</div>
@@ -31,24 +48,24 @@ function ButtonFilter({
       >
         {tags?.map((tag: any, i: number) => (
           <Button
-            disabled={setAvailableTags ? !availableTags.includes(tag.id) : false}
+            disabled={
+              setAvailableTags ? !availableTags.includes(tag.id) : false
+            }
             role="checkbox"
-            aria-checked={filter.map((tag: any) => tag.id).includes(tag.id)}
+            aria-checked={Array.isArray(filter) && filter.map((tag: any) => tag.id).includes(tag.id)}
             aria-label={`${t(filterLabel)} ${tag.name.replace('_', ' ')}`}
             key={`tagFilter-${i}`}
             className={
-              filter.map((tag: any) => tag.id).includes(tag.id) &&
+              Array.isArray(filter) && filter?.map((tag: any) => tag.id).includes(tag.id) &&
               availableTags.includes(tag.id)
                 ? styles.selected
                 : styles.filterTag
             }
             onClick={() => {
-              setFilter((current: string[]) =>
-                filterLabel === 'search.filter_lang' && !(current?.includes(tag))
-                  ? [tag]
-                  : current?.includes(tag)
-                  ? current.filter((item) => item !== tag)
-                  : [...current, tag]
+              setFilter((current: { id: string; name: string }[]) =>
+                filterLabel === 'search.filter_lang'
+                  ? handleFilterLang(current, tag)
+                  : handleFilterEvent(current, tag) 
               );
             }}
           >
