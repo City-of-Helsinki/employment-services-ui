@@ -20,6 +20,7 @@ import styles from './events.module.scss';
 import ButtonFilter from '../eventsComponents/ButtonFilter';
 import EventListComponent from '../eventsComponents/EventListComponent';
 import HtmlBlock from '../HtmlBlock';
+import ResponsiveFilterMapper from '../eventsComponents/ResponsiveFilterMapper';
 
 export default function Events(props: EventListProps): JSX.Element {
   const { field_title, field_events_list_desc } = props;
@@ -60,9 +61,9 @@ export default function Events(props: EventListProps): JSX.Element {
           })
         );
         setEventsLanguageTags(updatedTerms);
-      });
+      });  
 
-    getEventsTags('event_tags', locale ?? 'fi')
+      getEventsTags('event_tags', languageFilter[0]?.Id ?? locale)
       .then((response) => response.data)
       .then((data) => data.map((term: any) => term.attributes))
       .then((result) => {
@@ -84,18 +85,19 @@ export default function Events(props: EventListProps): JSX.Element {
         : [...filter];
       setFilter(tagEvent);
     }
-    if (eventsLanguageTags && eventsLanguageTags.length > 0) {
+        if (eventsLanguageTags && eventsLanguageTags.length > 0) {      
       const tagEvent = isFirstElementString(languageFilter)
-        ? eventsLanguageTags.filter((tag: any) => languageFilter.includes(tag.name))
+        ? eventsLanguageTags.filter((tag: any) => languageFilter.includes(tag.id))
         : [...languageFilter];
       setLanguageFilter(tagEvent);
     }
     
   }, [eventsTags, eventsLanguageTags]);
   
-
   const isFirstElementString = (array: any) => {
-    return typeof array[0] === 'string' ? true : false;
+    return array !== null && array !== undefined && typeof array[0] === 'string'
+      ? true
+      : false;
   };
 
   const updateURL = useCallback(() => {
@@ -141,25 +143,14 @@ export default function Events(props: EventListProps): JSX.Element {
       : `${total?.max} ${t('list.results_text')}`;
   };
 
-  // const getInitialOptions = () => {
-  //   const dropdownOptions: { label: string }[] = [];
-  //   eventsLanguageTags.map((option: string) =>
-  //     dropdownOptions.push({ label: option })
-  //   );
-  //   return dropdownOptions;
-  // };
-
-  // const getSelectedOptions = (): { label: string }[] => {
-  //   const currentOptionSelected: { label: string }[] = [];
-  //   const available = getAvailableTags(events, 'field_in_language');
-
-  //   languageFilter.map((option: string) => {
-  //     available.includes(option)
-  //       ? currentOptionSelected.push({ label: option })
-  //       : null;
-  //   });
-  //   return currentOptionSelected;
-  // };
+  const getInitialOptions = () => {
+      const dropdownOptions: { value: string, label: string }[] = [];
+      
+      eventsLanguageTags.map((option: {id: string, name: string}) =>
+       dropdownOptions.push({ value: option.id, label: option.name })
+      );
+      return dropdownOptions;
+  };
 
   return (
     <div className="component" onLoad={() => keepScrollPosition()}>
@@ -180,13 +171,17 @@ export default function Events(props: EventListProps): JSX.Element {
             availableTags={getAvailableTags(events, 'field_event_tags_id')}
             filterLabel={'search.filter'}
           />
-          <ButtonFilter
+
+        <ResponsiveFilterMapper
             tags={eventsLanguageTags}
             setFilter={setLanguageFilter}
-            filter={languageFilter as any}
+            filter={languageFilter}
             availableTags={getAvailableTags(events, 'field_language_id')}
             filterLabel={'search.filter_lang'}
-            setAvailableTags={filter?.length > 0}
+            setAvailableTags={filter.length > 0}
+            dropdownLabel={'search.dropdown_label'}
+            initialOptions={getInitialOptions()}
+            select={languageFilter}
           />
 
           <HDSButton

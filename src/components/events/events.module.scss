@@ -149,6 +149,40 @@
   }
 }
 
+.dropdownFilter {
+  --placeholder-color: var(--color-black-90) !important;
+  --focus-outline-color: var(--color-suomenlinna-medium-light) !important;
+  [class*="FieldLabel-module_label"] {
+    font-weight: 700;
+    padding-top: var(--spacing-s);
+    padding-bottom: var(--spacing-2-xs);
+  }
+  [class*="tag_hds-tag"] {
+    --tag-background: var(--color-black-90);
+    --tag-color: var(--color-white);
+    padding-left: 0.27rem;
+    font-family: inherit;
+    font-size: 100%;
+    font-weight: 500;
+    span:first-letter {
+      text-transform: capitalize;
+    }
+  }
+  [class*="Combobox-module_menuItem"] {
+    --multiselect-checkbox-color-selected: var(--color-white);
+    --multiselect-checkbox-background-selected: var(--color-black-90);
+    --multiselect-checkbox-border-hover: var(--color-suomenlinna-medium-light);
+  }
+  [class*="Combobox-module_menuItem"]:first-letter {
+    text-transform: capitalize;
+  }
+  [class*="tag_hds-tag__delete-button"] {
+    svg {
+      display: none;
+    }
+  }
+}
+
 ul.tags {
   display: flex;
   flex-wrap: wrap;

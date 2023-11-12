@@ -357,15 +357,15 @@ export const handlePageURL = (
       }
       }
     );
-    const langTags = languageFilter?.map((tag: { name: string }) => {
+    const langTags = languageFilter?.map((tag: { id: string }) => {
       if (typeof tag === 'string') {
         return tag === languageFilter[0] && tags.length === 0
         ? `lang=${tag}`
         : `&lang=${tag}`;
       } else {
        return tag === languageFilter[0] && tags.length === 0
-        ? `lang=${tag.name}`
-        : `&lang=${tag.name}`;
+        ? `lang=${tag.id}`
+        : `&lang=${tag.id}`;
       }
   
     });
