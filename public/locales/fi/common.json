@@ -23,8 +23,8 @@
   },
   "search": {
     "filter": "Valitse aiheet",
-    "filter_lang": "Valitse kielet",
-    "dropdown_label": "Ohjauskielet",
+    "filter_lang": "Valitse kieli",
+    "dropdown_label": "Valitse kieli",
     "clear": "Poista kaikki valinnat",
     "title": "Hae työllisyyspalveluiden sivuilta",
     "page_title": "Haku",

@@ -343,7 +343,7 @@ if (urlParams !== null && urlParams.getAll(filterName).length !== 0) {
 };
 
 export const handlePageURL = (
-  filter: [{name: string, id: string}],
+  filter: [{name_en: string, id: string}],
   languageFilter: [{name: string, id: string}],
   router: any,
   basePath: string
@@ -353,7 +353,7 @@ export const handlePageURL = (
       if (typeof tag === 'string') {
       return  tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
       } else {
-       return tag === filter[0] ? `tag=${tag.name}` : `&tag=${tag.name}`
+       return tag === filter[0] ? `tag=${tag.name_en}` : `&tag=${tag.name_en}`
       }
       }
     );

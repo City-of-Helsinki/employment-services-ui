@@ -10,7 +10,9 @@ interface ButtonFilterProps {
   availableTags: any;
   filterLabel: string;
   setAvailableTags?: any;
+  language?: any;
 }
+
 
 function ButtonFilter({
   tags,
@@ -19,13 +21,13 @@ function ButtonFilter({
   availableTags,
   filterLabel,
   setAvailableTags = true,
+  language
 }: ButtonFilterProps) {
-  const { t } = useTranslation();  
-
+  const { t } = useTranslation();
   const handleFilterLang = (
     current: { id: string; name: string }[],
     tag: { id: string; name: string }
-  ) => (current.findIndex((item) => item.id === tag.id) !== -1 ? [] : [tag]);
+  ) => (current?.findIndex((item) => item.id === tag.id) !== -1 ? [] : [tag]);
 
   const handleFilterEvent = (
     current: { id: string; name: string }[],
@@ -36,7 +38,8 @@ function ButtonFilter({
       ? [...current.slice(0, tagIndex), ...current.slice(tagIndex + 1)]
       : [...current, tag];
   };
-  
+
+  const nameLang = `name_${language}`;
 
   return (
     <div>
@@ -52,11 +55,19 @@ function ButtonFilter({
               setAvailableTags ? !availableTags.includes(tag.id) : false
             }
             role="checkbox"
-            aria-checked={Array.isArray(filter) && filter.map((tag: any) => tag.id).includes(tag.id)}
-            aria-label={`${t(filterLabel)} ${tag.name.replace('_', ' ')}`}
+            aria-checked={
+              Array.isArray(filter) &&
+              filter.map((tag: any) => tag.id).includes(tag.id)
+            }
+            aria-label={`${t(filterLabel)} ${
+              filterLabel === 'search.filter_lang'
+                ? tag.name.replace('_', ' ')
+                : tag[nameLang].replace('_', ' ')
+            }`}
             key={`tagFilter-${i}`}
             className={
-              Array.isArray(filter) && filter?.map((tag: any) => tag.id).includes(tag.id) &&
+              Array.isArray(filter) &&
+              filter?.map((tag: any) => tag.id).includes(tag.id) &&
               availableTags.includes(tag.id)
                 ? styles.selected
                 : styles.filterTag
@@ -65,11 +76,13 @@ function ButtonFilter({
               setFilter((current: { id: string; name: string }[]) =>
                 filterLabel === 'search.filter_lang'
                   ? handleFilterLang(current, tag)
-                  : handleFilterEvent(current, tag) 
+                  : handleFilterEvent(current, tag)
               );
             }}
           >
-            {tag.name.replace('_', ' ')}
+            {filterLabel === 'search.filter_lang'
+              ? tag.name.replace('_', ' ')
+              : tag[nameLang].replace('_', ' ')}
           </Button>
         ))}
       </div>

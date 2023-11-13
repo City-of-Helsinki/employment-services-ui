@@ -24,7 +24,7 @@
   "search": {
     "filter": "Select topics",
     "filter_lang": "Select languages",
-    "dropdown_label": "Event languages",
+    "dropdown_label": "Event language",
     "clear": "Clear all filters",
     "title": "Search the Employment Services website",
     "page_title": "Search",

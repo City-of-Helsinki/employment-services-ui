@@ -14,6 +14,7 @@ import {
   handlePageURL,
   getContent,
   getAvailableTags,
+  drupalLanguages,
 } from '@/lib/helpers';
 
 import styles from './events.module.scss';
@@ -33,8 +34,12 @@ export default function Events(props: EventListProps): JSX.Element {
       ? `${slug[0]}/${slug[1]}`
       : `${locale}/${slug[0]}/${slug[1]}`;
 
-  const [languageFilter, setLanguageFilter] = useState<any>(getInitialFilters('lang', locale ?? 'fi'));
-  const [filter, setFilter] = useState<any>(getInitialFilters('tag', locale ?? 'fi'));
+  const [languageFilter, setLanguageFilter] = useState<any>(
+    getInitialFilters('lang', locale ?? 'fi')
+  );
+  const [filter, setFilter] = useState<any>(
+    getInitialFilters('tag', locale ?? 'fi')
+  );
 
   const fetcher = (eventsIndex: number) =>
     getEventsSearch(
@@ -61,39 +66,73 @@ export default function Events(props: EventListProps): JSX.Element {
           })
         );
         setEventsLanguageTags(updatedTerms);
-      });  
+      });
 
-      getEventsTags('event_tags', languageFilter[0]?.Id ?? locale)
-      .then((response) => response.data)
-      .then((data) => data.map((term: any) => term.attributes))
+    const arrayTag: any = [];
+    Promise.all(
+      drupalLanguages.map((lang) => getEventsTags('event_tags', lang))
+    )
+      .then((responses) => Promise.all(responses.map((res) => res.data)))
+      .then((data) => data.flat())
       .then((result) => {
-        const tags: string[] = result.map(
-          (tag: { field_id: string; name: string }) => ({
-            id: tag.field_id,
-            name: tag.name,
-          })
-        );
-        tags.sort((a: any, b: any) => a.name.localeCompare(b.name));
-        setEventsTags(tags);
+        arrayTag.push(...result.map((data: any) => data.attributes));
+      })
+      .then(() => {
+        const groupedTags: {
+          [id: string]: {
+            id: string;
+            name_en: string;
+            name_fi: string;
+            name_sv: string;
+          };
+        } = {};
+
+        arrayTag.forEach((tag: any) => {
+          const id = tag.field_id;
+          if (!groupedTags[id]) {
+            groupedTags[id] = {
+              id: id,
+              name_en: tag.langcode === 'en' ? tag.name : '',
+              name_fi: tag.langcode === 'fi' ? tag.name : '',
+              name_sv: tag.langcode === 'sv' ? tag.name : '',
+            };
+          } else {
+            if (tag.langcode === 'en') {
+              groupedTags[id].name_en = tag.name;
+            } else if (tag.langcode === 'fi') {
+              groupedTags[id].name_fi = tag.name;
+            } else if (tag.langcode === 'sv') {
+              groupedTags[id].name_sv = tag.name;
+            }
+          }
+        });
+
+
+        const resultArray = Object.values(groupedTags);
+        setEventsTags(resultArray);
+      })
+      .catch((error) => {
+        console.error('Error fetching and processing data:', error);
       });
   }, [locale]);
 
   useEffect(() => {
     if (eventsTags && eventsTags.length > 0) {
       const tagEvent = isFirstElementString(filter)
-        ? eventsTags.filter((tag: any) => filter.includes(tag.name))
+        ? eventsTags.filter((tag: any) => filter.includes(tag.name_en))
         : [...filter];
       setFilter(tagEvent);
     }
-        if (eventsLanguageTags && eventsLanguageTags.length > 0) {      
+    if (eventsLanguageTags && eventsLanguageTags.length > 0) {
       const tagEvent = isFirstElementString(languageFilter)
-        ? eventsLanguageTags.filter((tag: any) => languageFilter.includes(tag.id))
+        ? eventsLanguageTags.filter((tag: any) =>
+            languageFilter.includes(tag.id)
+          )
         : [...languageFilter];
       setLanguageFilter(tagEvent);
     }
-    
   }, [eventsTags, eventsLanguageTags]);
-  
+
   const isFirstElementString = (array: any) => {
     return array !== null && array !== undefined && typeof array[0] === 'string'
       ? true
@@ -102,7 +141,7 @@ export default function Events(props: EventListProps): JSX.Element {
 
   const updateURL = useCallback(() => {
     handlePageURL(
-      filter as [{ id: string; name: string }],
+      filter as [{ id: string; name_en: string }],
       languageFilter as any,
       router,
       basePath
@@ -144,12 +183,12 @@ export default function Events(props: EventListProps): JSX.Element {
   };
 
   const getInitialOptions = () => {
-      const dropdownOptions: { value: string, label: string }[] = [];
-      
-      eventsLanguageTags.map((option: {id: string, name: string}) =>
-       dropdownOptions.push({ value: option.id, label: option.name })
-      );
-      return dropdownOptions;
+    const dropdownOptions: { value: string; label: string }[] = [];
+
+    eventsLanguageTags.map((option: { id: string; name: string }) =>
+      dropdownOptions.push({ value: option.id, label: option.name })
+    );
+    return dropdownOptions;
   };
 
   return (
@@ -170,9 +209,15 @@ export default function Events(props: EventListProps): JSX.Element {
             filter={filter as any}
             availableTags={getAvailableTags(events, 'field_event_tags_id')}
             filterLabel={'search.filter'}
+            language={
+              languageFilter.length > 0 &&
+              drupalLanguages.includes(languageFilter[0].id)
+                ? languageFilter[0].id
+                : locale
+            }
           />
 
-        <ResponsiveFilterMapper
+          <ResponsiveFilterMapper
             tags={eventsLanguageTags}
             setFilter={setLanguageFilter}
             filter={languageFilter}
