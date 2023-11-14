@@ -330,7 +330,6 @@ export const getInitialFilters = (filterName: string, locale: string) => {
 if (urlParams !== null && urlParams.getAll(filterName).length !== 0) {
   return urlParams.getAll(filterName);
 }
-    const sessionLocale = sessionStorage.getItem('locale');
     const sessionFilters = sessionStorage.getItem(filterName);    
     if (sessionFilters !== null) {
       return JSON.parse(sessionFilters);

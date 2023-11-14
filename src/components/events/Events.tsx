@@ -55,65 +55,68 @@ export default function Events(props: EventListProps): JSX.Element {
   const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
 
   useEffect(() => {
-    getEventsTags('event_languages', 'fi')
-      .then((response) => response.data)
-      .then((data) => data.map((term: any) => term.attributes))
-      .then((result) => {
-        const updatedTerms = result.map(
-          (tag: { field_language_id: string; name: string }) => ({
-            id: tag.field_language_id,
-            name: tag.name,
-          })
-        );
-        setEventsLanguageTags(updatedTerms);
-      });
-
-    const arrayTag: any = [];
-    Promise.all(
-      drupalLanguages.map((lang) => getEventsTags('event_tags', lang))
-    )
-      .then((responses) => Promise.all(responses.map((res) => res.data)))
-      .then((data) => data.flat())
-      .then((result) => {
-        arrayTag.push(...result.map((data: any) => data.attributes));
-      })
-      .then(() => {
-        const groupedTags: {
-          [id: string]: {
-            id: string;
-            name_en: string;
-            name_fi: string;
-            name_sv: string;
-          };
-        } = {};
-
-        arrayTag.forEach((tag: any) => {
-          const id = tag.field_id;
-          if (!groupedTags[id]) {
-            groupedTags[id] = {
-              id: id,
-              name_en: tag.langcode === 'en' ? tag.name : '',
-              name_fi: tag.langcode === 'fi' ? tag.name : '',
-              name_sv: tag.langcode === 'sv' ? tag.name : '',
+    Promise.all([
+      getEventsTags('event_languages', 'fi')
+        .then((response) => response.data)
+        .then((data) => data.map((term: any) => term.attributes))
+        .then((result) => {
+          const updatedTerms = result.map(
+            (tag: { field_language_id: string; field_display_name: string, name: string }) => ({
+              id: tag.field_language_id,
+              name: tag.field_display_name || tag.name, //,
+            })
+          );
+          setEventsLanguageTags(updatedTerms);
+        }),
+    
+      Promise.all(
+        drupalLanguages.map((lang) => getEventsTags('event_tags', lang))
+      )
+        .then((responses) => Promise.all(responses.map((res) => res.data)))
+        .then((data) => data.flat())
+        .then((result) => {
+          const arrayTag: any = [];
+          arrayTag.push(...result.map((data: any) => data.attributes));
+    
+          const groupedTags: {
+            [id: string]: {
+              id: string;
+              name_en: string;
+              name_fi: string;
+              name_sv: string;
             };
-          } else {
-            if (tag.langcode === 'en') {
-              groupedTags[id].name_en = tag.name;
-            } else if (tag.langcode === 'fi') {
-              groupedTags[id].name_fi = tag.name;
-            } else if (tag.langcode === 'sv') {
-              groupedTags[id].name_sv = tag.name;
+          } = {};
+    
+          arrayTag.forEach((tag: any) => {
+            const id = tag.field_id;
+            if (!groupedTags[id]) {
+              groupedTags[id] = {
+                id: id,
+                name_en: tag.langcode === 'en' ? tag.name : '',
+                name_fi: tag.langcode === 'fi' ? tag.name : '',
+                name_sv: tag.langcode === 'sv' ? tag.name : '',
+              };
+            } else {
+              if (tag.langcode === 'en') {
+                groupedTags[id].name_en = tag.name;
+              } else if (tag.langcode === 'fi') {
+                groupedTags[id].name_fi = tag.name;
+              } else if (tag.langcode === 'sv') {
+                groupedTags[id].name_sv = tag.name;
+              }
             }
-          }
-        });
-
-
-        const resultArray = Object.values(groupedTags);
-        setEventsTags(resultArray);
-      })
+          });
+    
+          const resultArray = Object.values(groupedTags);
+          setEventsTags(resultArray);
+        })
+        .catch((error) => {
+          console.error('Error fetching event tags:', error);
+        }),
+    ])
       .catch((error) => {
-        console.error('Error fetching and processing data:', error);
-      });
+        console.error('Error fetching language tags:', error);
+      });    
   }, [locale]);
 
   useEffect(() => {
@@ -139,13 +142,13 @@ export default function Events(props: EventListProps): JSX.Element {
       : false;
   };
 
-  const updateURL = useCallback(() => {
+  const updateURL = useCallback(() => {   
     handlePageURL(
       filter as [{ id: string; name_en: string }],
       languageFilter as any,
       router,
       basePath
-    );
+    ); 
   }, [locale, filter, languageFilter]);
 
   useEffect(() => {
@@ -203,6 +206,18 @@ export default function Events(props: EventListProps): JSX.Element {
         )}
         <div role="group">
           <h2>{t('search.header')}</h2>
+
+          <ResponsiveFilterMapper
+            tags={eventsLanguageTags}
+            setFilter={setLanguageFilter}
+            filter={languageFilter}
+            availableTags={getAvailableTags(events, 'field_language_id')}
+            filterLabel={'search.filter_lang'}
+            setAvailableTags={filter.length > 0}
+            dropdownLabel={'search.dropdown_label'}
+            initialOptions={getInitialOptions()}
+          />
+
           <ButtonFilter
             tags={eventsTags}
             setFilter={setFilter}
@@ -215,18 +230,6 @@ export default function Events(props: EventListProps): JSX.Element {
                 ? languageFilter[0].id
                 : locale
             }
-          />
-
-          <ResponsiveFilterMapper
-            tags={eventsLanguageTags}
-            setFilter={setLanguageFilter}
-            filter={languageFilter}
-            availableTags={getAvailableTags(events, 'field_language_id')}
-            filterLabel={'search.filter_lang'}
-            setAvailableTags={filter.length > 0}
-            dropdownLabel={'search.dropdown_label'}
-            initialOptions={getInitialOptions()}
-            select={languageFilter}
           />
 
           <HDSButton

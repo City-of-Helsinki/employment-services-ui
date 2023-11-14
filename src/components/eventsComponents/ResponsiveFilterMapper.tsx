@@ -6,18 +6,16 @@ import ButtonFilter from './ButtonFilter';
 interface ResponsiveFilterMapperProps {
   setAvailableTags?: boolean;
   setFilter: (newFilter: any) => void; 
-  filter: any;
+  filter: [{ id: string; name: string }];
   initialOptions: { label: string }[]
-  select: { label: string }[];
   tags: string[];
-  availableTags: any;
+  availableTags: string[];
   filterLabel: string;
   dropdownLabel: string;
 }
 
 function ResponsiveFilterMapper({
   setAvailableTags = true,
-  select,
   initialOptions,
   setFilter,
   filter,
@@ -44,8 +42,8 @@ function ResponsiveFilterMapper({
       <DropdownFilter
         setAvailableTags={setAvailableTags}
         setFilter={setFilter}
-        select={select}
-        initialOptions={initialOptions}
+        select={filter}
+        initialOptions={initialOptions as { value: string; label: string }[]}
         filterLabel={filterLabel}
         dropdownLabel={dropdownLabel}
         availableTags={availableTags}

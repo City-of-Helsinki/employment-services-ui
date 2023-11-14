@@ -29,7 +29,7 @@ export default async function handler(
     return;
   }
 
-  const { index, eventTagId, eventTagName, languageTagId, locale }: Index =
+  const { index, eventTagId, languageTagId, locale }: Index =
     req?.query || {};
 
   if (isNaN(Number(index))) {
@@ -101,7 +101,7 @@ export default async function handler(
     res.status(500);
   }
 
-  if (eventTagId) {
+  if (languageTagId) {
     try {
       const searchRes = await elastic.search({
         index: `event_index`,
@@ -116,9 +116,9 @@ export default async function handler(
         },
       });
       const {
-        hits: { total },
+        hits: { total, hits },
       } = searchRes as {
-        hits: { total: SearchTotalHits };
+        hits: { total: SearchTotalHits, hits: any };
       };
 
       response = {
@@ -130,7 +130,7 @@ export default async function handler(
       res.status(500);
     }
   }
-  res.json(response);
+    res.json(response);
 }
 
 const getLanguage = (languageTagId: string, locale: string) => {
