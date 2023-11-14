@@ -37,7 +37,6 @@ export const getEventsSearch = async (
   const queryParams = {
     index: eventsIndex,
     eventTagId: eventTags.map((tag: { id: string }) => tag.id),
-    eventTagName: eventTags.map((tag: { name: string }) => tag.name),
     languageTagId: languageTag.map((tag: { id: string }) => tag.id),
     locale: locale,
   };

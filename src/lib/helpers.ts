@@ -37,7 +37,7 @@ export const printablePages = [
 ];
 
 export const primaryLanguages = ['fi', 'en', 'sv'];
-export const drupalLanguages = ['fi', 'en', 'sv'];
+export const drupalLanguages = ['fi', 'en', 'sv', 'ua', 'ru', 'so'];
 export const frontPagePaths = [
   '/',
   '/en',

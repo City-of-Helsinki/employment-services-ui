@@ -63,7 +63,7 @@ export default function Events(props: EventListProps): JSX.Element {
           const updatedTerms = result.map(
             (tag: { field_language_id: string; field_display_name: string, name: string }) => ({
               id: tag.field_language_id,
-              name: tag.field_display_name || tag.name, //,
+              name: tag.field_display_name || tag.name,
             })
           );
           setEventsLanguageTags(updatedTerms);
@@ -84,6 +84,9 @@ export default function Events(props: EventListProps): JSX.Element {
               name_en: string;
               name_fi: string;
               name_sv: string;
+              name_so: string;
+              name_ua: string;
+              name_ru: string;
             };
           } = {};
     
@@ -95,6 +98,9 @@ export default function Events(props: EventListProps): JSX.Element {
                 name_en: tag.langcode === 'en' ? tag.name : '',
                 name_fi: tag.langcode === 'fi' ? tag.name : '',
                 name_sv: tag.langcode === 'sv' ? tag.name : '',
+                name_so: tag.langcode === 'so' ? tag.name : '',
+                name_ua: tag.langcode === 'ua' ? tag.name : '',
+                name_ru: tag.langcode === 'ru' ? tag.name : '',
               };
             } else {
               if (tag.langcode === 'en') {
@@ -103,12 +109,20 @@ export default function Events(props: EventListProps): JSX.Element {
                 groupedTags[id].name_fi = tag.name;
               } else if (tag.langcode === 'sv') {
                 groupedTags[id].name_sv = tag.name;
+              } else if (tag.langcode === 'so') {
+                groupedTags[id].name_so = tag.name;
+              } else if (tag.langcode === 'ua') {
+                groupedTags[id].name_ua = tag.name;
+              } else if (tag.langcode === 'ru') {
+                groupedTags[id].name_ru = tag.name;
               }
             }
           });
     
           const resultArray = Object.values(groupedTags);
           setEventsTags(resultArray);
+          console.log('resultArray', resultArray);
+          
         })
         .catch((error) => {
           console.error('Error fetching event tags:', error);
