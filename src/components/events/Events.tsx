@@ -53,6 +53,8 @@ export default function Events(props: EventListProps): JSX.Element {
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
   const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
+  const [selectedLanguage, setSelectedLanguage] = useState<any>(locale);
+
 
   useEffect(() => {
     Promise.all([
@@ -121,7 +123,6 @@ export default function Events(props: EventListProps): JSX.Element {
     
           const resultArray = Object.values(groupedTags);
           setEventsTags(resultArray);
-          console.log('resultArray', resultArray);
           
         })
         .catch((error) => {
@@ -147,6 +148,7 @@ export default function Events(props: EventListProps): JSX.Element {
           )
         : [...languageFilter];
       setLanguageFilter(tagEvent);
+      document.documentElement.setAttribute('lang', languageFilter[0]?.id)
     }
   }, [eventsTags, eventsLanguageTags]);
 
@@ -190,6 +192,7 @@ export default function Events(props: EventListProps): JSX.Element {
     setFilter([]);
     setLanguageFilter([]);
     router.replace(`/${basePath}`, undefined, { shallow: true });
+    document.documentElement.setAttribute('lang', locale ?? 'fi');
   };
 
   const resultText = () => {
@@ -207,6 +210,12 @@ export default function Events(props: EventListProps): JSX.Element {
     );
     return dropdownOptions;
   };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && document && selectedLanguage) {
+      document.documentElement.setAttribute('lang', selectedLanguage);
+    }
+  }, [selectedLanguage]);
 
   return (
     <div className="component" onLoad={() => keepScrollPosition()}>
@@ -230,6 +239,7 @@ export default function Events(props: EventListProps): JSX.Element {
             setAvailableTags={filter.length > 0}
             dropdownLabel={'search.dropdown_label'}
             initialOptions={getInitialOptions()}
+            setSelectedLanguage={setSelectedLanguage}
           />
 
           <ButtonFilter
@@ -239,7 +249,7 @@ export default function Events(props: EventListProps): JSX.Element {
             availableTags={getAvailableTags(events, 'field_event_tags_id')}
             filterLabel={'search.filter'}
             language={
-              languageFilter.length > 0 &&
+              languageFilter?.length > 0 &&
               drupalLanguages.includes(languageFilter[0].id)
                 ? languageFilter[0].id
                 : locale

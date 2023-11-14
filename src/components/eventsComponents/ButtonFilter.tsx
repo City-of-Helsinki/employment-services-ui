@@ -11,8 +11,8 @@ interface ButtonFilterProps {
   filterLabel: string;
   setAvailableTags?: any;
   language?: any;
+  setSelectedLanguage?: any;
 }
-
 
 function ButtonFilter({
   tags,
@@ -21,13 +21,16 @@ function ButtonFilter({
   availableTags,
   filterLabel,
   setAvailableTags = true,
-  language
+  language,
+  setSelectedLanguage
 }: ButtonFilterProps) {
   const { t } = useTranslation();
   const handleFilterLang = (
     current: { id: string; name: string }[],
     tag: { id: string; name: string }
-  ) => (current?.findIndex((item) => item.id === tag.id) !== -1 ? [] : [tag]);
+  ) => {
+    return current?.findIndex((item) => item.id === tag.id) !== -1 ? [] : [tag];
+  };
 
   const handleFilterEvent = (
     current: { id: string; name: string }[],
@@ -73,6 +76,9 @@ function ButtonFilter({
                 : styles.filterTag
             }
             onClick={() => {
+              filterLabel === 'search.filter_lang'
+                ? setSelectedLanguage(String(tag.id))
+                : null;
               setFilter((current: { id: string; name: string }[]) =>
                 filterLabel === 'search.filter_lang'
                   ? handleFilterLang(current, tag)

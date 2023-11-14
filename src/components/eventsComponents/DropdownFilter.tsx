@@ -12,6 +12,7 @@ interface DropdownFilterProps {
   dropdownLabel: string;
   availableTags: string[];
   select: { id: string; name: string }[];
+  setSelectedLanguage: any;
 }
 
 function DropdownFilter({
@@ -22,6 +23,7 @@ function DropdownFilter({
   dropdownLabel,
   availableTags,
   select,
+  setSelectedLanguage
 }: DropdownFilterProps) {
   const { t } = useTranslation();
   const [domLoaded, setDomLoaded] = useState<boolean>(false);
@@ -64,13 +66,16 @@ function DropdownFilter({
               const lastSelected = selectedOption[selectedOption.length - 1];
               selectedOption.splice(0, selectedOption.length - 1);
               setFilter([{ id: lastSelected.value, name: lastSelected.label }]);
+              setSelectedLanguage(lastSelected.value)
             } else if (selectedOption.length === 1) {
               setFilter([
                 { id: selectedOption[0].value, name: selectedOption[0].label },
               ]);
+              setSelectedLanguage(selectedOption[0].value)
             } else {
               setFilter([]);
             }
+    
           }}
           value={currentOptionSelected}
           options={initialOptions}

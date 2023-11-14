@@ -12,6 +12,7 @@ interface ResponsiveFilterMapperProps {
   availableTags: string[];
   filterLabel: string;
   dropdownLabel: string;
+  setSelectedLanguage: any;
 }
 
 function ResponsiveFilterMapper({
@@ -23,6 +24,7 @@ function ResponsiveFilterMapper({
   availableTags,
   filterLabel,
   dropdownLabel,
+  setSelectedLanguage
 }: ResponsiveFilterMapperProps) {
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -40,13 +42,14 @@ function ResponsiveFilterMapper({
   if (isMobile) {
     return (
       <DropdownFilter
-        setAvailableTags={setAvailableTags}
-        setFilter={setFilter}
-        select={filter}
-        initialOptions={initialOptions as { value: string; label: string }[]}
-        filterLabel={filterLabel}
-        dropdownLabel={dropdownLabel}
-        availableTags={availableTags}
+      setAvailableTags={setAvailableTags}
+      setFilter={setFilter}
+      select={filter}
+      initialOptions={initialOptions as { value: string; label: string }[]}
+      filterLabel={filterLabel}
+      dropdownLabel={dropdownLabel}
+      availableTags={availableTags}
+      setSelectedLanguage={setSelectedLanguage}
       />
     );
   } else {
@@ -58,6 +61,7 @@ function ResponsiveFilterMapper({
         availableTags={availableTags}
         filterLabel={filterLabel}
         setAvailableTags={setAvailableTags}
+        setSelectedLanguage={setSelectedLanguage}
       />
     );
   }
