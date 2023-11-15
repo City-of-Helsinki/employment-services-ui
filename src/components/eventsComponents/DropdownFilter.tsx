@@ -7,7 +7,7 @@ import styles from '../events/events.module.scss';
 interface DropdownFilterProps {
   setAvailableTags?: boolean;
   setFilter: (newFilter: any) => void;
-  initialOptions: { value: string; label: string }[] | [];
+  initialOptions: any;
   filterLabel: string;
   dropdownLabel: string;
   availableTags: string[];
