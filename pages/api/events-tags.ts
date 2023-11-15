@@ -1,62 +1,33 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import * as Elastic from '@/lib/elasticsearch';
-
-
-interface QueryBody {
-  query: {
-    match_all: object,
-  },
-  size: number,
-  aggs: {
-    events_tags: {
-      terms: {
-        field: string,
-        size: number,
-      },
-    },
-  },
-}
-
+import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { tagField, locale }: Partial<{ [key: string]: string | string[]; }> = req?.query || {};
-
-  // No posts allowed, no missing params-errors revealed.
-  if (req.method !== 'GET') {
-    res.status(400);
-    return;
-  }
-  const elastic = Elastic.getElasticClient();
-
-  const body: QueryBody = {
-    query: {
-      match_all: {},
-    },
-    size: 0,
-    aggs: {
-      events_tags: {
-        terms: {
-          field: tagField as string,
-          size: 100,
-        },
-      },
-    },
-  };
-
   try {
-    const searchRes = await elastic.search({
-      index: `events_${locale}`,
-      body: body,
-    });
+    const { tagField, locale }: Partial<{ [key: string]: string | string[] }> =
+      req?.query || {};
 
-    const { events_tags }: any = searchRes.aggregations;
+    if (!tagField) {
+      throw new Error('Invalid or missing tagField parameter');
+    }
 
-    res.json(events_tags?.buckets);
-  } catch (err) {
-    console.log('err', err);
-    res.status(500);
+    const localePath =
+      locale === 'fi'
+        ? `jsonapi/taxonomy_term/${tagField}`
+        : `${locale}/jsonapi/taxonomy_term/${tagField}`;
+
+    const apiUrl = `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/${localePath}`;
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data from ${apiUrl}`);
+    }
+
+    const data = await response.json();
+
+    res.status(200).json(data);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
   }
 }

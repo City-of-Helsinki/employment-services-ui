@@ -37,6 +37,7 @@ export const printablePages = [
 ];
 
 export const primaryLanguages = ['fi', 'en', 'sv'];
+export const drupalLanguages = ['fi', 'en', 'sv', 'ua', 'ru', 'so'];
 export const frontPagePaths = [
   '/',
   '/en',
@@ -311,7 +312,7 @@ export const getKey = (index: number) => {
   return `${index}`;
 };
 
-export const getContent = (content: string, data: any) => {  
+export const getContent = (content: string, data: any) => {
   /** Filter events object from data */
   return data?.reduce((acc: any, curr: any) => acc.concat(curr?.[content]), []);
 };
@@ -326,12 +327,11 @@ export const getTotal = (data: EventData[]) => {
 
 export const getInitialFilters = (filterName: string, locale: string) => {
   if (typeof window !== 'undefined') {
-    if (urlParams !== null && urlParams.getAll(filterName).length !== 0) {
-      return urlParams.getAll(filterName);
-    }
-    const sessionLocale = sessionStorage.getItem('locale');
-    const sessionFilters = sessionStorage.getItem(filterName);
-    if (sessionFilters !== null && sessionLocale === locale) {
+if (urlParams !== null && urlParams.getAll(filterName).length !== 0) {
+  return urlParams.getAll(filterName);
+}
+    const sessionFilters = sessionStorage.getItem(filterName);    
+    if (sessionFilters !== null) {
       return JSON.parse(sessionFilters);
     } else {
       return [];
@@ -342,32 +342,52 @@ export const getInitialFilters = (filterName: string, locale: string) => {
 };
 
 export const handlePageURL = (
-  filter: string[],
+  filter: [{name_en: string, id: string}],
+  languageFilter: [{name: string, id: string}],
   router: any,
   basePath: string
 ) => {
-  if (filter.length) {
-    const tags = filter.map((tag) =>
-      tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
+  if (filter?.length || languageFilter?.length) {
+    const tags = filter?.map((tag) =>{
+      if (typeof tag === 'string') {
+      return  tag === filter[0] ? `tag=${tag}` : `&tag=${tag}`
+      } else {
+       return tag === filter[0] ? `tag=${tag.name_en}` : `&tag=${tag.name_en}`
+      }
+      }
     );
+    const langTags = languageFilter?.map((tag: { id: string }) => {
+      if (typeof tag === 'string') {
+        return tag === languageFilter[0] && tags.length === 0
+        ? `lang=${tag}`
+        : `&lang=${tag}`;
+      } else {
+       return tag === languageFilter[0] && tags.length === 0
+        ? `lang=${tag.id}`
+        : `&lang=${tag.id}`;
+      }
+  
+    });
 
     router.replace(
-      `/${basePath}?${tags.toString().replaceAll(',', '')}`,
+      `/${basePath}?${tags.toString().replaceAll(',', '')}${langTags
+        .toString()
+        .replaceAll(',', '')}`,
       undefined,
       { shallow: true }
     );
   }
 };
 
-export const getAvailableTags = (events: EventData[], fieldName: string) => {
-  const availableTags: string[] = [];
+export const getAvailableTags = (events: EventData[], fieldName: string) => {  
+  const availableTags: string[] = [];  
   events
     ?.map((event: { [field: string]: any }) => event?.[fieldName])
     .forEach((field: string[]) =>
-      field?.forEach((tag: string) =>
+      field?.forEach((tag: string) =>      
         !availableTags.includes(tag) ? availableTags.push(tag) : null
       )
-    );
+    );    
   return availableTags;
 };
 
