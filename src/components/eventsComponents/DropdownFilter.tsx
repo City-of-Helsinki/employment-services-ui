@@ -25,7 +25,7 @@ function DropdownFilter({
 }: DropdownFilterProps) {
   const { t } = useTranslation();
   const [domLoaded, setDomLoaded] = useState<boolean>(false);
-  const [currentOptionSelected, setCurrentOptionSelected] = useState<{ value: string, label: string }[]>()
+  const [currentOptionSelected, setCurrentOptionSelected] = useState<any>()
 
   useEffect(() => {
     setDomLoaded(true);
@@ -39,7 +39,7 @@ function DropdownFilter({
       setCurrentOptionSelected([]);
     } else {
       select?.map((option: any) => {
-        setCurrentOptionSelected([{ value: option.id, label: option.name }]);
+      setCurrentOptionSelected([{ value: option.id, label: option.name }]);
       });
     }
 
