@@ -67,8 +67,7 @@ function ButtonFilter({
             key={`tagFilter-${i}`}
             className={
               Array.isArray(filter) &&
-              filter?.map((tag: any) => tag.id).includes(tag.id) &&
-              availableTags.includes(tag.id)
+              filter?.map((tag: any) => tag.id).includes(tag.id)
                 ? styles.selected
                 : styles.filterTag
             }
