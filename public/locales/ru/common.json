@@ -23,6 +23,8 @@
   },
   "search": {
     "filter": "Фильтровать события",
+    "filter_lang": "Выберите языки",
+    "dropdown_label": "Язык",
     "clear": "Снять выбор",
     "title": "Search the Employment Services website",
     "page_title": "Search",
@@ -36,7 +38,8 @@
     "entity_type_event": "Событие",
     "entity_type_article": "Новость",
     "loading_suggestions": "Loading suggestions",
-    "group_description": "Вы можете выбрать из следующих фильтров несколько раз"
+    "group_description": "Вы можете выбрать из следующих фильтров несколько раз",
+    "header": "Предстоящие мероприятия"
   },
   "list": {
     "load_more": "Показать больше",
@@ -59,7 +62,18 @@
     "info_url_text": "Домашние страницы событий",
     "info_url_text_teams": "Открыть событие через Teams",
     "cancelled_text": "Отменено",
-    "field_offers_info_url": "Зарегистрировано"
+    "field_offers_info_url": "Зарегистрировано",
+    "provider": "Сведения об организаторе",
+    "publisher": "Сведения об издателе,",
+    "showAll": "SПоказать все",
+    "showLess": "Скрыть",
+    "Other_times": "Другие сроки проведения мероприятия",
+    "languages": "Языки"
+  },
+  "news": {
+    "news": "Новости",
+    "newsletter": "Новостная рассылка",
+    "partner_jobs": "Вакансии от партнеров"
   },
   "video": {
     "cookie_consent": "You have not allowed the use of cookies on this site.",
@@ -92,5 +106,15 @@
     "title": "Feedback buttons cannot be displayed",
     "text": "To use this feature, you must accept cookies from the site. You can provide feedback on this page by enabling statistics-related cookies.",
     "button": "Change cookie settings"
-  }
+  },
+  "datetime": {
+    "time": "в"
+  },
+  "Sun": "вс.",
+  "Mon": "пн.",
+  "Tue": "вт.",
+  "Wed": "ср.",
+  "Thu": "чт.",
+  "Fri": "пт.",
+  "Sat": "сб."
 }
