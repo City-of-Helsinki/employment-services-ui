@@ -99,7 +99,7 @@ function LanguageSelect({
                 clearSessionStorage();
               }}
             >
-              Россия
+              Русский
             </Link>
           )}
           {langLinks.so === activePath && activePath !== undefined && (
