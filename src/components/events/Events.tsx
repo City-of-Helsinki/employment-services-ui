@@ -7,7 +7,6 @@ import { Button as HDSButton, IconCrossCircle, Container } from 'hds-react';
 import { EventListProps } from '@/lib/types';
 import { getEventsSearch, getEventsTags } from '@/lib/client-api';
 import {
-  getKey,
   getTotal,
   keepScrollPosition,
   getInitialFilters,
@@ -22,6 +21,10 @@ import ButtonFilter from '../eventsComponents/ButtonFilter';
 import EventListComponent from '../eventsComponents/EventListComponent';
 import HtmlBlock from '../HtmlBlock';
 import ResponsiveFilterMapper from '../eventsComponents/ResponsiveFilterMapper';
+
+const getKeyForEvent = (index: number) => {
+  return `${index}`;
+};
 
 export default function Events(props: EventListProps): JSX.Element {
   const { field_title, field_events_list_desc } = props;
@@ -41,60 +44,71 @@ export default function Events(props: EventListProps): JSX.Element {
     getInitialFilters('tag', locale ?? 'fi')
   );
 
-  const fetcher = (eventsIndex: number) =>
+  const fetcherForEvents = (eventsIndex: number) =>
     getEventsSearch(
       eventsIndex,
       filter as [{ id: string; name: string }],
       languageFilter as any,
       locale ?? 'fi'
     );
-  const { data, setSize } = useSWRInfinite(getKey, fetcher);
+  const { data, setSize } = useSWRInfinite(getKeyForEvent, fetcherForEvents);
   const events = data && getContent('events', data);
   const total = data && getTotal(data);
   const [eventsTags, setEventsTags] = useState<any>([]);
   const [eventsLanguageTags, setEventsLanguageTags] = useState<any>([]);
 
   useEffect(() => {
-    Promise.all([
-      getEventsTags('event_languages', 'fi')
-        .then((response) => response.data)
-        .then((data) => data.map((term: any) => term.attributes))
-        .then((result) => {
-          const updatedTerms = result.map(
-            (tag: { field_language_id: string; field_display_name: string, name: string }) => ({
-              id: tag.field_language_id,
-              name: tag.field_display_name || tag.name,
-            })
-          );
-          setEventsLanguageTags(updatedTerms);
-        }),
-    
-      Promise.all(
-        drupalLanguages.map((lang) => getEventsTags('event_tags', lang))
-      )
-        .then((responses) => Promise.all(responses.map((res) => res.data)))
-        .then((data) => data.flat())
-        .then((result) => {
-          const arrayTag: any = [];
-          arrayTag.push(...result.map((data: any) => data.attributes));
-    
-          const groupedTags: {
-            [id: string]: {
-              id: string;
-              name_en: string;
-              name_fi: string;
-              name_sv: string;
-              name_so: string;
-              name_ua: string;
-              name_ru: string;
-            };
-          } = {};
-    
-          arrayTag.forEach((tag: any) => {
+    const fetchData = async () => {
+      try {
+        const languagesResponse = await getEventsTags('event_languages', 'fi');
+        const languagesData = await languagesResponse.data;
+        const updatedTerms = languagesData
+          .map((term: any) => term.attributes)
+          .map((tag: any) => ({
+            id: tag.field_language_id,
+            name: tag.field_display_name || tag.name,
+          }));
+        setEventsLanguageTags(updatedTerms);
+
+        const tagsResponses = await Promise.all(
+          drupalLanguages.map(async (lang) => {
+            try {
+              const response = await getEventsTags('event_tags', lang);
+              return response.data;
+            } catch (error) {
+              console.error(`Error fetching data for language ${lang}:`, error);
+              return [];
+            }
+          })
+        );
+
+        const tagsData = tagsResponses
+          .flat()
+          .map((response) => response.attributes);
+
+        const groupedTags: {
+          [id: string]: {
+            id: string;
+            name_en: string;
+            name_fi: string;
+            name_sv: string;
+            name_so: string;
+            name_ua: string;
+            name_ru: string;
+          };
+        } = {};
+
+        tagsData.forEach(
+          (tag: {
+            langcode: string;
+            name: string;
+            field_id: string;
+            id: string;
+          }) => {
             const id = tag.field_id;
             if (!groupedTags[id]) {
               groupedTags[id] = {
-                id: id,
+                id,
                 name_en: tag.langcode === 'en' ? tag.name : '',
                 name_fi: tag.langcode === 'fi' ? tag.name : '',
                 name_sv: tag.langcode === 'sv' ? tag.name : '',
@@ -103,34 +117,18 @@ export default function Events(props: EventListProps): JSX.Element {
                 name_ru: tag.langcode === 'ru' ? tag.name : '',
               };
             } else {
-              if (tag.langcode === 'en') {
-                groupedTags[id].name_en = tag.name;
-              } else if (tag.langcode === 'fi') {
-                groupedTags[id].name_fi = tag.name;
-              } else if (tag.langcode === 'sv') {
-                groupedTags[id].name_sv = tag.name;
-              } else if (tag.langcode === 'so') {
-                groupedTags[id].name_so = tag.name;
-              } else if (tag.langcode === 'ua') {
-                groupedTags[id].name_ua = tag.name;
-              } else if (tag.langcode === 'ru') {
-                groupedTags[id].name_ru = tag.name;
-              }
+              (groupedTags[id] as any)[`name_${tag.langcode}`] = tag.name;
             }
-          });
-    
-          const resultArray = Object.values(groupedTags);
-          setEventsTags(resultArray);
-          console.log('resultArray', resultArray);
-          
-        })
-        .catch((error) => {
-          console.error('Error fetching event tags:', error);
-        }),
-    ])
-      .catch((error) => {
-        console.error('Error fetching language tags:', error);
-      });    
+          }
+        );
+        const resultArray = Object.values(groupedTags);
+        setEventsTags(resultArray);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
   }, [locale]);
 
   useEffect(() => {
@@ -156,13 +154,13 @@ export default function Events(props: EventListProps): JSX.Element {
       : false;
   };
 
-  const updateURL = useCallback(() => {   
+  const updateURL = useCallback(() => {
     handlePageURL(
       filter as [{ id: string; name_en: string }],
       languageFilter as any,
       router,
       basePath
-    ); 
+    );
   }, [locale, filter, languageFilter]);
 
   useEffect(() => {

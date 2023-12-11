@@ -12,7 +12,6 @@ import {
 
 
 import { getNews } from '@/lib/client-api';
-import { getContent, getKey } from '@/lib/helpers';
 import { DrupalFormattedText } from '@/lib/types';
 import HtmlBlock from '../HtmlBlock';
 import styles from './news.module.scss';
@@ -37,6 +36,9 @@ interface News {
   field_article_category: string;
   created: string;
 }
+const getKeyForNews = (index: number) => {
+  return `${index}_news`;
+};
 
 function NewsList({
   field_title,
@@ -50,12 +52,13 @@ function NewsList({
   const [newsIndex, setNewsIndex] = useState<number>(4);
   const bgColor = field_background_color?.field_css_name ?? 'white';
 
-  const fetcher = (index: number) =>
+  const fetcherForNews = (index: number) =>
     getNews(index, newsIndex, field_news_filter, locale ?? 'fi');
 
-  const { data, size, setSize } = useSWRInfinite(getKey, fetcher);
+  const { data, size, setSize } = useSWRInfinite(getKeyForNews, fetcherForNews);
   const total = data && data[0].total;
-  const news = data && getContent('news', data);
+  
+  const news = data && data[0]?.news;
 
   useEffect(() => {
     setSize(1);
@@ -92,8 +95,8 @@ function NewsList({
         >
           {news?.map((news: News) => (
             <div className={styles.newsCard} key={news.id}>
-              <a href={news.url[0]}>
-                <h3 className={styles.newsTitle}>{news.title}</h3>
+              <a href={news?.url[0]}>
+                <h3 className={styles.newsTitle}>{news?.title}</h3>
               </a>
               {news.field_article_category === 'newsletter' && (
                 <p>{t('news.newsletter')}</p>

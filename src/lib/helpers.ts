@@ -308,10 +308,6 @@ const urlParams =
     ? new URLSearchParams(window.location.search)
     : null;
 
-export const getKey = (index: number) => {
-  return `${index}`;
-};
-
 export const getContent = (content: string, data: any) => {
   /** Filter events object from data */
   return data?.reduce((acc: any, curr: any) => acc.concat(curr?.[content]), []);

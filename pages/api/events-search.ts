@@ -101,7 +101,7 @@ export default async function handler(
     res.status(500);
   }
 
-  if (languageTagId) {
+  if (languageTagId || eventTagId) {
     try {
       const searchRes = await elastic.search({
         index: `event_index`,
