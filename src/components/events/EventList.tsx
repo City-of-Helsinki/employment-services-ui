@@ -7,7 +7,6 @@ import { Linkbox, IconArrowRight, Container } from 'hds-react';
 import { EventsQueryParams, EventListProps, EventData } from '@/lib/types';
 import { getEvents } from '@/lib/client-api';
 
-import { getPathAlias } from '@/lib/helpers';
 import HtmlBlock from '@/components/HtmlBlock';
 import TagList from './TagList';
 import styles from './events.module.scss';
@@ -37,7 +36,7 @@ export function EventList({
   
   const fetcher = () => getEvents(queryParams);
   const { data } = useSWR(`/${locale}/${asPath}`, fetcher);
-
+  
   return (
     <div
       className="component hide-print"
@@ -75,7 +74,7 @@ export function EventList({
                     linkboxAriaLabel={`${t('list.event_title')} ${event.title}`}
                     linkAriaLabel={`${t('list.event_link')} ${event.title}`}
                     key={event.id}
-                    href={getPathAlias(event.path)}
+                    href={event.url}
                     withBorder
                   >
                     {event.field_image_url && (
