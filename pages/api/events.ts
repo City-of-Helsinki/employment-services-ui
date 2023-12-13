@@ -27,13 +27,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     res.status(400).json(events)
     return
   }
- const {tags, locationId, locale} = queryParams;
-
+  const {tags, locationId, locale} = queryParams;
+  
   const elastic = Elastic.getElasticClient();
 
   let response: any = {};
   const body = {
-    size: 3,
+    size: locationId ? 2 : 3,
     query: {
       bool: {
         filter: [] as Terms[],
