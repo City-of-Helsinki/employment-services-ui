@@ -207,7 +207,7 @@ export default function Events(props: EventListProps): JSX.Element {
   };
 
   return (
-    <div className="component" onLoad={() => keepScrollPosition()}>
+    <div onLoad={() => keepScrollPosition()}>
       <Container className="container">
         {field_title && <h2>{field_title}</h2>}
 
