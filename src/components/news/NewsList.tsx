@@ -1,26 +1,28 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import useSWRInfinite from 'swr/infinite';
+import dateformat from 'dateformat';
 import {
   Button as HDSButton,
   IconPlus,
   IconArrowRight,
   Container,
 } from 'hds-react';
-import dateformat from 'dateformat';
-import useSWR from 'swr';
 
-import { DrupalFormattedText, Node } from '@/lib/types';
-import { getPathAlias } from '@/lib/helpers';
+
 import { getNews } from '@/lib/client-api';
-import HtmlBlock from '@/components/HtmlBlock';
+import { DrupalFormattedText } from '@/lib/types';
+import HtmlBlock from '../HtmlBlock';
 import styles from './news.module.scss';
+
+
 
 interface NewsListProps {
   field_title: string;
   field_short_list: boolean;
   field_news_filter: string;
   field_news_list_desc: DrupalFormattedText;
-  langcode: string;
   field_background_color: {
     field_css_name: string;
   };
@@ -28,46 +30,47 @@ interface NewsListProps {
 interface News {
   id: string;
   published_at?: string;
-  path: Path;
+  url: string;
   title: string;
   status: boolean;
   field_article_category: string;
   created: string;
 }
-
-interface Path {
-  alias: string;
-  langcode: string;
-  pid: number;
-}
+const getKeyForNews = (index: number) => {
+  return `${index}_news`;
+};
 
 function NewsList({
   field_title,
   field_short_list,
   field_news_list_desc,
   field_news_filter,
-  langcode,
   field_background_color,
 }: NewsListProps): JSX.Element {
   const { t } = useTranslation();
-  const [newsIndex, setNewsIndex] = useState<number>(1);
-  const [paginatedNews, setPaginatedNews] = useState<Node[]>([]);
+  const { locale }= useRouter();
+  const [newsIndex, setNewsIndex] = useState<number>(4);
   const bgColor = field_background_color?.field_css_name ?? 'white';
-  const fetcher = () => getNews(field_short_list, field_news_filter, langcode);
-  const { data: news } = useSWR(`/news`, fetcher);
 
-  const total: number = news?.length ?? 0;
-  useEffect(() => {
-      const paginatedArticle = news?.slice(0, 4 * newsIndex);
-      setPaginatedNews(paginatedArticle);
-  }, [news, newsIndex]);
+  const fetcherForNews = (index: number) =>
+    getNews(index, newsIndex, field_news_filter, locale ?? 'fi');
 
-  const loadMoreText = t('list.load_more');
-
-  const getArticleDate = (published_at: string | null, created: string) => {
-   return published_at !== null && published_at > created ? published_at : created;
-  }
+  const { data, size, setSize } = useSWRInfinite(getKeyForNews, fetcherForNews);
+  const total = data && data[0].total;
   
+  const news = data && data[0]?.news;
+
+  useEffect(() => {
+    setSize(1);
+  }, [newsIndex]); // eslint-disable-line
+
+  const getDateTimeFi = (published_at: string | null, created: string) => {
+    const timestamp: any =
+      published_at !== null && published_at > created ? published_at : created;
+    return dateformat(new Date(timestamp * 1000), 'dd.mm.yyyy');
+  };
+
+
   return (
     <div
       className="component"
@@ -90,37 +93,39 @@ function NewsList({
         <div
           className={`${styles.newsList} ${field_short_list && styles.short}`}
         >
-          {paginatedNews?.map((news: News) => (
+          {news?.map((news: News) => (
             <div className={styles.newsCard} key={news.id}>
-              <a href={getPathAlias(news.path)}>
-                <h3 className={styles.newsTitle}>{news.title}</h3>
+              <a href={news?.url[0]}>
+                <h3 className={styles.newsTitle}>{news?.title}</h3>
               </a>
               {news.field_article_category === 'newsletter' && (
                 <p>{t('news.newsletter')}</p>
               )}
               {news.published_at && (
                 <p className={styles.articleDate}>
-                  <time dateTime={getArticleDate(news.published_at, news.created)}>{`${dateformat(
-                    getArticleDate(news.published_at, news.created),
-                    'dd.mm.yyyy'
-                  )}`}</time>
+                  <time
+                    dateTime={getDateTimeFi(news.published_at, news.created)}
+                  >
+                    {getDateTimeFi(news.published_at, news.created)}
+                  </time>
                 </p>
               )}
             </div>
           ))}
         </div>
 
-        {!field_short_list && paginatedNews && total > paginatedNews.length && (
+        {!field_short_list && total > news?.length && (
           <div className={styles.loadMore}>
             <HDSButton
               variant="supplementary"
               iconRight={<IconPlus />}
               style={{ background: 'none' }}
               onClick={() => {
-                setNewsIndex(newsIndex + 1);
+                setNewsIndex(newsIndex + 4);
+                setSize(size + 1);
               }}
             >
-              {loadMoreText}
+              {t('list.load_more')}
             </HDSButton>
           </div>
         )}

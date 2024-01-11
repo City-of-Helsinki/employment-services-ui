@@ -11,6 +11,7 @@ const baseQueryParams = () =>
       'field_content.field_image.field_media_image',
       'field_content.field_background_color',
       'field_notification',
+      'field_content.field_accordion_items.field_accordion_item_content.field_link_list_with_description',
     ])
     .addFields(CONTENT_TYPES.MEDIA_IMAGE, [
       'field_media_image',
@@ -21,7 +22,7 @@ const baseQueryParams = () =>
       'field_accordion_title_level',
       'field_accordion_text',
       'field_accordion_title',
-      'field_accordion_items'
+      'field_accordion_items',
     ])
     .addFields(CONTENT_TYPES.ACCORDION_ITEM, [
       'field_accordion_item_content',
@@ -76,6 +77,14 @@ const baseQueryParams = () =>
       'field_quote_author_last_name',
       'field_quote_author_title'
     ])
+    .addFields(CONTENT_TYPES.LINK_WITH_ICON, [
+      'field_header',
+      'field_link_list_title',
+      'field_icon',
+      'field_icon_positioning',
+      'field_link_list_with_description',
+      'field_header',
+    ])
 
 const getPageQueryParams = () =>
   baseQueryParams()
@@ -95,7 +104,8 @@ const getPageQueryParams = () =>
     ])
     .addInclude([
       'field_content.field_accordion_items.field_accordion_item_content',
-      'field_lower_content'
+      'field_content.field_link_list_with_description',
+      'field_lower_content',
     ])
     .addFields(CONTENT_TYPES.TEXT, [
       'field_text'
@@ -105,6 +115,14 @@ const getPageQueryParams = () =>
     ])
     .addFields(CONTENT_TYPES.SUJO_EMBEDDED, [
       'field_training'
+    ])
+    .addFields(CONTENT_TYPES.LINK_WITH_ICON, [
+      'field_header',
+      'field_link_list_title',
+      'field_icon',
+      'field_icon_positioning',
+      'field_link_list_with_description',
+      'field_header',
     ])
     .getQueryObject()
 
@@ -124,7 +142,9 @@ const getLandingPageQueryParams = () =>
     ])
     .addInclude([
       'field_hero.field_custom_hero_image.field_media_image',
-      'field_content.field_accordion_items.field_accordion_item_content'
+      'field_content.field_accordion_items.field_accordion_item_content',
+      'field_content.field_accordion_items.field_accordion_item_content.field_link_list_with_description',
+      'field_content.field_link_list_with_description',
     ])
     .addFields(CONTENT_TYPES.HERO, [
       'field_hero_desc',
@@ -143,6 +163,15 @@ const getLandingPageQueryParams = () =>
       'field_news_filter',
       'field_news_list_desc',
       'field_background_color',
+      'field_news_filter',
+    ])
+    .addFields(CONTENT_TYPES.LINK_WITH_ICON, [
+      'field_header',
+      'field_link_list_title',
+      'field_icon',
+      'field_icon_positioning',
+      'field_link_list_with_description',
+      'field_header',
     ])
     .getQueryObject()
 
@@ -176,11 +205,11 @@ export const baseEventQueryParams = () =>
       'field_location_extra_info',
       'field_offers_info_url',
       'field_event_tags',
+      'field_in_language',
       'field_provider',
       'field_super_event',
       'field_publisher',
       'field_provider',
-      'field_in_language'
     ])
 
 const getEventPageQueryParams = () =>
@@ -195,6 +224,8 @@ export const baseArticlePageQueryParams = () =>
       'field_content.field_liftup_with_image_image.field_media_image',
       'field_content.field_background_color',
       'field_content.field_accordion_items.field_accordion_item_content',
+      'field_content.field_link_list_with_description',
+      'field_content.field_accordion_items.field_accordion_item_content.field_link_list_with_description',
     ])
     .addFields(NODE_TYPES.ARTICLE, [
       'id',
@@ -257,6 +288,14 @@ export const baseArticlePageQueryParams = () =>
       'field_list_of_links_link',
       'field_list_of_links_image',
       'field_list_of_links_desc',
+    ])
+    .addFields(CONTENT_TYPES.LINK_WITH_ICON, [
+      'field_header',
+      'field_link_list_title',
+      'field_icon',
+      'field_icon_positioning',
+      'field_link_list_with_description',
+      'field_header',
     ])
 
 const getArticlePageQueryParams = () =>

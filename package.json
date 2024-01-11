@@ -10,7 +10,7 @@
     "preview": "next build && next start"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "8.1.0",
+    "@elastic/elasticsearch": "8.10.0",
     "@types/dateformat": "^5.0.0",
     "@types/qs": "^6.9.7",
     "axios": "^0.26.0",

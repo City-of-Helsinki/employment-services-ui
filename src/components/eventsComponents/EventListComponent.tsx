@@ -10,7 +10,7 @@ import { EventData } from '@/lib/types';
 
 function EventListComponent({ events }: { events: EventData[] }) {
     const { t } = useTranslation();
-  return (
+      return (
     <div className={styles.eventList}>
       {events && events.length > 0 ? (
         events.map((event: any, key: number) => (
@@ -35,7 +35,7 @@ function EventListComponent({ events }: { events: EventData[] }) {
               )}
 
               <div className={styles.eventCardContent}>
-                {event.field_tags && event.field_tags.length !== 0 && (
+                {event.field_event_tags && event.field_event_tags.length !== 0 && (
                   <TagList tags={event.field_event_tags} />
                 )}
                 <DateTime

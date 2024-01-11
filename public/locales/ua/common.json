@@ -23,6 +23,8 @@
   },
   "search": {
     "filter": "Фільтрувати заходи",
+    "filter_lang": "Виберіть мови",
+    "dropdown_label": "Мови консультування",
     "clear": "Прибрати з виділеного",
     "title": "Search the Employment Services website",
     "page_title": "Search",
@@ -36,7 +38,8 @@
     "entity_type_event": "Захід",
     "entity_type_article": "Новина",
     "loading_suggestions": "Loading suggestions",
-    "group_description": "Ви можете вибрати кілька з наведених нижче фільтрів одночасно."
+    "group_description": "Ви можете вибрати кілька з наведених нижче фільтрів одночасно.",
+    "header": "Майбутні заходи"
   },
   "list": {
     "load_more": "Показати більше",
@@ -60,7 +63,18 @@
     "info_url_text": "Домашня сторінка заходу",
     "info_url_text_teams": "Відкрийте захід через Teams",
     "cancelled_text": "Скасовано",
-    "field_offers_info_url": "Зареєструватися"
+    "field_offers_info_url": "Зареєструватися",
+    "provider": "Дані організатора",
+    "publisher": "Дані видавця",
+    "showAll": "Показати все",
+    "showLess": "Сховати",
+    "Other_times": "Інший час проведення заходу",
+    "languages": "Мови"
+  },
+  "news": {
+    "news": "Новини",
+    "newsletter": "Інформаційний бюлетень",
+    "partner_jobs": "Вакансії від партнерів"
   },
   "video": {
     "cookie_consent": "You have not allowed the use of cookies on this site.",
@@ -93,5 +107,15 @@
     "title": "Feedback buttons cannot be displayed",
     "text": "To use this feature, you must accept cookies from the site. You can provide feedback on this page by enabling statistics-related cookies.",
     "button": "Change cookie settings"
-  }
+  },
+  "datetime": {
+    "time": "о"
+  },
+  "Sun": "Нд",
+  "Mon": "Пн",
+  "Tue": "Вт",
+  "Wed": "Ср",
+  "Thu": "Чт",
+  "Fri": "Пт",
+  "Sat": "Сб"
 }

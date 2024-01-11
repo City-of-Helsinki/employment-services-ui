@@ -23,6 +23,8 @@
   },
   "search": {
     "filter": "Kala saar dhacdooyinka",
+    "filter_lang": "Dooro luqadda",
+    "dropdown_label": "Luqadaha hagitaanka",
     "clear": "Ka Saar doorashada",
     "title": "Search the Employment Services website",
     "page_title": "Search",
@@ -36,7 +38,8 @@
     "entity_type_event": "Dhacdo",
     "entity_type_article": "War",
     "loading_suggestions": "Loading suggestions",
-    "group_description": "Dhowr mar ayaad dooran kartaa kuwaan soo socda ee la kala saaray"
+    "group_description": "Dhowr mar ayaad dooran kartaa kuwaan soo socda ee la kala saaray",
+    "header": "Dhacdooyinka soo socda"
   },
   "list": {
     "load_more": "Wax badan muuji",
@@ -60,7 +63,18 @@
     "info_url_text": "Bogga internetka ee munaasabadda ama dhacdada",
     "info_url_text_teams": "Waxaad furtaa munaasabadda Teams-ka",
     "cancelled_text": "Waa la baajiyay",
-    "field_offers_info_url": "Is diiwaangeli"
+    "field_offers_info_url": "Is diiwaangeli",
+    "provider": "Macluumaadka qabanqaabiyaha",
+    "publisher": "Macluumaadka daabacaha",
+    "showAll": "I tus dhammaan",
+    "showLess": "Qari",
+    "Other_times": "Wakhtiyada kale ee dhacdada",
+    "languages": "Luqadaha"
+  },
+  "news": {
+    "news": "War",
+    "newsletter": "War-side",
+    "partner_jobs": "Boosaska shaqada ee ay bixiyaan qolooyinka lala shaqeeyo"
   },
   "video": {
     "cookie_consent": "You have not allowed the use of cookies on this site.",
@@ -93,5 +107,15 @@
     "title": "Feedback buttons cannot be displayed",
     "text": "To use this feature, you must accept cookies from the site. You can provide feedback on this page by enabling statistics-related cookies.",
     "button": "Change cookie settings"
-  }
+  },
+  "datetime": {
+    "time": "saacadda"
+  },
+  "Sun": "Axad",
+  "Mon": "Isniin",
+  "Tue": "Talaado",
+  "Wed": "Arbaco",
+  "Thu": "Khamiis",
+  "Fri": "Jimco",
+  "Sat": "Sabti"
 }
