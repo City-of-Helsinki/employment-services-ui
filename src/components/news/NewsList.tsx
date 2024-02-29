@@ -48,7 +48,7 @@ function NewsList({
   field_background_color,
 }: NewsListProps): JSX.Element {
   const { t } = useTranslation();
-  const { locale }= useRouter();
+  const { locale } = useRouter();
   const [newsIndex, setNewsIndex] = useState<number>(4);
   const bgColor = field_background_color?.field_css_name ?? 'white';
 
@@ -57,7 +57,7 @@ function NewsList({
 
   const { data, size, setSize } = useSWRInfinite(getKeyForNews, fetcherForNews);
   const total = data && data[0].total;
-  
+
   const news = data && data[0]?.news;
 
   useEffect(() => {
@@ -69,68 +69,77 @@ function NewsList({
       published_at !== null && published_at > created ? published_at : created;
     return dateformat(new Date(timestamp * 1000), 'dd.mm.yyyy');
   };
-
+  
 
   return (
-    <div
-      className="component"
-      style={{ backgroundColor: `var(--color-${bgColor})` }}
-    >
-      <Container className="container">
-        <div className={styles.newsListTitleArea}>
-          {field_title && <h2>{field_title}</h2>}
-          {field_short_list && t('list.news_url') && (
-            <a href={t('list.news_url')}>
-              {t('list.show_all_news')} <IconArrowRight size="l" />
-            </a>
-          )}
-        </div>
-        {field_news_list_desc?.processed && (
-          <div className={styles.newsListDescription}>
-            <HtmlBlock field_text={field_news_list_desc} />
-          </div>
-        )}
+    <>
+      {news?.length ? (
         <div
-          className={`${styles.newsList} ${field_short_list && styles.short}`}
+          className="component"
+          style={{ backgroundColor: `var(--color-${bgColor})` }}
         >
-          {news?.map((news: News) => (
-            <div className={styles.newsCard} key={news.id}>
-              <a href={news?.url[0]}>
-                <h3 className={styles.newsTitle}>{news?.title}</h3>
-              </a>
-              {news.field_article_category === 'newsletter' && (
-                <p>{t('news.newsletter')}</p>
-              )}
-              {news.published_at && (
-                <p className={styles.articleDate}>
-                  <time
-                    dateTime={getDateTimeFi(news.published_at, news.created)}
-                  >
-                    {getDateTimeFi(news.published_at, news.created)}
-                  </time>
-                </p>
+          <Container className="container">
+            <div className={styles.newsListTitleArea}>
+              {field_title && <h2>{field_title}</h2>}
+              {field_short_list && t('list.news_url') && (
+                <a href={t('list.news_url')}>
+                  {t('list.show_all_news')} <IconArrowRight size="l" />
+                </a>
               )}
             </div>
-          ))}
-        </div>
-
-        {!field_short_list && total > news?.length && (
-          <div className={styles.loadMore}>
-            <HDSButton
-              variant="supplementary"
-              iconRight={<IconPlus />}
-              style={{ background: 'none' }}
-              onClick={() => {
-                setNewsIndex(newsIndex + 4);
-                setSize(size + 1);
-              }}
+            {field_news_list_desc?.processed && (
+              <div className={styles.newsListDescription}>
+                <HtmlBlock field_text={field_news_list_desc} />
+              </div>
+            )}
+            <div
+              className={`${styles.newsList} ${
+                field_short_list && styles.short
+              }`}
             >
-              {t('list.load_more')}
-            </HDSButton>
-          </div>
-        )}
-      </Container>
-    </div>
+              {news?.map((news: News) => (
+                <div className={styles.newsCard} key={news.id}>
+                  <a href={news?.url[0]}>
+                    <h3 className={styles.newsTitle}>{news?.title}</h3>
+                  </a>
+                  {news.field_article_category === 'newsletter' && (
+                    <p>{t('news.newsletter')}</p>
+                  )}
+                  {news.published_at && (
+                    <p className={styles.articleDate}>
+                      <time
+                        dateTime={getDateTimeFi(
+                          news.published_at,
+                          news.created
+                        )}
+                      >
+                        {getDateTimeFi(news.published_at, news.created)}
+                      </time>
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {!field_short_list && total > news?.length && (
+              <div className={styles.loadMore}>
+                <HDSButton
+                  variant="supplementary"
+                  iconRight={<IconPlus />}
+                  style={{ background: 'none' }}
+                  onClick={() => {
+                    setNewsIndex(newsIndex + 4);
+                    setSize(size + 1);
+                  }}
+                >
+                  {t('list.load_more')}
+                </HDSButton>
+              </div>
+            )}
+          </Container>
+        </div>
+      ) : null}
+    </>
   );
 }
 
