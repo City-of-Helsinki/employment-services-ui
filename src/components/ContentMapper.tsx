@@ -17,6 +17,7 @@ import { NavProps } from '@/lib/types';
 import UnitsList from './tprUnits/UnitsList';
 import MapEmbedded from './mapEmbedded/MapEmbedded';
 import LinkWithIcon from './linkwithIcon/LinkWithIcon';
+import RSSFeed from './rrsFeed/RSSFeed';
 
 interface ContentMapperProps {
   content: any;
@@ -54,6 +55,12 @@ export function ContentMapper({
             </Container>
           </div>
         );
+
+      case CONTENT_TYPES.RSS_FEED:
+        if (!item?.id) {
+          return null;
+        }
+        return <RSSFeed {...item} key={key} />;
 
       case CONTENT_TYPES.ACCORDION:
         if (!item?.field_accordion_items) {
