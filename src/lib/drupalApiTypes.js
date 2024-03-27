@@ -33,4 +33,5 @@ export const CONTENT_TYPES = {
   UNITS_LIST: 'paragraph--units_list',
   UNIT_MAP: 'paragraph--unit_map',
   LINK_WITH_ICON: 'paragraph--link_with_icon',
+  RSS_FEED: 'paragraph--rss_feed'
 }
