@@ -125,7 +125,9 @@ const getPageQueryParams = () =>
       'field_header',
     ])
     .addFields(CONTENT_TYPES.RSS_FEED, [
-      'field_rss_feed_url'
+      'field_rss_feed_url',
+      'field_background_color',
+      'field_rss_title',
     ])
     .getQueryObject()
 

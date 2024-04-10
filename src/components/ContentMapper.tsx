@@ -17,7 +17,7 @@ import { NavProps } from '@/lib/types';
 import UnitsList from './tprUnits/UnitsList';
 import MapEmbedded from './mapEmbedded/MapEmbedded';
 import LinkWithIcon from './linkwithIcon/LinkWithIcon';
-import RSSFeed from './rrsFeed/RSSFeed';
+import RSSFeed from './rssFeed/RSSFeed';
 
 interface ContentMapperProps {
   content: any;

@@ -1,0 +1,103 @@
+@import '/styles/variables.scss';
+
+.newsList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: var(--spacing-xl) var(--spacing-s);
+
+  &.short {
+    justify-content: space-between;
+  }
+}
+
+.newsListTitleArea {
+  a {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+  }
+
+  svg {
+    margin-left: var(--spacing-s);
+    transition: transform .2s linear;
+  }
+
+  &:hover svg {
+    transform: translateX(0.5rem);
+  }
+}
+
+.newsListDescription {
+  max-width: 50rem;
+  margin-bottom: var(--spacing-xl);
+}
+
+.newsCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  border-left: 0.5rem solid var(--color-metro);
+  padding: 0 0 0 var(--spacing-s);
+  min-height: var(--spacing-layout-xl);
+  overflow:hidden;
+  word-wrap: break-word;
+  width: 100%;
+
+  h3 {
+    font-weight: 700;
+    word-wrap: break-word;
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    text-decoration: none;
+    margin: 0;
+  }
+
+  .newsTitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+  }
+}
+
+.loadMore {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--spacing-l);
+}
+
+@media (min-width: $breakpoint-s) {
+  .newsCard {
+    width: calc(50% - var(--spacing-l));
+  }
+}
+
+@media (min-width: $breakpoint-l) {
+  .newsListTitleArea {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+
+  }
+  .newsCard {
+    width: calc(50% - var(--spacing-l));
+  }
+}
+
+@media (min-width: $breakpoint-xl) {
+  .newsCard {
+    flex-grow: 0;
+    width: calc(50% - var(--spacing-l));
+  }
+}
