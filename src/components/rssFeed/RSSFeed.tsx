@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 import {
   Button as HDSButton,
   IconPlus,
@@ -7,6 +8,7 @@ import {
 import { useTranslation } from 'next-i18next';
 import styles from './rssFeed.module.scss';
 import dateformat from 'dateformat';
+import { getRSSFeed } from '@/lib/client-api';
 
 interface RSSFeedProps {
   field_rss_feed_url: string,
@@ -28,38 +30,16 @@ function RSSFeed({
   field_background_color,
   field_rss_title
 }: RSSFeedProps): JSX.Element {
-  const [feed, setFeed] = useState<any>([]);
+  const fetcher = (field_rss_feed_url: string) => getRSSFeed(field_rss_feed_url);
+  const { data } = useSWR(field_rss_feed_url, fetcher);
   const [newsIndex, setNewsIndex] = useState<number>(4);
-  const news = feed.length ? feed.slice(0, newsIndex) : [];
+  const news = data?.items.slice(0, newsIndex);
   const bgColor = field_background_color?.field_css_name ?? 'white';
   const { t } = useTranslation();
-
-  useEffect(() => {
-    if (field_rss_feed_url) {
-      fetchRSSFeed(field_rss_feed_url);
-    }
-  }, []);
 
   const getDateTimeFi = (published_at: string | null) => {
     const timestamp: any = published_at !== null && published_at;
     return dateformat(new Date(timestamp).getTime(), 'dd.mm.yyyy');
-  };
-
-  const fetchRSSFeed = async (url: string) => {
-    try {
-      const encodedUrl = encodeURIComponent(url);
-      const response = await fetch(`/api/rss-proxy?url=${encodedUrl}`);
-      if (response.ok) {
-          const data = await response.json();
-          setFeed(data.items);
-
-      } else {
-          console.error('Error fetching feed:', response.statusText)
-      }
-
-    } catch (error) {
-      console.error('Error fetching feed:', error);
-    }
   };
 
   return (
@@ -95,7 +75,7 @@ function RSSFeed({
                 </div>
               ))}
             </div>
-            { feed.length > news?.length && (
+            { data?.items.length > news?.length && (
               <div className={styles.loadMore}>
                 <HDSButton
                   variant="supplementary"

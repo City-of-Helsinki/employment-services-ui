@@ -97,7 +97,6 @@ export const getEventsTags = async (tagField: string, locale: string) => {
   return data;
 };
 
-
 export const getSearchSuggestions = async (
   query: string | undefined,
   locale: Locale
@@ -106,4 +105,14 @@ export const getSearchSuggestions = async (
     params: { q: query, locale: locale },
   });
   return data;
+};
+
+export const getRSSFeed = async (url: string) => {
+  const encodedUrl = encodeURIComponent(url);
+  try {
+    const { data } = await axios.get(`/api/rss-proxy?url=${encodedUrl}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
 };

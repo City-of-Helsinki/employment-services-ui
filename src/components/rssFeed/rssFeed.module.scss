@@ -29,11 +29,6 @@
   }
 }
 
-.newsListDescription {
-  max-width: 50rem;
-  margin-bottom: var(--spacing-xl);
-}
-
 .newsCard {
   display: flex;
   flex-direction: column;
@@ -42,7 +37,7 @@
   border-left: 0.5rem solid var(--color-metro);
   padding: 0 0 0 var(--spacing-s);
   min-height: var(--spacing-layout-xl);
-  overflow:hidden;
+  overflow: hidden;
   word-wrap: break-word;
   width: 100%;
 
