@@ -61,6 +61,12 @@ export async function getStaticProps(
   };
   let withAuth = false;
 
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   // Use auth with preview to see unpublished content.
   if (context.preview) {
     withAuth = true;
