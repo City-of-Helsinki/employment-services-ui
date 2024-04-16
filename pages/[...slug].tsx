@@ -220,6 +220,10 @@ export default function Page({ node, nav, footer, preview }: PageProps) {
     return <ErrorPage statusCode={404} />;
   }
 
+  if (router.isFallback {
+    return <div>Loading...</div>;
+  }
+
   if (!node) return null;
 
   const metaTitle = getTitle(node, t('site_title'));
