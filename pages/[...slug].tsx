@@ -220,7 +220,7 @@ export default function Page({ node, nav, footer, preview }: PageProps) {
     return <ErrorPage statusCode={404} />;
   }
 
-  if (router.isFallback {
+  if (router.isFallback) {
     return <div>Loading...</div>;
   }
 
