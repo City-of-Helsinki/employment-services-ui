@@ -47,7 +47,7 @@ export async function getStaticPaths(context: GetStaticPathsContext): Promise<Ge
 
   return {
     paths: paths,
-    fallback: true,
+    fallback: 'blocking',
   };
 }
 
@@ -63,9 +63,6 @@ export async function getStaticProps(
 
   const router = useRouter();
 
-  if (router.isFallback) {
-    return <div>Loading...</div>;
-  }
 
   // Use auth with preview to see unpublished content.
   if (context.preview) {
