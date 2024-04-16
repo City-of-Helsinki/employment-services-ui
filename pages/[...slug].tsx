@@ -47,7 +47,7 @@ export async function getStaticPaths(context: GetStaticPathsContext): Promise<Ge
 
   return {
     paths: paths,
-    fallback: 'blocking',
+    fallback: true,
   };
 }
 
@@ -92,7 +92,7 @@ export async function getStaticProps(
 
   if (BUILD_PHASE) {
     // Try a few times, sometimes Drupal router just gives random errors.
-    node = await getNode({ type, context, drupal, path, retry: 10 });
+    node = await getNode({ type, context, drupal, path, retry: 5 });
   } else {
     node = await getNode({ type, context, drupal, path });
   }
@@ -235,8 +235,8 @@ export default function Page({ node, nav, footer, preview }: PageProps) {
     <Layout
       header={nav}
       footer={footer}
-      hideNav={node.field_hide_navigation}
-      langcode={node.langcode}
+      hideNav={node?.field_hide_navigation}
+      langcode={node?.langcode}
       preview={preview}
     >
       <Head>
@@ -249,15 +249,15 @@ export default function Page({ node, nav, footer, preview }: PageProps) {
         <meta property="og:image" content={metaImage} />
       </Head>
       <a id="content" tabIndex={-1}></a>
-      { node.type === NODE_TYPES.PAGE && (
+      { node?.type === NODE_TYPES.PAGE && (
         <NodeBasicPage node={node} sidebar={nav} preview={preview}/>
       )}
-      {node.type === NODE_TYPES.LANDING_PAGE && (
+      {node?.type === NODE_TYPES.LANDING_PAGE && (
         <NodeLandingPage node={node} />
       )}
-      {node.type === NODE_TYPES.EVENT && <NodeEventPage node={node} />}
-      {node.type === NODE_TYPES.ARTICLE && <NodeArticlePage node={node} />}
-      {node.type === NODE_TYPES.TPR_UNIT && (
+      {node?.type === NODE_TYPES.EVENT && <NodeEventPage node={node} />}
+      {node?.type === NODE_TYPES.ARTICLE && <NodeArticlePage node={node} />}
+      {node?.type === NODE_TYPES.TPR_UNIT && (
         <NodeTprUnitPage node={node} sidebar={nav} preview={preview}/>
       )}
       {/* React and share */}
