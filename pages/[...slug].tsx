@@ -92,7 +92,7 @@ export async function getStaticProps(
 
   if (BUILD_PHASE) {
     // Try a few times, sometimes Drupal router just gives random errors.
-    node = await getNode({ type, context, drupal, path, retry: 5 });
+    node = await getNode({ type, context, drupal, path, retry: 10 });
   } else {
     node = await getNode({ type, context, drupal, path });
   }
