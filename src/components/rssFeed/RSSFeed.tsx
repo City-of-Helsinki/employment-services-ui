@@ -9,6 +9,8 @@ import { useTranslation } from 'next-i18next';
 import styles from './rssFeed.module.scss';
 import dateformat from 'dateformat';
 import { getRSSFeed } from '@/lib/client-api';
+import { DrupalFormattedText } from '@/lib/types';
+import HtmlBlock from '../HtmlBlock';
 
 interface RSSFeedProps {
   field_rss_feed_url: string,
@@ -16,6 +18,7 @@ interface RSSFeedProps {
     field_css_name: string;
   };
   field_rss_title: string,
+  field_rss_feed_description: DrupalFormattedText;
 }
 
 interface News {
@@ -28,7 +31,8 @@ interface News {
 function RSSFeed({
   field_rss_feed_url,
   field_background_color,
-  field_rss_title
+  field_rss_title,
+  field_rss_feed_description
 }: RSSFeedProps): JSX.Element {
   const fetcher = (field_rss_feed_url: string) => getRSSFeed(field_rss_feed_url);
   const { data } = useSWR(field_rss_feed_url, fetcher);
@@ -53,6 +57,11 @@ function RSSFeed({
             <div className={styles.newsListTitleArea}>
               {field_rss_title && <h2>{field_rss_title}</h2>}
             </div>
+            {field_rss_feed_description?.processed && (
+              <div className={styles.newsListDescription}>
+                <HtmlBlock field_text={field_rss_feed_description} />
+              </div>
+            )}
             <div
               className={`${styles.newsList} ${styles.short}`}
             >

@@ -29,6 +29,11 @@
   }
 }
 
+.newsListDescription {
+  max-width: 50rem;
+  margin-bottom: var(--spacing-xl);
+}
+
 .newsCard {
   display: flex;
   flex-direction: column;
