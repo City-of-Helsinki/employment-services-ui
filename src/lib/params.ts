@@ -128,6 +128,7 @@ const getPageQueryParams = () =>
       'field_rss_feed_url',
       'field_background_color',
       'field_rss_title',
+      'field_rss_feed_description',
     ])
     .getQueryObject()
 
