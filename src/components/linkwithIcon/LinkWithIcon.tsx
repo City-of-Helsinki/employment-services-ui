@@ -14,7 +14,6 @@ interface LinkWithIconProps {
 function LinkWithIcon({
   field_header,
   field_icon,
-  field_icon_positioning,
   field_link_list_with_description,
 }: LinkWithIconProps) {
   const linkTitle = (title: string, url: string) => {

@@ -124,6 +124,12 @@ const getPageQueryParams = () =>
       'field_link_list_with_description',
       'field_header',
     ])
+    .addFields(CONTENT_TYPES.RSS_FEED, [
+      'field_rss_feed_url',
+      'field_background_color',
+      'field_rss_title',
+      'field_rss_feed_description',
+    ])
     .getQueryObject()
 
 const getLandingPageQueryParams = () =>
