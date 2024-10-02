@@ -128,41 +128,6 @@ function LanguageSelect({
             </Link>
           )}
         </div>
-        {menuOtherLanguages && menuOtherLanguages.length > 0 && (
-          <div ref={wrapperRef}>
-            <Button
-              aria-label={t('other_languages')}
-              className={styles.buttonGlobe}
-              onClick={() => setOpen(!open)}
-              iconRight={
-                !open ? <IconAngleDown size="s" /> : <IconAngleUp size="s" />
-              }
-            >
-              <IconGlobe size="s" />
-            </Button>
-            {open && (
-              <div className={styles.globalDropDown}>
-                <div className={styles.headerLanguageLink}>
-                  {t('global_menu_title')}
-                </div>
-                {menuOtherLanguages?.map((link: any) => (
-                  <a
-                    href={link.url}
-                    key={link.id}
-                    onClick={() => {
-                      previewNavigation(link.url, preview);
-                      clearSessionStorage();
-                    }}
-                  >
-                    <div className={styles.globalLink}>
-                      <span>{link.title}</span>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
       </nav>
     </div>
   );
