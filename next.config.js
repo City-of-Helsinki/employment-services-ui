@@ -173,10 +173,10 @@ const nextConfig = {
         destination: '/ajankohtaista/tapahtumat',
         permanent: true,
       },
-      { 
-        source: '/tapahtuma/:slug', 
+      {
+        source: '/tapahtuma/:slug',
         destination: '/ajankohtaista/tapahtumat/:slug',
-        permanent: true, 
+        permanent: true,
       },
       {
         source: '/blogi',
@@ -338,10 +338,10 @@ const nextConfig = {
         destination: '/aktuellt/evenemang',
         permanent: true,
       },
-      { 
-        source: '/evenemang/:slug', 
+      {
+        source: '/evenemang/:slug',
         destination: '/aktuellt/evenemang/:slug',
-        permanent: true, 
+        permanent: true,
       },
       {
         source: '/blogg',
@@ -503,10 +503,10 @@ const nextConfig = {
         destination: '/current-matters/events',
         permanent: true,
       },
-      { 
-        source: '/event/:slug', 
+      {
+        source: '/event/:slug',
         destination: '/current-matters/events/:slug',
-        permanent: true, 
+        permanent: true,
       },
       {
         source: '/blog',
@@ -634,6 +634,16 @@ const nextConfig = {
       {
         source: '/be-touch-employment-services-summer-and-apply-training-courses-starting-autumn',
         destination: '/current-matters/newsletters/be-touch-employment-services-summer-and-apply-training-courses-starting',
+        permanent: true,
+      },
+      {
+        source: '/tyonhaku/tuetut-tyopaikat/palkkatuki/helsingin-kaupungin-palkkatuetut-tyopaikat',
+        destination: '/tyonhaku/tuetut-tyopaikat/palkkatuetut-tyopaikat',
+        permanent: true,
+      },
+      {
+        source: '/tyonhaku/tuetut-tyopaikat/palkkatuki/kumppanien-tarjoamat-tyopaikat',
+        destination: '/tyonhaku/tuetut-tyopaikat/kumppanien-tarjoamat-tyopaikat',
         permanent: true,
       },
     ]
