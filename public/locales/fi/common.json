@@ -11,7 +11,7 @@
   "text_print_section": "Tulosta tämä osio",
   "skip-to-main-content": "Suoraan sisältöön",
   "navigation": {
-    "button_text": "Oma asiointi",
+    "button_text": "Asiointi",
     "button_link": "https://asiointi.mol.fi/omaasiointi/",
     "title_aria_label": "Helsinki: Työllisyyspalvelut",
     "navigate_to_page": "Siirry sivulle",
