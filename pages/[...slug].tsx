@@ -79,7 +79,7 @@ export async function getStaticProps(
   }
 
   const entityLangcode = path?.entity?.langcode;
-  
+
   // If page(path) doesn't exist on current language.
   if (locale !== entityLangcode) {
     return {
@@ -138,7 +138,7 @@ export async function getStaticProps(
     if (primaryLanguages.includes(locale)) {
       return 'main'
     } else {
-      return 'menu-other-languages'; 
+      return 'menu-other-languages';
     }
   }
 
@@ -160,19 +160,19 @@ export async function getStaticProps(
     if (primaryLanguages.includes(locale)) {
       return 'footer'
     } else {
-      return 'footer-other-languages'; 
+      return 'footer-other-languages';
     }
   }
   const getFooterMenuLang = () => {
     if (primaryLanguages.includes(locale)) {
       return locale;
     } else {
-      return 'en'; 
+      return 'en';
     }
   }
- 
+
   const { tree: footerNav } = await getMenu(getFooterMenu(), getFooterMenuLang(), defaultLocale);
-  
+
   const preview = context.preview ? context.preview : false;
 
   const breadcrumb = getBreadCrumb(
