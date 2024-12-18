@@ -41,23 +41,6 @@ function Footer(props: FooterProps): JSX.Element {
       theme={'dark'}
       className={styles.footer}
     >
-      <HDSFooter.Navigation navigationAriaLabel="Footer navigation">
-        {renderFooterNav(footerNav)}
-        <HDSFooter.SoMe>
-          <HDSFooter.Item
-            icon={<IconFacebook size="m" aria-label={facebook} />}
-            href="https://www.facebook.com/HelsinginTyollisyyspalvelut"
-          />
-          <HDSFooter.Item
-            icon={<IconInstagram size="m" aria-label={instagram} />}
-            href="https://www.instagram.com/helsingintyollisyyspalvelut"
-          />
-          <HDSFooter.Item
-            icon={<IconLinkedin size="m" aria-label={linkedIn} />}
-            href="https://www.linkedin.com/showcase/helsingintyollisyyspalvelut"
-          />
-        </HDSFooter.SoMe>
-      </HDSFooter.Navigation>
 
       <HDSFooter.Base copyrightHolder={t('footer.copyright')}>
         <HDSFooter.Item

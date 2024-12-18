@@ -96,17 +96,6 @@ function Header(header: NavProps): JSX.Element {
         menuOtherLanguages={themes}
         preview={preview}
       />
-      { !frontPagePaths.includes(activePath) && activePath !== '/' && (
-        <div className={styles.subHeader}>
-          <Breadcrumb breadcrumb={breadcrumb} locale={locale as string} preview={preview}/>
-          {isPrintable && (
-            <PrintButton
-              onClick={() => window?.print()}
-              buttonText={t('text_print')}
-            />
-          )}
-        </div>
-      )}
     </>
   );
 }
@@ -118,44 +107,5 @@ export const getNav = (menuArray: DrupalMenuLinkContent[] | undefined, activePat
   if (!menuArray) {
     return <></>;
   }
-  menuArray.map((item: DrupalMenuLinkContent, index: number) => {
-    const subs: ReactElement[] = [];
-    let childActive = false;
-    item.items?.map((sub: DrupalMenuLinkContent, i: number) => {
-      childActive = sub.url === activePath || childActive;
-      subs.push(
-        <NavigationHDS.Item
-          key={sub.title}
-          as="a"
-          href={sub.url}
-          label={sub.title}
-          active={sub.url === activePath}
-          onClick={() => {
-            previewNavigation(sub.url, preview);
-            clearSessionStorage();
-          }}
-        />
-      );
-      return subs;
-    });
-    const isActive = item.url === activePath || childActive;
-    nav.push(
-      <NavigationHDS.DropdownLink
-        label={item.title}
-        key={item.title}
-        id={item.title}
-        active={isActive}
-        className={classNames(styles.navDropDown, isActive && styles.active)}
-        href={item.url}
-        onClick={() => {
-          previewNavigation(item.url, preview);
-          clearSessionStorage();
-        }}
-      >
-        {subs}
-      </NavigationHDS.DropdownLink>
-    );
-    return nav;
-  });
   return nav;
 };
