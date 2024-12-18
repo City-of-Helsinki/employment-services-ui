@@ -41,20 +41,7 @@ export default function Navigation({
             menuOtherLanguages={menuOtherLanguages}
             preview={preview}
           />
-          {primaryLanguages.includes(langcode) && (
-            <NavigationHDS.Search
-              onSearch={onSearch}
-              searchLabel={t('navigation.search_label')}
-              searchPlaceholder={t('navigation.search_placeholder')}
-            />
-          )}
-          <Button
-            className={styles.loggingButton}
-            onClick={onClick}
-            iconRight={<IconLinkExternal size="s" aria-hidden="true" />}
-          >
-            {t('navigation.button_text')}
-          </Button>
+
         </NavigationHDS.Actions>
         {primaryLanguages.includes(langcode) && !hideNav && (
           <NavigationHDS.Row>{getNav(menu, activePath, preview as boolean)}</NavigationHDS.Row>
