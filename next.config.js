@@ -33,7 +33,10 @@ const serverRuntimeConfig = {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  i18n,
+  i18n: {
+    locales: ['fi','en','sv'],
+    defaultLocale: 'fi',
+  },
   reactStrictMode: true,
   publicRuntimeConfig,
   serverRuntimeConfig,
@@ -645,6 +648,41 @@ const nextConfig = {
         source: '/tyonhaku/tuetut-tyopaikat/palkkatuki/kumppanien-tarjoamat-tyopaikat',
         destination: '/tyonhaku/tuetut-tyopaikat/kumppanien-tarjoamat-tyopaikat',
         permanent: true,
+      },
+      {
+        source: '/en',
+        destination: 'https://www.hel.fi/en/business-and-work/',
+        permanent: false,
+        locale: false,
+      },
+      {
+        source: '/sv',
+        destination: 'https://www.hel.fi/sv/foretag-och-arbete/',
+        permanent: false,
+        locale: false,
+      },
+      {
+        source: '/sv/((?!aktuellt/evenemang|_next|jsonapi|arbetssokande/subventionerat-arbete/lonesubventionerade-arbetsplatser|arbetssokande/subventionerat-arbete/arbetsprovning/helsingfors-stads-lediga-platser-arbetsprovning).*)',
+        destination: 'https://www.hel.fi/sv/foretag-och-arbete/',
+        permanent: false,
+        locale: false,
+      },
+      {
+        source: '/en/((?!current-matters/events|_next|jsonapi|job-seeking/supported-jobs/pay-subsidised-jobs|job-seeking/supported-jobs/available-work-try-outs).*)',
+        destination: 'https://www.hel.fi/en/business-and-work/',
+        permanent: false,
+        locale: false,
+      },
+      {
+        source: '/',
+        destination: 'https://www.hel.fi/fi/yritykset-ja-tyo/',
+        permanent: false,
+      },
+      {
+        source: '/:locale/((?!favicon.ico|current-matters/events|job-seeking/supported-jobs/pay-subsidised-jobs|job-seeking/supported-jobs/available-work-try-outs|aktuellt/evenemang|_next|jsonapi|arbetssokande/subventionerat-arbete/lonesubventionerade-arbetsplatser|arbetssokande/subventionerat-arbete/arbetsprovning/helsingfors-stads-lediga-platser-arbetsprovning|jsonapi|_next|ajankohtaista/tapahtumat|tyonhaku/tuetut-tyopaikat/palkkatuetut-tyopaikat|tyonhaku/tuetut-tyopaikat/tyokokeilupaikat).*)',
+        destination: 'https://www.hel.fi/fi/yritykset-ja-tyo/',
+        permanent: false,
+        locale: false,
       },
     ]
   },
