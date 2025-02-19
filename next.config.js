@@ -36,6 +36,7 @@ const nextConfig = {
   i18n: {
     locales: ['fi','en','sv'],
     defaultLocale: 'fi',
+    localeDetection: false,
   },
   reactStrictMode: true,
   publicRuntimeConfig,
@@ -674,15 +675,15 @@ const nextConfig = {
         locale: false,
       },
       {
-        source: '/',
-        destination: 'https://www.hel.fi/fi/yritykset-ja-tyo/',
-        permanent: false,
-      },
-      {
         source: '/:locale/((?!favicon.ico|current-matters/events|job-seeking/supported-jobs/pay-subsidised-jobs|job-seeking/supported-jobs/available-work-try-outs|aktuellt/evenemang|_next|jsonapi|arbetssokande/subventionerat-arbete/lonesubventionerade-arbetsplatser|arbetssokande/subventionerat-arbete/arbetsprovning/helsingfors-stads-lediga-platser-arbetsprovning|jsonapi|_next|ajankohtaista/tapahtumat|tyonhaku/tuetut-tyopaikat/palkkatuetut-tyopaikat|tyonhaku/tuetut-tyopaikat/tyokokeilupaikat).*)',
         destination: 'https://www.hel.fi/fi/yritykset-ja-tyo/',
         permanent: false,
         locale: false,
+      },
+      {
+        source: '/',
+        destination: 'https://www.hel.fi/fi/yritykset-ja-tyo/',
+        permanent: false,
       },
     ]
   },
