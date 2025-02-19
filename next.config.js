@@ -663,19 +663,19 @@ const nextConfig = {
         locale: false,
       },
       {
-        source: '/sv/((?!aktuellt/evenemang|_next|jsonapi|arbetssokande/subventionerat-arbete/lonesubventionerade-arbetsplatser|arbetssokande/subventionerat-arbete/arbetsprovning/helsingfors-stads-lediga-platser-arbetsprovning).*)',
+        source: '/sv/((?!aktuellt/evenemang|_next|__next|api|jsonapi|arbetssokande/subventionerat-arbete/lonesubventionerade-arbetsplatser|arbetssokande/subventionerat-arbete/arbetsprovning/helsingfors-stads-lediga-platser-arbetsprovning).*)',
         destination: 'https://www.hel.fi/sv/foretag-och-arbete/',
         permanent: false,
         locale: false,
       },
       {
-        source: '/en/((?!current-matters/events|_next|jsonapi|job-seeking/supported-jobs/pay-subsidised-jobs|job-seeking/supported-jobs/available-work-try-outs).*)',
+        source: '/en/((?!current-matters/events|_next|__next|api|jsonapi|job-seeking/supported-jobs/pay-subsidised-jobs|job-seeking/supported-jobs/available-work-try-outs).*)',
         destination: 'https://www.hel.fi/en/business-and-work/',
         permanent: false,
         locale: false,
       },
       {
-        source: '/:locale/((?!favicon.ico|current-matters/events|job-seeking/supported-jobs/pay-subsidised-jobs|job-seeking/supported-jobs/available-work-try-outs|aktuellt/evenemang|_next|jsonapi|arbetssokande/subventionerat-arbete/lonesubventionerade-arbetsplatser|arbetssokande/subventionerat-arbete/arbetsprovning/helsingfors-stads-lediga-platser-arbetsprovning|jsonapi|_next|ajankohtaista/tapahtumat|tyonhaku/tuetut-tyopaikat/palkkatuetut-tyopaikat|tyonhaku/tuetut-tyopaikat/tyokokeilupaikat).*)',
+        source: '/:locale/((?!favicon.ico|current-matters/events|job-seeking/supported-jobs/pay-subsidised-jobs|job-seeking/supported-jobs/available-work-try-outs|aktuellt/evenemang|_next|__next|jsonapi|arbetssokande/subventionerat-arbete/lonesubventionerade-arbetsplatser|arbetssokande/subventionerat-arbete/arbetsprovning/helsingfors-stads-lediga-platser-arbetsprovning|api|jsonapi|_next|ajankohtaista/tapahtumat|tyonhaku/tuetut-tyopaikat/palkkatuetut-tyopaikat|tyonhaku/tuetut-tyopaikat/tyokokeilupaikat).*)',
         destination: 'https://www.hel.fi/fi/yritykset-ja-tyo/',
         permanent: false,
         locale: false,
